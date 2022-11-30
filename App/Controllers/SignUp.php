@@ -1,12 +1,12 @@
 <?php
 
+namespace App\Controllers;
+
 /**
  * Sign Up controller
  */
 
- //namespace App\Controllers;
-
- class SignUp
+ class Signup
  {
     /**
      * Show the index page
@@ -25,6 +25,6 @@
      */
     public function success()
     {
-        echo "Witaj na stronnue szczęśliwie zarejestrowanych użytkowników kontrolera rejestracji!";
+        echo "Witaj na stronie szczęśliwie zarejestrowanych użytkowników kontrolera rejestracji!";
     }
  }

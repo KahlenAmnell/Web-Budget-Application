@@ -1,6 +1,6 @@
 <?php
 
-//namespace Core;
+namespace Core;
 
 /**
  * Router
@@ -104,6 +104,7 @@ class Router
         if ($this->match($url)) {
             $controller = $this->parameters['controller'];
             $controller = $this->convertToStudlyCaps($controller);
+            $controller = $this->getNamespace() . $controller;
 
             if (class_exists($controller)) {
                 $controller_object = new $controller();
@@ -146,5 +147,44 @@ class Router
     protected function convertToCamelCase($string)
     {
         return lcfirst($this->convertToStudlyCaps($string));
+    }
+
+    /**
+     * Remove the query string variables from the URL before route is matched to the routing table. 
+     * 
+     * @param string $url The full url
+     * 
+     * @return string The URL with the query string removed
+     */
+    protected function removeQueryStringVariables($url)
+    {
+        if ($url != '') {
+            $parts = explode('&', $url, 2);
+
+            if (strpos($parts[0], '=') === false) {
+                $url = $parts[0];
+            } else {
+                $url = '';
+            }
+        }
+
+        return $url;
+    }
+
+    /**
+     * Get the namespace for the controller class. The namespace defined in the
+     * route parameters is added if present.
+     *
+     * @return string The request URL
+     */
+    protected function getNamespace()
+    {
+        $namespace = 'App\Controllers\\';
+
+        if (array_key_exists('namespace', $this->parameters)) {
+            $namespace .= $this->parameters['namespace'] . '\\';
+        }
+
+        return $namespace;
     }
 }

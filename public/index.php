@@ -5,17 +5,12 @@
  */
 
 /**
- * Sign up controller
+ * Composer
  */
-require '../App/Controllers/SignUp.php';
-
-/**
- * Routing
- */
-require '../Core/Router.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
 
 
-$router = new Router();
+$router = new Core\Router();
 
 $router->add('', ['controller' => 'Home', 'action' => 'index']);
 $router->add('{controller}/{action}');
