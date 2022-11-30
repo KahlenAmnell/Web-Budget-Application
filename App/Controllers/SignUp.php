@@ -6,8 +6,8 @@ namespace App\Controllers;
  * Sign Up controller
  */
 
- class Signup
- {
+class Signup
+{
     /**
      * Show the index page
      * 
@@ -27,4 +27,4 @@ namespace App\Controllers;
     {
         echo "Witaj na stronie szczęśliwie zarejestrowanych użytkowników kontrolera rejestracji!";
     }
- }
+}
