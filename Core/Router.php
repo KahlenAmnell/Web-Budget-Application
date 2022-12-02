@@ -109,7 +109,7 @@ class Router
             $controller = $this->getNamespace() . $controller;
 
             if (class_exists($controller)) {
-                $controller_object = new $controller();
+                $controller_object = new $controller($this->parameters);
 
                 $action = $this->parameters['action'];
                 $action = $this->convertToCamelCase($action);

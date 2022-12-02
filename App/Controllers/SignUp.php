@@ -6,7 +6,7 @@ namespace App\Controllers;
  * Sign Up controller
  */
 
-class Signup
+class Signup extends \Core\Controller
 {
     /**
      * Show the index page

@@ -1,5 +1,7 @@
 <?php
 
+namespace Core;
+
 /**
  * Base controller
  */
@@ -13,7 +15,7 @@
     protected $route_params = [];
 
     /**
-     * Class contructor
+     * Class constructor
      * 
      * @param array $route_params Parameters from the route
      * 
