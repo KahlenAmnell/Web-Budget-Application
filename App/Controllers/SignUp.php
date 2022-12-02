@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use \Core\View;
+
 /**
  * Sign Up controller
  */
@@ -15,7 +17,9 @@ class Signup extends \Core\Controller
      */
     public function indexAction()
     {
-        echo "Witaj na stronie index kontrolera rejestracji!";
+        View::render('Signup/index.php', [
+            'name'  => 'Jan'
+        ]);
     }
 
     /**
