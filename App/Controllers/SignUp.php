@@ -17,7 +17,7 @@ class Signup extends \Core\Controller
      */
     public function indexAction()
     {
-        View::render('Signup/index.php', [
+        View::renderTemplate('Signup/index.html', [
             'name'  => 'Jan'
         ]);
     }
