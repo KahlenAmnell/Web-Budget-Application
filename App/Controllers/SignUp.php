@@ -13,7 +13,7 @@ class Signup extends \Core\Controller
      * 
      * @return void
      */
-    public function index()
+    public function indexAction()
     {
         echo "Witaj na stronie index kontrolera rejestracji!";
     }
@@ -23,7 +23,7 @@ class Signup extends \Core\Controller
      * 
      * @return void
      */
-    public function success()
+    public function successAction()
     {
         echo "Witaj na stronie szczęśliwie zarejestrowanych użytkowników kontrolera rejestracji!";
     }

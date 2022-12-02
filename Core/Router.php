@@ -114,7 +114,7 @@ class Router
                 $action = $this->parameters['action'];
                 $action = $this->convertToCamelCase($action);
 
-                if (is_callable([$controller_object, $action])) {
+                if (preg_match('/action$/i', $action) == 0) {
                     $controller_object->$action();
                 } else {
                     echo "Method $action (in controller $controller) not found";
