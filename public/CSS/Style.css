@@ -1,0 +1,40 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-image: url(https://images.unsplash.com/photo-1633158829875-e5316a358c6f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80);
+    background-size: cover;
+    color: #17694b;
+}
+
+.balance {
+    position: fixed;
+    top: 400px;
+}
+
+.tableBackground {
+    background-color: #ffffff75;
+}
+
+.secondNavColors {
+    background-color: #218d66;
+    color: white;
+}
+
+.buttonHover:hover {
+    background-color: white;
+}
+
+.myButton {
+    background-color: #17694b;
+}
+
+.myButton:hover {
+    background-color: white;
+}
+
+.formBackground {
+    background-color: #17694b99;
+}
+
+#customDateInput {
+    display: none;
+}

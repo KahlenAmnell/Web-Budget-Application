@@ -4,14 +4,47 @@
 
 {% block body %}
 
-<h1>Przykład</h1>
-<p>Witaj {{ name }} w szablonie zrobionym dzięki Twig!</p>
-{% for data in base %}
-{{ data.username }}
+<main>
+    <div>
+        <h1 class="display-2 mt-5 d-flex justify-content-center">Budżet domowy</h1>
+    </div>
+    <div class="container mt-5 text-light  mx-md-auto mx-sm-5%">
+        <form class="p-4 mx-auto rounded-3 formBackground col-lg-4 col-md-6" id="loginFor" method="post">
+            <input type='hidden' id='token' name='token' />
+            <div class="mb-4">
+                <h2 class="text-center display-5">Zarejestruj się</h2>
+            </div>
+            <div class="form-floating mb-3 text-dark">
+                <input type="text" class="form-control" name="nameRegister" id="nameRegisterInput" placeholder=" "
+                    required>
+                <label for="nameRegisterInput">Imię</label>
 
-{{ data.id }}
+            </div>
+            <div class="form-floating mb-3 text-dark">
+                <input type="email" class="form-control" name="emailRegister" id="emailRegisterInput" placeholder=" "
+                    required>
+                <label for="emailRegisterInput">Adres e-mail</label>
 
-{{ data.email }}
-{% endfor %}
+            </div>
+            <div class="form-floating mb-3 text-dark">
+                <input type="password" class="form-control" name="passwordRegister" id="passwordRegisterInput"
+                    placeholder=" " required>
+                <label for="passwordRegisterInput">Hasło</label>
+
+            </div>
+            <div class="form-floating mb-3 text-dark">
+                <input type="password" class="form-control" name="secondPasswordRegister"
+                    id="secondPasswordRegisterInput" placeholder=" " required>
+                <label for="passwordRegisterInput">Powtórz hasło</label>
+            </div>
+            <div class="d-grid gap-2 w-50 mx-auto">
+                <button class="btn btn-outline-light" type="submit" id="signInButton" name="buttonSubmit">Utwórz
+                    konto</button>
+
+                <a class="btn btn-outline-light" href="index.php">Powrót do logowania</a>
+            </div>
+        </form>
+    </div>
+</main>
 
 {% endblock %}
