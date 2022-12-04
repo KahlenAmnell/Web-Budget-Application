@@ -6,5 +6,12 @@
 
 <h1>Przykład</h1>
 <p>Witaj {{ name }} w szablonie zrobionym dzięki Twig!</p>
+{% for data in base %}
+{{ data.username }}
+
+{{ data.id }}
+
+{{ data.email }}
+{% endfor %}
 
 {% endblock %}
