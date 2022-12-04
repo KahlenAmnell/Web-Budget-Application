@@ -1,0 +1,17 @@
+[04-Dec-2022 20:27:47 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched'
+Stack trace: #0 C:\xampp\htdocs\Web-Budget-Application\public\index.php(28): Core\Router->dispatch('signup/index/ne...')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\Web-Budget-Application\Core\Router.php' on line 126
+[04-Dec-2022 20:28:11 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched'
+Stack trace: #0 C:\xampp\htdocs\Web-Budget-Application\public\index.php(28): Core\Router->dispatch('signup/index/')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\Web-Budget-Application\Core\Router.php' on line 126
+[04-Dec-2022 20:28:13 Europe/Berlin] Uncaught exception: 'Exception' with message 'No route matched'
+Stack trace: #0 C:\xampp\htdocs\Web-Budget-Application\public\index.php(28): Core\Router->dispatch('signup/index/')
+#1 {main}
+Thrown in 'C:\xampp\htdocs\Web-Budget-Application\Core\Router.php' on line 126
+[04-Dec-2022 20:29:30 Europe/Berlin] Uncaught exception: 'Exception' with message 'Method indAction not found in controller App\Controllers\Signup'
+Stack trace: #0 C:\xampp\htdocs\Web-Budget-Application\Core\Router.php(118): Core\Controller->__call('ind', Array)
+#1 C:\xampp\htdocs\Web-Budget-Application\public\index.php(28): Core\Router->dispatch('signup/ind')
+#2 {main}
+Thrown in 'C:\xampp\htdocs\Web-Budget-Application\Core\Controller.php' on line 50
