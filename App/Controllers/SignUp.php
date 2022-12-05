@@ -27,6 +27,17 @@ class Signup extends \Core\Controller
     }
 
     /**
+     * Sign up new user
+     * 
+     * @return void
+     */
+    public function createAction()
+    {
+        $user = new User($_POST);
+        
+    }
+
+    /**
      * Show the success page
      * 
      * @return void

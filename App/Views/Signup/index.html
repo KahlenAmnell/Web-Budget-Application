@@ -9,33 +9,32 @@
         <h1 class="display-2 mt-5 d-flex justify-content-center">Budżet domowy</h1>
     </div>
     <div class="container mt-5 text-light  mx-md-auto mx-sm-5%">
-        <form class="p-4 mx-auto rounded-3 formBackground col-lg-4 col-md-6" id="loginFor" method="post">
+        <form class="p-4 mx-auto rounded-3 formBackground col-lg-4 col-md-6" id="signUpFrom" method="post"
+            action="/Signup/create">
             <input type='hidden' id='token' name='token' />
             <div class="mb-4">
                 <h2 class="text-center display-5">Zarejestruj się</h2>
             </div>
             <div class="form-floating mb-3 text-dark">
-                <input type="text" class="form-control" name="nameRegister" id="nameRegisterInput" placeholder=" "
-                    required>
-                <label for="nameRegisterInput">Imię</label>
+                <input type="text" class="form-control" name="nameRegister" id="name" placeholder=" " required>
+                <label for="name">Imię</label>
 
             </div>
             <div class="form-floating mb-3 text-dark">
-                <input type="email" class="form-control" name="emailRegister" id="emailRegisterInput" placeholder=" "
-                    required>
-                <label for="emailRegisterInput">Adres e-mail</label>
+                <input type="email" class="form-control" name="emailRegister" id="email" placeholder=" " required>
+                <label for="email">Adres e-mail</label>
 
             </div>
             <div class="form-floating mb-3 text-dark">
-                <input type="password" class="form-control" name="passwordRegister" id="passwordRegisterInput"
+                <input type="password" class="form-control" name="passwordRegister" id="password" placeholder=" "
+                    required>
+                <label for="password">Hasło</label>
+
+            </div>
+            <div class="form-floating mb-3 text-dark">
+                <input type="password" class="form-control" name="secondPasswordRegister" id="secondPassword"
                     placeholder=" " required>
-                <label for="passwordRegisterInput">Hasło</label>
-
-            </div>
-            <div class="form-floating mb-3 text-dark">
-                <input type="password" class="form-control" name="secondPasswordRegister"
-                    id="secondPasswordRegisterInput" placeholder=" " required>
-                <label for="passwordRegisterInput">Powtórz hasło</label>
+                <label for="password">Powtórz hasło</label>
             </div>
             <div class="d-grid gap-2 w-50 mx-auto">
                 <button class="btn btn-outline-light" type="submit" id="signInButton" name="buttonSubmit">Utwórz
