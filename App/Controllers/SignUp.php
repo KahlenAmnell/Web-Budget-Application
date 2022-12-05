@@ -34,7 +34,12 @@ class Signup extends \Core\Controller
     public function createAction()
     {
         $user = new User($_POST);
-        
+
+        if (!$user->save()) {
+            View::renderTemplate('Signup/index.html', [
+                'user' => $user
+            ]);
+        }
     }
 
     /**
