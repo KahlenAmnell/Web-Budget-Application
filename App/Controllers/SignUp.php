@@ -35,7 +35,9 @@ class Signup extends \Core\Controller
     {
         $user = new User($_POST);
 
-        if (!$user->save()) {
+        if ($user->save()) {
+            $this->redirect('/signup/success');
+        } else {
             View::renderTemplate('Signup/index.html', [
                 'user' => $user
             ]);
@@ -49,6 +51,6 @@ class Signup extends \Core\Controller
      */
     public function successAction()
     {
-        echo "Witaj na stronie szczęśliwie zarejestrowanych użytkowników kontrolera rejestracji!";
+        View::renderTemplate('Signup/success.html');
     }
 }
