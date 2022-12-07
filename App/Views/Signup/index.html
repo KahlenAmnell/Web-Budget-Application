@@ -2,6 +2,33 @@
 
 {% block title %}Sign up {% endblock %}
 
+{% block footer %}
+
+
+<script>
+
+    (function () {
+        'use strict'
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>
+{% endblock %}
+
 {% block body %}
 
 <main>
@@ -19,32 +46,42 @@
             </ul>
             {% endif %}
         </div>
-        <form class="p-4 mx-auto rounded-3 formBackground col-lg-4 col-md-6" id="signUpFrom" method="post"
-            action="/Signup/create">
+        <form class="p-4 mx-auto rounded-3 formBackground col-lg-4 col-md-6 needs-validation" id="signUpFrom"
+            method="post" action="/Signup/create" novalidate>
             <input type='hidden' id='token' name='token' />
             <div class="mb-4">
                 <h2 class="text-center display-5">Zarejestruj się</h2>
             </div>
             <div class="form-floating mb-3 text-dark">
                 <input type="text" class="form-control" name="name" id="nameInput" placeholder=" "
-                    value="{{ user.name }}">
+                    value="{{ user.name }}" required>
                 <label for="nameInput">Imię</label>
-
+                <div class="invalid-feedback" style='color: white'>
+                    Podaj imię.
+                </div>
             </div>
             <div class="form-floating mb-3 text-dark">
                 <input type="email" class="form-control" name="email" id="emailInput" placeholder=" "
-                    value="{{ user.email }}">
+                    value="{{ user.email }}" required>
                 <label for="emailInput">Adres e-mail</label>
-
+                <div class="invalid-feedback" style='color: white'>
+                    Podany adres email jest nieprawidłowy.
+                </div>
             </div>
             <div class="form-floating mb-3 text-dark">
-                <input type="password" class="form-control" name="password" id="passwordInput" placeholder=" ">
+                <input type="password" class="form-control" name="password" id="passwordInput" placeholder=" " required>
                 <label for="passwordInput">Hasło</label>
-
+                <div class="invalid-feedback" style='color: white'>
+                    Hasło musi zawierać conajmniej 8 znaków i mieć przynajmniej jedną literę i jedną cyfrę.
+                </div>
             </div>
             <div class="form-floating mb-3 text-dark">
-                <input type="password" class="form-control" name="secondPassword" id="secondPassword" placeholder=" ">
-                <label for="secondPassword">Powtórz hasło</label>
+                <input type="password" class="form-control" name="passwordConfirmation" id="passwordConfirmationInput"
+                    placeholder=" " required>
+                <label for="passwordConfirmation">Powtórz hasło</label>
+                <div class="invalid-feedback" style='color: white'>
+                    Podane hasła nie są identyczne.
+                </div>
             </div>
             <div class="d-grid gap-2 w-50 mx-auto">
                 <button class="btn btn-outline-light" type="submit" id="signInButton" name="buttonSubmit">Utwórz

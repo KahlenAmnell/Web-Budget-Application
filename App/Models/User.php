@@ -92,7 +92,7 @@ class User extends \Core\Model
             $this->errors[] = 'Hasło musi zawierać conajmniej jedną cyfrę.';
         }
 
-        if ($this->password != $this->secondPassword) {
+        if ($this->password != $this->passwordConfirmation) {
             $this->errors[] = 'Podane hasła się nie zgadzają.';
         }
     }
