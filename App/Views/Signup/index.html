@@ -6,7 +6,7 @@
 
 
 <script>
-
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
     (function () {
         'use strict'
 
@@ -26,6 +26,43 @@
                 }, false)
             })
     })()
+
+    $(document).ready(function () {
+        $("#signUpFrom").validate({
+            errorClass: 'errors',
+            rules: {
+                name: "required",
+                email: {
+                    required: true,
+                    email: true
+                },
+                password: {
+                    required: true,
+                    minlength: 8
+                },
+                passwordConfirmation: {
+                    equalTo: '#passwordInput'
+                }
+            },
+            messages: {
+                name: 'Podaj imię',
+                email: {
+                    required: 'Podaj adres email'
+                },
+                password: {
+                    required: 'Podaj hasło',
+                    minlength: 'Hasło musi zawierać conajmniej 8 znaków'
+                },
+                passwordConfirmation: 'Podane hasła nie są identyczne'
+            },
+            highlight: function (element) {
+                $(element).next().addClass('text-warning')
+            },
+            unhighlight: function (element) {
+                $(element).next().removeClass('errors').removeClass('text-warning')
+            }
+        });
+    });
 </script>
 {% endblock %}
 
@@ -46,42 +83,32 @@
             </ul>
             {% endif %}
         </div>
-        <form class="p-4 mx-auto rounded-3 formBackground col-lg-4 col-md-6 needs-validation" id="signUpFrom"
-            method="post" action="/Signup/create" novalidate>
+        <form class="p-4 mx-auto rounded-3 formBackground col-lg-4 col-md-6" id="signUpFrom" method="post"
+            action="/Signup/create">
             <input type='hidden' id='token' name='token' />
             <div class="mb-4">
                 <h2 class="text-center display-5">Zarejestruj się</h2>
             </div>
-            <div class="form-floating mb-3 text-dark">
-                <input type="text" class="form-control" name="name" id="nameInput" placeholder=" "
-                    value="{{ user.name }}" required>
-                <label for="nameInput">Imię</label>
-                <div class="invalid-feedback" style='color: white'>
-                    Podaj imię.
-                </div>
+            <div class="mb-3">
+                <label for="nameInput" class="form-label">Imię</label>
+                <input type="text" class="form-control " name="name" id="nameInput" placeholder=""
+                    value="{{ user.name }}" required autofocus>
             </div>
-            <div class="form-floating mb-3 text-dark">
+            <div class="mb-3">
+                <label for="emailInput">Adres e-mail</label>
                 <input type="email" class="form-control" name="email" id="emailInput" placeholder=" "
                     value="{{ user.email }}" required>
-                <label for="emailInput">Adres e-mail</label>
-                <div class="invalid-feedback" style='color: white'>
-                    Podany adres email jest nieprawidłowy.
-                </div>
+
             </div>
-            <div class="form-floating mb-3 text-dark">
-                <input type="password" class="form-control" name="password" id="passwordInput" placeholder=" " required>
+            <div class="mb-3">
                 <label for="passwordInput">Hasło</label>
-                <div class="invalid-feedback" style='color: white'>
-                    Hasło musi zawierać conajmniej 8 znaków i mieć przynajmniej jedną literę i jedną cyfrę.
-                </div>
+                <input type="password" class="form-control" name="password" id="passwordInput" placeholder=" " required>
+
             </div>
-            <div class="form-floating mb-3 text-dark">
+            <div class="mb-3">
+                <label for="passwordConfirmationInput">Powtórz hasło</label>
                 <input type="password" class="form-control" name="passwordConfirmation" id="passwordConfirmationInput"
                     placeholder=" " required>
-                <label for="passwordConfirmation">Powtórz hasło</label>
-                <div class="invalid-feedback" style='color: white'>
-                    Podane hasła nie są identyczne.
-                </div>
             </div>
             <div class="d-grid gap-2 w-50 mx-auto">
                 <button class="btn btn-outline-light" type="submit" id="signInButton" name="buttonSubmit">Utwórz
