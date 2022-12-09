@@ -104,7 +104,7 @@ class User extends \Core\Model
      * 
      * @return boolean True i frecord already exist with specified email, false otherwise
      */
-    public function emailExist($email)
+    public static function emailExist($email)
     {
         $user = static::findbyEmail($email);
 
@@ -122,7 +122,7 @@ class User extends \Core\Model
      * 
      * @return mixed User object if found, false otherwise
      */
-    public function findbyEmail($email)
+    public static function findbyEmail($email)
     {
         $sql = 'SELECT * FROM users WHERE email = :email';
 

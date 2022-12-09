@@ -14,7 +14,8 @@
                 name: "required",
                 email: {
                     required: true,
-                    email: true
+                    email: true,
+                    remote: '/account/validate-email'
                 },
                 password: {
                     required: true,
@@ -29,7 +30,8 @@
                 name: 'Podaj imię',
                 email: {
                     required: 'Podaj adres email.',
-                    email: 'Podaj poprawny adres email.'
+                    email: 'Podaj poprawny adres email.',
+                    remote: 'Istnieje już konto z podanym adresem email.'
                 },
                 password: {
                     required: 'Podaj hasło.',
