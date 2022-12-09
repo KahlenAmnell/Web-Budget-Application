@@ -3,30 +3,10 @@
 {% block title %}Sign up {% endblock %}
 
 {% block footer %}
+<script src="/js/app.js"></script>
 
 
 <script>
-    // Example starter JavaScript for disabling form submissions if there are invalid fields
-    (function () {
-        'use strict'
-
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        var forms = document.querySelectorAll('.needs-validation')
-
-        // Loop over them and prevent submission
-        Array.prototype.slice.call(forms)
-            .forEach(function (form) {
-                form.addEventListener('submit', function (event) {
-                    if (!form.checkValidity()) {
-                        event.preventDefault()
-                        event.stopPropagation()
-                    }
-
-                    form.classList.add('was-validated')
-                }, false)
-            })
-    })()
-
     $(document).ready(function () {
         $("#signUpFrom").validate({
             errorClass: 'errors',
@@ -38,7 +18,8 @@
                 },
                 password: {
                     required: true,
-                    minlength: 8
+                    minlength: 8,
+                    validPassword: true
                 },
                 passwordConfirmation: {
                     equalTo: '#passwordInput'
@@ -47,13 +28,14 @@
             messages: {
                 name: 'Podaj imię',
                 email: {
-                    required: 'Podaj adres email'
+                    required: 'Podaj adres email.',
+                    email: 'Podaj poprawny adres email.'
                 },
                 password: {
-                    required: 'Podaj hasło',
-                    minlength: 'Hasło musi zawierać conajmniej 8 znaków'
+                    required: 'Podaj hasło.',
+                    minlength: 'Hasło musi zawierać conajmniej 8 znaków.'
                 },
-                passwordConfirmation: 'Podane hasła nie są identyczne'
+                passwordConfirmation: 'Podane hasła nie są identyczne.'
             },
             highlight: function (element) {
                 $(element).next().addClass('text-warning')
