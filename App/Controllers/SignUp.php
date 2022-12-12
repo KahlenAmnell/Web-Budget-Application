@@ -18,12 +18,7 @@ class Signup extends \Core\Controller
      */
     public function indexAction()
     {
-        $base = User::test();
-
-        View::renderTemplate('Signup/index.html', [
-            'name'  => 'Jan',
-            'base' => $base
-        ]);
+        View::renderTemplate('Signup/index.html');
     }
 
     /**

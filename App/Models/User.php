@@ -139,22 +139,22 @@ class User extends \Core\Model
     }
 
     /**
-     * Test method
+     * Authenticate a user by email and password
      * 
-     * @return array
+     * @param string $email email address
+     * @param string $password password
+     * 
+     * @return mixed The user object or false if authentication fails 
      */
-    public static function test()
+    public static function authenticate($email, $password)
     {
-        try {
-            $db = static::getDB();
+        $user = static::findbyEmail($email);
 
-            $stmt = $db->query('SELECT * FROM users');
-
-            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            return $results;
-        } catch (PDOException $e) {
-            echo $e->getMessage();
+        if ($user) {
+            if (password_verify($password, $user->password_hash)) {
+                return $user;
+            }
         }
+        return false;
     }
 }
