@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use \Core\View;
 use \App\Models\User;
+use \App\Auth;
 
 /**
  * Sign Up controller
@@ -18,6 +19,9 @@ class Signup extends \Core\Controller
      */
     public function indexAction()
     {
+        if (Auth::isLoggedIn()) {
+            $this->redirect('/main-menu/index');
+        }
         View::renderTemplate('Signup/index.html');
     }
 

@@ -33,7 +33,7 @@ class Login extends \Core\Controller
 
         if ($user) {
             Auth::login($user);
-            $this->redirect('/main-menu/index');
+            $this->redirect(Auth::getReturnToPage());
         } else {
             View::renderTemplate(('Login/index.html'), [
                 'email' => $_POST['email']

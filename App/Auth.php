@@ -48,4 +48,33 @@ class Auth
         // Finally, destroy the session.
         session_destroy();
     }
+
+    /**
+     * Check if user is logged in
+     * 
+     * @return boolean
+     */
+    public static function isLoggedIn()
+    {
+        return isset($_SESSION['user_id']);
+    }
+
+    /**
+     * Remember the originally requested page in the session
+     * 
+     * @return void
+     */
+    public static function rememberRequestedPage()
+    {
+        $_SESSION['return_to'] = $_SERVER['REQUEST_URI'];
+    }
+
+    /**
+     * Get the originally requested page to return to after requiring login or default to the homepage
+     * @return void
+     */
+    public static function getReturnToPage()
+    {
+        return $_SESSION['return_to'] ?? '/';
+    }
 }

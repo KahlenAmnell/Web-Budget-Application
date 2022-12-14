@@ -3,12 +3,13 @@
 namespace App\Controllers;
 
 use \Core\View;
+use \App\Auth;
 
 /**
  * Main menu controller
  */
 
-class MainMenu extends \Core\Controller
+class MainMenu extends Authenticated
 {
     /**
      * Show main menu 

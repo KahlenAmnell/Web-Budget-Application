@@ -2,12 +2,14 @@
 
 namespace Core;
 
+use \App\Auth;
+
 /**
  * Base controller
  */
 
- abstract class Controller
- {
+abstract class Controller
+{
     /**
      * Parameters from the matched route
      * @var array
@@ -26,7 +28,7 @@ namespace Core;
         $this->route_params = $route_params;
     }
 
-/**
+    /**
      * Magic method called when a non-existent or inaccessible method is
      * called on an object of this class. Used to execute before and after
      * filter methods on action methods. Action methods need to be named
@@ -58,7 +60,6 @@ namespace Core;
      */
     protected function before()
     {
-
     }
 
     /**
@@ -68,7 +69,6 @@ namespace Core;
      */
     protected function after()
     {
-        
     }
 
     /**
@@ -82,5 +82,19 @@ namespace Core;
     {
         header('Location: http://' . $_SERVER['HTTP_HOST'] . $url, true, 303);
         exit;
+    }
+
+    /**
+     * Require the user to be logged in before giving access to the rrequested page
+     * Remember the requested page for later, then redirect to the login page.
+     * 
+     * @return void
+     */
+    public function requireLogin()
+    {
+        if (!Auth::isLoggedIn()) {
+            Auth::rememberRequestedPage();
+            $this->redirect('/');
+        }
     }
 }
