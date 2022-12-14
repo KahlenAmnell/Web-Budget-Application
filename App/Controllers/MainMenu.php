@@ -18,6 +18,8 @@ class MainMenu extends Authenticated
      */
     public function indexAction()
     {
-        View::renderTemplate('MainMenu/index.html');
+        View::renderTemplate('MainMenu/index.html', [
+            'user' => Auth::getUser()
+        ]);
     }
 }

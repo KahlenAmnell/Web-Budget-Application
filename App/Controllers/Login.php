@@ -19,6 +19,9 @@ class Login extends \Core\Controller
      */
     public function indexAction()
     {
+        if (Auth::getUser()) {
+            $this->redirect('/main-menu/index');
+        }
         View::renderTemplate('Login/index.html');
     }
 
@@ -32,6 +35,7 @@ class Login extends \Core\Controller
         $user = User::authenticate($_POST['email'], $_POST['password']);
 
         if ($user) {
+            $user->username = Auth::getReturnToPage();
             Auth::login($user);
             $this->redirect(Auth::getReturnToPage());
         } else {

@@ -19,7 +19,7 @@ class Signup extends \Core\Controller
      */
     public function indexAction()
     {
-        if (Auth::isLoggedIn()) {
+        if (Auth::getUser()) {
             $this->redirect('/main-menu/index');
         }
         View::renderTemplate('Signup/index.html');
