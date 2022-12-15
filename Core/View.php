@@ -2,6 +2,8 @@
 
 namespace Core;
 
+use \App\Auth;
+
 /**
  * View
  *
@@ -59,6 +61,7 @@ class View
         if ($twig === null) {
             $loader = new \Twig\Loader\FilesystemLoader(dirname(__DIR__) . '/App/Views');
             $twig = new \Twig\Environment($loader);
+            $twig->addGlobal('current_user', \App\Auth::getUser());
         }
 
         return $twig->render($template, $args);

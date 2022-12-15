@@ -24,10 +24,29 @@
                     <path
                         d="M11 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h1V7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7h1V2z" />
                 </svg>
-                <a class="btn btn-outline-light mx-2" href="index.php">Home</a>
+                {% if current_user %}
+                <a class="btn btn-outline-light mx-2" href="/main-menu/index">Home</a>
             </div>
+            <div class="d-grid gap-2 d-flex justify-content-end">
+                <a class="btn btn-outline-light mx-2" href="Settings.php">Ustawienia</a>
+                <a class="btn btn-outline-light me-3" href="/logout">Wyloguj się</a>
+            </div>
+            {% else %}
+            <a class="btn btn-outline-light mx-2" href="/login/index">Home</a>
+            {% endif %}
         </nav>
     </header>
+    {% if current_user %}
+    <nav class="navbar navbar-dark sticky-top secondNavColors">
+        <div>
+            <a class="btn btn-outline-light secondNavColors buttonHover mx-2" href="AddIncome.php">Dodaj
+                przychód</a><a class="btn btn-outline-light secondNavColors buttonHover me-2"
+                href="AddExpense.php">Dodaj
+                wydatek</a><a class="btn btn-outline-light secondNavColors buttonHover" href="Balance.php">Przeglądaj
+                bilans</a>
+        </div>
+    </nav>
+    {% endif %}
 
     {% block body %}
     {% endblock %}
@@ -42,7 +61,7 @@
         crossorigin="anonymous"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
 
-    {% block footer %} 
+    {% block footer %}
     {% endblock %}
 </body>
 

@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use \Core\View;
 use \App\Models\User;
+use \App\Auth;
 
 /**
  * Sign Up controller
@@ -18,12 +19,10 @@ class Signup extends \Core\Controller
      */
     public function indexAction()
     {
-        $base = User::test();
-
-        View::renderTemplate('Signup/index.html', [
-            'name'  => 'Jan',
-            'base' => $base
-        ]);
+        if (Auth::getUser()) {
+            $this->redirect('/main-menu/index');
+        }
+        View::renderTemplate('Signup/index.html');
     }
 
     /**

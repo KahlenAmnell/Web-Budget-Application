@@ -4,6 +4,8 @@
  * Front controller
  */
 
+ini_set('session.cookie_lifetime', 864000); // ten days in seconds
+
 /**
  * Composer
  */
@@ -17,11 +19,17 @@ set_error_handler('Core\Error::errorHandler');
 set_exception_handler('Core\Error::exceptionHandler');
 
 /**
+ * Sessions
+ */
+session_start();
+
+/**
  * Routing
  */
 $router = new Core\Router();
 
-$router->add('', ['controller' => 'Home', 'action' => 'index']);
+$router->add('', ['controller' => 'Login', 'action' => 'index']);
+$router->add('logout', ['controller' => 'Login', 'action' => 'log-out']);
 $router->add('{controller}/{action}');
 $router->add('{controller}/{id:\d+}/{action}');
 
