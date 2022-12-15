@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use PDO;
-use PDOException;
+use \App\Token;
 
 /**
  * User model
@@ -179,5 +179,30 @@ class User extends \Core\Model
         $stmt->execute();
 
         return $stmt->fetch();
+    }
+
+    /**
+     * Remember the login by inserting a new unique token into the remembered_logins table for this user record
+     * 
+     * @return boolean True if the login was remembered succesfully, false otherwise
+     */
+    public function rememberLogin()
+    {
+        $token = new Token();
+        $hashed_token = $token->getHash();
+
+        $expiry_timestamp = time() + 60 * 60 * 24 * 10; // 10 days from now
+
+        $sql = 'INSERT INTO remembered_login (token_hash, user_id, expires_at)
+                VALUES (:token_hash, :user_id, :expires_at)';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':token_hash', $hashed_token, PDO::PARAM_STR);
+        $stmt->bindValue(':user_id', $this->id, PDO::PARAM_INT);
+        $stmt->bindValue(':expires_at', date('Y-m-d H:i:s', $expiry_timestamp), PDO::PARAM_STR);
+
+        return $stmt->execute();
     }
 }

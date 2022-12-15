@@ -16,10 +16,16 @@ class Auth
      * 
      * @return void
      */
-    public static function login($user)
+    public static function login($user, $remember_me)
     {
         session_regenerate_id(true);
         $_SESSION['user_id'] = $user->id;
+
+        if($remember_me){
+            if($user->rememberLogin()){
+                setcookie('remember_me', $user->remember_token, $user->expiry_timestamp, '/');
+            }
+        }
     }
 
     /**
@@ -77,6 +83,8 @@ class Auth
     {
         if (isset($_SESSION['user_id'])){
             return User::findByID($_SESSION['user_id']);
+        } else {
+            
         }
     }
 }
