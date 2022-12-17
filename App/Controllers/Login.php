@@ -35,7 +35,7 @@ class Login extends \Core\Controller
         $user = User::authenticate($_POST['email'], $_POST['password']);
         $remember_me = isset($_POST['remember_me']);
 
-        if ($user) {
+        if ($user && ($user->is_active == 1)) {
             Auth::login($user, $remember_me);
             $this->redirect(Auth::getReturnToPage());
         } else {
