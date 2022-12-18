@@ -38,10 +38,9 @@ class Login extends \Core\Controller
 
         if ($user && ($user->is_active == 1)) {
             Auth::login($user, $remember_me);
-            Flash::addMessage('Logowanie pomyślne');
             $this->redirect(Auth::getReturnToPage());
         } else {
-            Flash::addMessage('Logowanie nie udało się', 'danger');
+            Flash::addMessage('Logowanie nie udało się!', 'danger');
             View::renderTemplate(('Login/index.html'), [
                 'email' => $_POST['email'],
                 'remember_me' => $remember_me
