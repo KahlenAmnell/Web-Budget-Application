@@ -48,6 +48,12 @@
     </nav>
     {% endif %}
 
+    {% for message in flash_messages %}
+    <div class="alert alert-{{message.type}}">
+        {{ message.body }}
+    </div>
+    {% endfor %}
+
     {% block body %}
     {% endblock %}
 
