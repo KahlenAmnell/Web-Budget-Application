@@ -5,6 +5,7 @@ namespace App\Controllers;
 use \Core\View;
 use \App\Models\User;
 use \App\Auth;
+use \App\Flash;
 
 /**
  * Login controller
@@ -39,6 +40,7 @@ class Login extends \Core\Controller
             Auth::login($user, $remember_me);
             $this->redirect(Auth::getReturnToPage());
         } else {
+            Flash::addMessage('Logowanie nie udało się!', 'danger');
             View::renderTemplate(('Login/index.html'), [
                 'email' => $_POST['email'],
                 'remember_me' => $remember_me
@@ -54,6 +56,12 @@ class Login extends \Core\Controller
     public function logOutAction()
     {
         Auth::logout();
+        $this->redirect('/login/show-logout-message');
+    }
+
+    public function showLogoutMessageAction()
+    {
+        Flash::addMessage('Wylogowano pomyślnie.');
         $this->redirect('/');
     }
 }
