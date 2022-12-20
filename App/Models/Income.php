@@ -7,7 +7,6 @@ use PDO;
 /**
  * Incomes model
  */
-class Incomes extends \Core\Model
+class Income extends \Core\Model
 {
-    
 }
