@@ -102,6 +102,11 @@ class User extends \Core\Model
         if ($this->password != $this->passwordConfirmation) {
             $this->errors[] = 'Podane hasła się nie zgadzają.';
         }
+
+        //recaptcha
+        if ($this->recaptha()) {
+            $this->errors[] = 'recaptcha';
+        }
     }
 
     /**
@@ -254,5 +259,34 @@ class User extends \Core\Model
         $stmt->bindValue(':hashed_token', $hashed_token, PDO::PARAM_STR);
 
         $stmt->execute();
+    }
+
+    /**
+     * 
+     */
+    public function recaptha()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $url = "https://www.google.com/recaptcha/api/siteverify";
+            $data = [
+                'secret' => \App\Config::RECAPTCHA_SECRET_KEY,
+                'response' => $_POST['g-recaptcha-response'],
+                'remoteip' => $_SERVER['REMOTE_ADDR']
+            ];
+            $options = array(
+                'http' => array(
+                    'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                    'method'  => 'POST',
+                    'content' => http_build_query($data)
+                )
+            );
+            $context  = stream_context_create($options);
+            $response = file_get_contents($url, false, $context);
+            $res = json_decode($response, true);
+            if ($res['success'] == 1 && $res['score'] >= 0.5 && $res['action'] == "register") {
+                return true;
+            }
+        }
+        return false;
     }
 }
