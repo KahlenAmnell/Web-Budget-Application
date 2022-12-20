@@ -9,5 +9,13 @@ use \Core\View;
  */
 class AddIncome extends Authenticated
 {
-
+/**
+     * Show add income page
+     * 
+     * @return void
+     */
+    public function indexAction()
+    {
+        View::renderTemplate('AddIncome/index.html');
+    }
 }
