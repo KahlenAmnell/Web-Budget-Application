@@ -2,6 +2,23 @@
 
 {% block title %}Dodaj przychód{% endblock %}
 
+{% block footer %}
+<script>
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1; //January is 0!
+    var yyyy = today.getFullYear();
+    if (dd < 10) {
+        dd = '0' + dd
+    }
+    if (mm < 10) {
+        mm = '0' + mm
+    }
+    today = yyyy + '-' + mm + '-' + dd;
+    document.getElementById("datefield").setAttribute("max", today);
+</script>
+{% endblock %}
+
 {% block body %}
 
 <main class="mx-5">
@@ -9,7 +26,7 @@
         <h1 class="display-3 mt-3 d-flex justify-content-center text-center">Dodaj przychód</h1>
     </div>
     <div class="container mt-5 text-light  mx-lg-auto mx-sm-5%">
-        <form class="p-4 mx-auto rounded-3 col-xl-4 col-lg-6 col-md-9 formBackground" action="AddIncome.php"
+        <form class="p-4 mx-auto rounded-3 col-xl-4 col-lg-6 col-md-9 formBackground" action="/AddIncome/create"
             id="incomeForm" method="POST">
             <div class="mb-3 text-light mx-5">
                 <label for="amount">Kwota (podaj z kropką):</label>
