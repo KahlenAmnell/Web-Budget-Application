@@ -140,7 +140,7 @@ INSERT INTO `incomes_Category_Default` (`id`, `name`) VALUES
 
 CREATE TABLE `payment_Methods_Assigned_To_Users` (
   `id` int(11) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  `user_id` int(11) UNSIGNED NOT NULL,
+  `userID` int(11) UNSIGNED NOT NULL,
   `name` varchar(50) COLLATE utf8_polish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
