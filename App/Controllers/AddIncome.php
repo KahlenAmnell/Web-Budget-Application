@@ -5,6 +5,7 @@ namespace App\Controllers;
 use \Core\View;
 use \App\Models\Income;
 use \App\Flash;
+use \App\Auth;
 
 /**
  * Add income controller
@@ -18,7 +19,10 @@ class AddIncome extends Authenticated
      */
     public function indexAction()
     {
-        View::renderTemplate('AddIncome/index.html');
+        $user = Auth::getUser();
+        View::renderTemplate('AddIncome/index.html', [
+            'categories' => Income::getIncomeCategories()
+        ]);
     }
 
     /**
