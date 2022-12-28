@@ -82,6 +82,8 @@ class Expense extends \Core\Model
      */
     public function save()
     {
+        $this->validate();
+
         if (empty($this->errors)) {
             $sql = 'INSERT INTO expenses (userID, expenseCategoryAssignedToUserID, paymentMethodAssignedToUserID, amount, dateOfExpense, expenseComment)
                     VALUES (:id, :category, :paymentMethod, :amount, :date, :comment)';
@@ -99,5 +101,39 @@ class Expense extends \Core\Model
             return $stmt->execute();
         }
         return false;
+    }
+
+    /**
+     * Validate current data, adding validation errors messages to the errors array property
+     * 
+     * @return void
+     */
+    public function validate()
+    {
+        //amount
+        if ($this->amount <= 0) {
+            $this->errors[] = 'Kwota musi być większa niż 0.';
+        }
+        if ($this->amount != round($this->amount, 2)) {
+            $this->errors[] = 'Kwota musi być zaokrąglona do dwóch miejsc po przecinku.';
+        }
+
+        //data
+        if ($this->date > date("Y-m-d")) {
+            $this->errors[] = 'Data nie może być przyszła.';
+        }
+        if ($this->date < "2000-01-01") {
+            $this->errors[] = 'Data nie może wcześniejsza niż 01-01-2000.';
+        }
+
+        //expense category
+        if ($this->category == '') {
+            $this->errors[] = 'Musisz podać kategorię wydatku.';
+        }
+
+        //payment methods category
+        if ($this->paymentMethod == '') {
+            $this->errors[] = 'Musisz podać kategorię metody płatności.';
+        }
     }
 }
