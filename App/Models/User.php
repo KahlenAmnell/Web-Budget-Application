@@ -60,7 +60,15 @@ class User extends \Core\Model
             $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
             $stmt->bindValue(':activation_hash', $hashed_token, PDO::PARAM_STR);
 
-            return $stmt->execute();
+            $result = $stmt->execute();
+
+            $id = (int) $db->lastInsertId();
+
+            $this->assignCategories('incomes_Category_Default', 'incomes_Category_Assigned_To_Users', $id);
+            $this->assignCategories('expenses_category_default', 'expense_category_assigned_to_user_id', $id);
+            $this->assignCategories('payment_methods_default', 'payment_methods_assigned_to_users', $id);
+
+            return $result;
         }
         return false;
     }
@@ -104,9 +112,9 @@ class User extends \Core\Model
         }
 
         //recaptcha
-        if ($this->recaptha()) {
-            $this->errors[] = 'recaptcha';
-        }
+        // if ($this->recaptha()) {
+        //     $this->errors[] = 'recaptcha';
+        // }
     }
 
     /**
@@ -148,6 +156,28 @@ class User extends \Core\Model
         $stmt->execute();
 
         return $stmt->fetch();
+    }
+
+    /**
+     * Assign default categories to new user account
+     * 
+     * @param string $defaultTable  Table with default categories
+     * @param string $finalTable    Table with categories assign to user id
+     * @param int    $userId        Id to assign categories
+     * 
+     * @return void
+     */
+    public function assignCategories($defaultTable, $finalTable, $userId)
+    {
+        $sql = "INSERT INTO " . $finalTable . " (userID, name)
+                SELECT :userId , name FROM " . $defaultTable;
+
+        $db = static::getDB();
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+
+        $stmt->execute();
     }
 
     /**
