@@ -19,6 +19,9 @@ class AddExpense extends Authenticated
      */
     public function indexAction()
     {
-        View::renderTemplate('AddExpense/index.html');
+        View::renderTemplate('AddExpense/index.html', [
+            'expenseCategories' => Expense::getExpenseCategories(),
+            'paymentCategories' => Expense::getPaymentCategories()
+        ]);
     }
 }

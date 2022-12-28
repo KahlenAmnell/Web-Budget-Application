@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Dodaj przychód{% endblock %}
+{% block title %}Dodaj wydatek{% endblock %}
 
 {% block footer %}
 <script>
@@ -42,12 +42,18 @@
                 <label for="paymentMethod">Sposób płatności:</label>
                 <select class="form-select" name="paymentMethod" id="paymentMethod" required>
                     <option value="">Wybierz metodę płatności</option>
+                    {% for category in paymentCategories %}
+                    <option value="{{ category.id }}" name="{{ category.name }}">{{ category.name }}</option>
+                    {% endfor %}
                 </select>
             </div>
             <div class="mb-3 text-light col-9 mx-5">
                 <label for="category">Kategoria:</label>
                 <select class="form-select" name="category" id="category" required>
                     <option value="">Wybierz kategorię</option>
+                    {% for category in expenseCategories %}
+                    <option value="{{ category.id }}" name="{{ category.name }}">{{ category.name }}</option>
+                    {% endfor %}
                 </select>
             </div>
             <div class="mb-3 text-light col-9 mx-5">
