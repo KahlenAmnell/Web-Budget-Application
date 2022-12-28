@@ -24,4 +24,24 @@ class AddExpense extends Authenticated
             'paymentCategories' => Expense::getPaymentCategories()
         ]);
     }
+
+    /**
+     * Add expense to base
+     * 
+     * @return void
+     */
+    public function createAction()
+    {
+        $expense = new Expense($_POST);
+
+        if ($expense->save()) {
+            Flash::addMessage('Dodano wydatek.');
+            $this->redirect('/add-expense/index');
+        } else {
+            Flash::addMessage('Nie udało się dodać wydatku.', 'danger');
+            View::renderTemplate('AddExpense/index.html', [
+                'expense' => $expense
+            ]);
+        }
+    }
 }
