@@ -4,6 +4,47 @@
 
 {% block footer %}
 <script>
+    $(document).ready(function () {
+        $("#expenseForm").validate({
+            errorClass: 'errors',
+            rules: {
+                amount: {
+                    required: true,
+                    min: 0,
+                    step: 0.01
+                },
+                date: {
+                    required: true,
+                    min: '2000-01-01'
+                },
+                category: 'required',
+                paymentMethod: 'required',
+                comment: {
+                    maxlength: 250
+                }
+            },
+            messages: {
+                amount: {
+                    required: 'Podaj kwotę.',
+                    min: 'Kwota musi być większa niż 0.',
+                    step: 'Podaj kwotę do dwóch miejsc po przecinku'
+                },
+                date: {
+                    required: 'Podaj datę.',
+                    min: 'Podana data nie może być wcześniejsza niż 01-01-2000',
+                    max: 'Podana data nie możę być przyszła'
+                },
+                category: 'Wybierz kategorię wydatku.',
+                paymentMethod: 'Wybierz kategorię metody płatności',
+                comment: {
+                    maxlength: 'Komentarz nie może mieć więcej niż 250 znaków.'
+                }
+
+            }
+        });
+    });
+</script>
+<script>
     var today = new Date();
     var dd = today.getDate();
     var mm = today.getMonth() + 1; //January is 0!
@@ -27,10 +68,10 @@
     </div>
     <div class="container mt-5 text-light  mx-lg-auto mx-sm-5%">
         <div class="mx-auto col-lg-4 col-md-6" style="color: #17694b">
-            {% if user.errors is not empty %}
+            {% if expense.errors is not empty %}
             <p>Błędy:</p>
             <ul>
-                {% for error in user.errors %}
+                {% for error in expense.errors %}
                 <li>{{ error }}</li>
                 {% endfor %}
             </ul>
@@ -40,17 +81,15 @@
             id="expenseForm" method="POST">
             <div class="mb-3 text-light mx-5">
                 <label for="amount">Kwota (podaj z kropką):</label>
-                <input type="number" step=0.01 min=0 class="form-control" placeholder="Wpisz kwotę..." id="amount"
-                    name="amount" required>
+                <input type="number" class="form-control" placeholder="Wpisz kwotę..." id="amount" name="amount">
             </div>
             <div class="mb-3 text-light mx-5">
                 <label for="date">Data:</label>
-                <input id="datefield" name="date" type='date' min='2000-01-01' max='2000-12-13' class='form-control'
-                    required>
+                <input id="datefield" name="date" type='date' min='2000-01-01' max='2000-12-13' class='form-control'>
             </div>
             <div class="mb-3 text-light col-9 mx-5">
                 <label for="paymentMethod">Sposób płatności:</label>
-                <select class="form-select" name="paymentMethod" id="paymentMethod" required>
+                <select class="form-select" name="paymentMethod" id="paymentMethod">
                     <option value="">Wybierz metodę płatności</option>
                     {% for category in paymentCategories %}
                     <option value="{{ category.id }}" name="{{ category.name }}">{{ category.name }}</option>
@@ -59,7 +98,7 @@
             </div>
             <div class="mb-3 text-light col-9 mx-5">
                 <label for="category">Kategoria:</label>
-                <select class="form-select" name="category" id="category" required>
+                <select class="form-select" name="category" id="category">
                     <option value="">Wybierz kategorię</option>
                     {% for category in expenseCategories %}
                     <option value="{{ category.id }}" name="{{ category.name }}">{{ category.name }}</option>
