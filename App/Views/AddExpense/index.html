@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %}Dodaj przychód{% endblock %}
+{% block title %}Dodaj wydatek{% endblock %}
 
 {% block footer %}
 <script>
     $(document).ready(function () {
-        $("#incomeForm").validate({
+        $("#expenseForm").validate({
             errorClass: 'errors',
             rules: {
                 amount: {
@@ -18,6 +18,7 @@
                     min: '2000-01-01'
                 },
                 category: 'required',
+                paymentMethod: 'required',
                 comment: {
                     maxlength: 250
                 }
@@ -26,29 +27,23 @@
                 amount: {
                     required: 'Podaj kwotę.',
                     min: 'Kwota musi być większa niż 0.',
-                    step: 'Podaj kwotę do dwóch miejsc po przecinku.'
+                    step: 'Podaj kwotę do dwóch miejsc po przecinku'
                 },
                 date: {
                     required: 'Podaj datę.',
-                    min: 'Data nie może być wcześniejsza niż 01-01-2000.',
-                    max: 'Data nie może być przyszła.'
+                    min: 'Data nie może być wcześniejsza niż 01-01-2000',
+                    max: 'Data nie możę być przyszła'
                 },
-                category: 'Wybierz kategorię przychodu.',
+                category: 'Wybierz kategorię wydatku.',
+                paymentMethod: 'Wybierz kategorię metody płatności',
                 comment: {
                     maxlength: 'Komentarz nie może mieć więcej niż 250 znaków.'
                 }
 
-            },
-            highlight: function (element) {
-                $(element).next().addClass('text-info')
-            },
-            unhighlight: function (element) {
-                $(element).next().removeClass('errors').removeClass('text-info')
             }
         });
     });
 </script>
-
 <script>
     var today = new Date();
     var dd = today.getDate();
@@ -69,34 +64,43 @@
 
 <main class="mx-5">
     <div>
-        <h1 class="display-3 mt-3 d-flex justify-content-center text-center">Dodaj przychód</h1>
+        <h1 class="display-3 mt-3 d-flex justify-content-center text-center">Dodaj wydatek</h1>
     </div>
     <div class="container mt-5 text-light  mx-lg-auto mx-sm-5%">
         <div class="mx-auto col-lg-4 col-md-6" style="color: #17694b">
-            {% if income.errors is not empty %}
+            {% if expense.errors is not empty %}
             <p>Błędy:</p>
             <ul>
-                {% for error in income.errors %}
+                {% for error in expense.errors %}
                 <li>{{ error }}</li>
                 {% endfor %}
             </ul>
             {% endif %}
         </div>
-        <form class="p-4 mx-auto rounded-3 col-xl-4 col-lg-6 col-md-9 formBackground" action="/AddIncome/create"
-            id="incomeForm" method="POST">
+        <form class="p-4 mx-auto rounded-3 col-xl-4 col-lg-6 col-md-9 formBackground" action="/AddExpense/create"
+            id="expenseForm" method="POST">
             <div class="mb-3 text-light mx-5">
                 <label for="amount">Kwota (podaj z kropką):</label>
-                <input type="number" class="form-control" placeholder="Wpisz kwotę..." id="incomeAmount" name="amount">
+                <input type="number" class="form-control" placeholder="Wpisz kwotę..." id="amount" name="amount">
             </div>
             <div class="mb-3 text-light mx-5">
                 <label for="date">Data:</label>
-                <input id="datefield" name="date" type='date' max='2050-12-31' class='form-control'></input>
+                <input id="datefield" name="date" type='date' min='2000-01-01' max='2000-12-13' class='form-control'>
+            </div>
+            <div class="mb-3 text-light col-9 mx-5">
+                <label for="paymentMethod">Sposób płatności:</label>
+                <select class="form-select" name="paymentMethod" id="paymentMethod">
+                    <option value="">Wybierz metodę płatności</option>
+                    {% for category in paymentCategories %}
+                    <option value="{{ category.id }}" name="{{ category.name }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
             </div>
             <div class="mb-3 text-light col-9 mx-5">
                 <label for="category">Kategoria:</label>
                 <select class="form-select" name="category" id="category">
                     <option value="">Wybierz kategorię</option>
-                    {% for category in categories %}
+                    {% for category in expenseCategories %}
                     <option value="{{ category.id }}" name="{{ category.name }}">{{ category.name }}</option>
                     {% endfor %}
                 </select>
@@ -104,15 +108,16 @@
             <div class="mb-3 text-light col-9 mx-5">
                 <label class="form-label" for="comment">Komentarz (opcjonalnie):</label>
                 <div><textarea class="form-control" name="comment" id="comment" rows="2"
-                        placeholder="Max. 250 znaków..."></textarea>
+                        placeholder="Max. 250 znaków..." maxlength="250"></textarea>
                 </div>
             </div>
             <div class="d-grid gap-2 w-50 mx-auto">
-                <button class="btn btn-outline-light" name="buttonSubmit" type="submit">Dodaj</button>
+                <button class="btn btn-outline-light" type="submit">Dodaj</button>
                 <button class="btn btn-outline-light" type="reset">Anuluj</button>
             </div>
         </form>
     </div>
 </main>
+
 
 {% endblock %}
