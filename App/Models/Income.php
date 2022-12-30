@@ -7,50 +7,16 @@ use PDO;
 /**
  * Incomes model
  */
-class Income extends \Core\Model
+class Income extends Finances
 {
     /**
-     * Error messages
-     * 
-     * @var array
-     */
-    public $errors = [];
-
-    /**
-     * Class constructor
-     * 
-     * @param array $data Initial property values
-     * 
-     * @return void
-     */
-    public function __construct($data = [])
-    {
-        foreach ($data as $key => $value) {
-            $this->$key = $value;
-        };
-    }
-
-    /**
-     * Get categories assign to users
+     * Get income categories assign to users
      * 
      * @return array Array with income categories of logged in user
      */
     public static function getIncomeCategories()
     {
-        $userId = $_SESSION['user_id'];
-        $sql = 'SELECT name, id FROM incomes_category_assigned_to_users WHERE userID = :userId ORDER BY id';
-
-        $db = static::getDB();
-
-        $stmt = $db->prepare($sql);
-        $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
-
-        $stmt->execute();
-
-        while ($category = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $categories[] = $category;
-        }
-        return $categories;
+        return Finances::getCategories('incomes_category_assigned_to_users');
     }
 
     /**
@@ -87,21 +53,7 @@ class Income extends \Core\Model
      */
     public function validate()
     {
-        //amount
-        if ($this->amount <= 0) {
-            $this->errors[] = 'Kwota musi być większa niż 0.';
-        }
-        if ($this->amount != round($this->amount, 2)) {
-            $this->errors[] = 'Kwota musi być zaokrąglona do dwóch miejsc po przecinku.';
-        }
-
-        //data
-        if ($this->date > date("Y-m-d")) {
-            $this->errors[] = 'Data nie może być przyszła.';
-        }
-        if ($this->date < "2000-01-01") {
-            $this->errors[] = 'Data nie może wcześniejsza niż 01-01-2000.';
-        }
+        parent::validate();
 
         //category
         if ($this->category == '') {
