@@ -51,7 +51,7 @@ abstract class Finances extends \Core\Model
         return $categories;
     }
 
-        /**
+    /**
      * Validate current data, adding validation errors messages to the errors array property
      * 
      * @return void
@@ -59,11 +59,15 @@ abstract class Finances extends \Core\Model
     public function validate()
     {
         //amount
-        if ($this->amount <= 0) {
-            $this->errors[] = 'Kwota musi być większa niż 0.';
-        }
-        if ($this->amount != round($this->amount, 2)) {
-            $this->errors[] = 'Kwota musi być zaokrąglona do dwóch miejsc po przecinku.';
+        if ($this->amount == '') {
+            $this->errors[] = 'Podaj kwotę.';
+        } else {
+            if ($this->amount <= 0) {
+                $this->errors[] = 'Kwota musi być większa niż 0.';
+            }
+            if ($this->amount != round($this->amount, 2)) {
+                $this->errors[] = 'Kwota musi być zaokrąglona do dwóch miejsc po przecinku.';
+            }
         }
 
         //data

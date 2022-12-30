@@ -3,6 +3,54 @@
 {% block title %}Dodaj przychód{% endblock %}
 
 {% block footer %}
+<script src="/js/hideShowPassword.min.js"></script>
+<script src="/js/app.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#incomeForm").validate({
+            errorClass: 'errors',
+            rules: {
+                amount: {
+                    required: true,
+                    min: 0,
+                    step: 0.01
+                },
+                date: {
+                    required: true,
+                    min: '2000-01-01'
+                },
+                category: 'required',
+                comment: {
+                    maxlength: 250
+                }
+            },
+            messages: {
+                amount: {
+                    required: 'Podaj kwotę.',
+                    min: 'Kwota musi być większa niż 0.',
+                    step: 'Podaj kwotę do dwóch miejsc po przecinku'
+                },
+                date: {
+                    required: 'Podaj datę.',
+                    min: 'Podana data nie może być wcześniejsza niż 01-01-2000'
+                },
+                category: 'Wybierz kategorię przychodu.',
+                comment: {
+                    maxlength: 'Komentarz nie może mieć więcej niż 250 znaków.'
+                }
+
+            },
+            highlight: function (element) {
+                $(element).next().addClass('text-info')
+            },
+            unhighlight: function (element) {
+                $(element).next().removeClass('errors').removeClass('text-info')
+            }
+        });
+    });
+</script>
+
 <script>
     var today = new Date();
     var dd = today.getDate();
@@ -26,21 +74,29 @@
         <h1 class="display-3 mt-3 d-flex justify-content-center text-center">Dodaj przychód</h1>
     </div>
     <div class="container mt-5 text-light  mx-lg-auto mx-sm-5%">
+        <div class="mx-auto col-lg-4 col-md-6" style="color: #17694b">
+            {% if income.errors is not empty %}
+            <p>Błędy:</p>
+            <ul>
+                {% for error in income.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
         <form class="p-4 mx-auto rounded-3 col-xl-4 col-lg-6 col-md-9 formBackground" action="/AddIncome/create"
             id="incomeForm" method="POST">
             <div class="mb-3 text-light mx-5">
                 <label for="amount">Kwota (podaj z kropką):</label>
-                <input type="number" step=0.01 min=0 class="form-control" placeholder="Wpisz kwotę..." id="incomeAmount"
-                    name="amount" required>
+                <input type="number" class="form-control" placeholder="Wpisz kwotę..." id="incomeAmount" name="amount">
             </div>
             <div class="mb-3 text-light mx-5">
                 <label for="date">Data:</label>
-                <input id="datefield" name="date" type='date' min='2000-01-01' max='2000-12-13' class='form-control'
-                    required></input>
+                <input id="datefield" name="date" type='date' max='2050-12-31' class='form-control'></input>
             </div>
             <div class="mb-3 text-light col-9 mx-5">
                 <label for="category">Kategoria:</label>
-                <select class="form-select" name="category" id="category" required>
+                <select class="form-select" name="category" id="category">
                     <option value="">Wybierz kategorię</option>
                     {% for category in categories %}
                     <option value="{{ category.id }}" name="{{ category.name }}">{{ category.name }}</option>
@@ -50,7 +106,7 @@
             <div class="mb-3 text-light col-9 mx-5">
                 <label class="form-label" for="comment">Komentarz (opcjonalnie):</label>
                 <div><textarea class="form-control" name="comment" id="comment" rows="2"
-                        placeholder="Max. 250 znaków..." maxlength="250"></textarea>
+                        placeholder="Max. 250 znaków..."></textarea>
                 </div>
             </div>
             <div class="d-grid gap-2 w-50 mx-auto">
