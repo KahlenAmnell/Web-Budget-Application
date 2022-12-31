@@ -55,7 +55,8 @@
 <main class="mx-5">
     <div class="mt-5 mx-lg-auto mx-sm-5% d-md-flex justify-content-between">
         <div class="mb-2 tableBackground rounded">
-            <form class="p-2 mx-auto" action="/balance/index" id="balance" name="choosingPeriod" method="POST" novalidate>
+            <form class="p-2 mx-auto" action="/balance/index" id="balance" name="choosingPeriod" method="POST"
+                novalidate>
                 <div class="mb-3 col-12 mx-auto">
                     <label class="d-flex justify-content-center mb-1" for="period">Wybierz
                         okres:</label>
@@ -101,15 +102,20 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {% for income in incomes %}
+                        <tr>
+                            <td>{{ income.name }}</td>
+                            <td>{{ income.amount }}</td>
+                        </tr>
+                        {% endfor %}
                     <tfoot>
                         <tr>
                             <td>Suma przychodów</td>
-                            <td>$sumOfIncomes</td>
+                            <td>{{ sumOfIncomes }}</td>
                         </tr>
                     </tfoot>
                 </table>
-                <div id="incomesPieChart" class="w-100 mb-3"></div>';
-
+                <div id="incomesPieChart" class="w-100 mb-3"></div>
             </div>
         </div>
         <div class="mt-lg-0 mt-sm-5 rounded tableBackground h-100" style="width:33%">
