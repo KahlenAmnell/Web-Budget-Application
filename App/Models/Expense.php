@@ -76,4 +76,29 @@ class Expense extends Finances
             $this->errors[] = 'Musisz podać kategorię metody płatności.';
         }
     }
+
+    /**
+     * 
+     */
+    public static function getUserExpenses($earlierDate, $laterDate)
+    {
+        $sql = "SELECT ecatu.name, SUM(e.amount) AS amount FROM expense_Category_Assigned_To_User_ID AS ecatu INNER JOIN expenses AS e
+        WHERE e.userID = :id AND ecatu.id = e.expenseCategoryAssignedToUserID AND e.dateOfExpense >= :earlierDate AND e.dateOfExpense <= :laterDate GROUP BY ecatu.name ORDER BY amount DESC;";
+
+        $db = static::getDB();
+
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':id', $_SESSION['user_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':earlierDate', $earlierDate, PDO::PARAM_STR);
+        $stmt->bindValue(':laterDate', $laterDate, PDO::PARAM_STR);
+
+        $stmt->execute();
+
+        while ($category = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $categories[$category["name"]] = $category["amount"];
+        }
+
+        return $categories;
+    }
 }

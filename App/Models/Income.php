@@ -84,7 +84,7 @@ class Income extends Finances
         $stmt->execute();
 
         while ($category = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $categories[] = $category;
+            $categories[$category["name"]] = $category["amount"];
         }
 
         return $categories;

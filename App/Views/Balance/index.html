@@ -102,12 +102,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for income in incomes %}
+                        {% for category, income in incomes %}
                         <tr>
-                            <td>{{ income.name }}</td>
-                            <td>{{ income.amount }}</td>
+                            <td>{{ category }}</td>
+                            <td>{{ income }}</td>
                         </tr>
                         {% endfor %}
+                    </tbody>
                     <tfoot>
                         <tr>
                             <td>Suma przychodów</td>
@@ -129,11 +130,17 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {% for category, expense in expenses %}
+                        <tr>
+                            <td>{{ category }}</td>
+                            <td>{{ expense }}</td>
+                        </tr>
+                        {% endfor %}
                     </tbody>
                     <tfoot>
                         <tr>
                             <td>Suma wydatków</td>
-                            <td>$sumOfExpenses</td>
+                            <td>{{ sumOfExpenses }}</td>
                         </tr>
                     </tfoot>
                 </table>
