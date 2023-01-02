@@ -18,13 +18,59 @@ class Balance extends \Core\Controller
      */
     public function indexAction()
     {
-        $userIncomes = Income::getUserIncomes('2022-12-01', '2022-12-31');
-        $userExpenses = Expense::getUserExpenses('2022-12-01', '2022-12-31');
+        $earlierDate = date("Y-m") . "-01";
+        $laterDate = date("Y-m") . "-31";
+        $userIncomes = Income::getUserIncomes($earlierDate, $laterDate);
+        $userExpenses = Expense::getUserExpenses($earlierDate, $laterDate);
         View::renderTemplate('Balance/index.html', [
             'incomes' => $userIncomes,
             'sumOfIncomes' => array_sum($userIncomes),
             'expenses' => $userExpenses,
-            'sumOfExpenses' => array_sum($userExpenses)
+            'sumOfExpenses' => array_sum($userExpenses),
+            'choosenPerion' => 'currentMonth'
+        ]);
+    }
+
+    public function periodAction()
+    {
+        $period = $_POST['period'];
+        if (isset($_POST['period'])) {
+            if ($_POST['period'] == "currentMonth") {
+                $earlierDate = date("Y-m") . "-01";
+                $laterDate = date("Y-m") . "-31";
+            }
+            if ($_POST['period'] == "previousMonth") {
+                if (date("m") == "01") {
+                    $month = "12";
+                    $year = date("Y") - 1;
+                } else {
+                    $month = date("m") - 1;
+                    $year = date("Y");
+                }
+                $earlierDate = $year . "-" . $month . "-01";
+                $laterDate = $year . "-" . $month . "-31";
+            }
+            if ($_POST['period'] == "currentYear") {
+                $earlierDate = date("Y") . "-01-01";
+                $laterDate = date("Y") . "-12-31";
+            }
+            if ($_POST['period'] == "other") {
+                $earlierDate = $_POST['beginingDate'];
+                $laterDate = $_POST['endingDate'];
+            }
+            unset($_POST['period']);
+        } else {
+            $earlierDate = date("Y-m") . "-01";
+            $laterDate = date("Y-m") . "-31";
+        }
+        $userIncomes = Income::getUserIncomes($earlierDate, $laterDate);
+        $userExpenses = Expense::getUserExpenses($earlierDate, $laterDate);
+        View::renderTemplate('Balance/index.html', [
+            'incomes' => $userIncomes,
+            'sumOfIncomes' => array_sum($userIncomes),
+            'expenses' => $userExpenses,
+            'sumOfExpenses' => array_sum($userExpenses),
+            'choosenPerion' => $period
         ]);
     }
 }

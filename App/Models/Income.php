@@ -82,11 +82,14 @@ class Income extends Finances
         $stmt->bindValue(':laterDate', $laterDate, PDO::PARAM_STR);
 
         $stmt->execute();
-
         while ($category = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $categories[$category["name"]] = $category["amount"];
         }
-
-        return $categories;
+        if (isset($categories)) {
+            return $categories;
+        } else {
+            $nothing[] = 0;
+            return $nothing;
+        }
     }
 }

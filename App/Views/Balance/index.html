@@ -27,16 +27,16 @@
 <main class="mx-5">
     <div class="mt-5 mx-lg-auto mx-sm-5% d-md-flex justify-content-between">
         <div class="mb-2 tableBackground rounded">
-            <form class="p-2 mx-auto" action="/balance/index" id="balance" name="choosingPeriod" method="POST"
+            <form class="p-2 mx-auto" action="/balance/period" id="balance" name="choosingPeriod" method="POST"
                 novalidate>
                 <div class="mb-3 col-12 mx-auto">
                     <label class="d-flex justify-content-center mb-1" for="period">Wybierz
                         okres:</label>
                     <select class="form-select" name="period" id="period">
-                        <option value="currentMonth">Bieżący miesiąc</option>
-                        <option value="previousMonth">Poprzedni miesiąc</option>
-                        <option value="currentYear">Bieżący rok</option>
-                        <option value="other" id="customPeriod">Niestandardowy</option>
+                        <option value="currentMonth" {% if choosenPerion == "currentMonth"%} selected {% endif %}>Bieżący miesiąc</option>
+                        <option value="previousMonth" {% if choosenPerion == "previousMonth"%} selected {% endif %}>Poprzedni miesiąc</option>
+                        <option value="currentYear" {% if choosenPerion == "currentYear"%} selected {% endif %}>Bieżący rok</option>
+                        <option value="other" id="customPeriod" {% if choosenPerion == "other"%} selected {% endif %}>Niestandardowy</option>
                     </select>
                     <div id="customDateInput">
                         <div class="d-flex my-3">
