@@ -35,11 +35,11 @@ class Balance extends \Core\Controller
     {
         $period = $_POST['period'];
         if (isset($_POST['period'])) {
-            if ($_POST['period'] == "currentMonth") {
+            if ($period == "currentMonth") {
                 $earlierDate = date("Y-m") . "-01";
                 $laterDate = date("Y-m") . "-31";
             }
-            if ($_POST['period'] == "previousMonth") {
+            else if ($period == "previousMonth") {
                 if (date("m") == "01") {
                     $month = "12";
                     $year = date("Y") - 1;
@@ -50,11 +50,11 @@ class Balance extends \Core\Controller
                 $earlierDate = $year . "-" . $month . "-01";
                 $laterDate = $year . "-" . $month . "-31";
             }
-            if ($_POST['period'] == "currentYear") {
+            else if ($period == "currentYear") {
                 $earlierDate = date("Y") . "-01-01";
                 $laterDate = date("Y") . "-12-31";
             }
-            if ($_POST['period'] == "other") {
+            else if ($period == "other") {
                 $earlierDate = $_POST['beginingDate'];
                 $laterDate = $_POST['endingDate'];
             }
