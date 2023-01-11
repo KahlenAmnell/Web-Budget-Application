@@ -33,18 +33,6 @@
         }
     })
 </script>
-<script>
-    $(document).ready(function () {
-        $("#periodForm").validate({
-            errorClass: 'errors',
-            rules: {
-                beginingDate: 'required',
-                endingDate: 'required'
-            },
-            messages: 'Podaj datę.'
-        });
-    });
-</script>
 {% endblock %}
 {% block body %}
 
@@ -57,7 +45,7 @@
                     <h5 class="modal-title">Wybierz okres</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="periodForm" action="/Balance/period" method="POST">
+                <form id="periodForm" action="/Balance/index" method="POST">
                     <div class="modal-body">
                         <select class="form-select" name="period" id="period">
                             <option value="currentMonth" {% if choosenPerion=="currentMonth" %} selected {% endif %}>
@@ -76,14 +64,12 @@
                             <div class="d-flex my-3 ms-3 d-grid gap-2">
                                 <label for="beginingDate">Od:</label>
                                 <input type="date" class="form-control ps-3" style="width: 150px;" min="1900-01-01"
-                                    name="beginingDate" id="beginingDate" {% if choosenPerion=="other" %} required {%
-                                    endif %}>
+                                    name="beginingDate" id="beginingDate">
                             </div>
                             <div class="d-flex ms-3 d-grid gap-2">
                                 <label for="endingDate">Do:</label>
                                 <input type="date" class="form-control" style="width: 150px;" min="1900-01-01"
-                                    name="endingDate" id="endingDate" {% if choosenPerion=="other" %} required {% endif
-                                    %}>
+                                    name="endingDate" id="endingDate">
                             </div>
                         </div>
                     </div>
@@ -112,8 +98,8 @@
     </div>
     <div class="d-lg-flex justify-content-lg-evenly">
         <div class="mb-5 tableBackground h-100 " style="width:33%">
-            <h3 class="text-center">Przychody</h3>
             {% if sumOfIncomes != 0 %}
+            <h3 class="text-center">Przychody</h3>
             <div class="container-fluid d-xl-flex my-auto">
                 <table class="table table-light me-3">
                     <thead class="">
@@ -139,14 +125,12 @@
                 </table>
             </div>
             {% else %}
-            <div>
-                <p class="text-center">Brak przychodów.</p>
-            </div>
+            <h3 class="text-center my-3">Brak przychodów</h3>
             {% endif %}
         </div>
         <div class="mt-lg-0 mt-sm-5 rounded tableBackground h-100" style="width:33%">
-            <h3 class="text-center">Wydatki</h3>
             {% if sumOfExpenses != 0 %}
+            <h3 class="text-center mt-3">Wydatki</h3>
             <div class="container-fluid d-xl-flex my-auto">
                 <table class="table table-light me-3">
                     <thead class="">
@@ -172,9 +156,7 @@
                 </table>
             </div>
             {% else %}
-            <div>
-                <p class="text-center">Brak przychodów.</p>
-            </div>
+            <h3 class="text-center my-3">Brak wydatków</h3>
             {% endif %}
         </div>
     </div>

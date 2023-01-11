@@ -9,7 +9,7 @@ use \App\Models\Income;
 /**
  * Balance controller
  */
-class Balance extends \Core\Controller
+class Balance extends Authenticated
 {
     /**
      * Show balance page
@@ -18,59 +18,69 @@ class Balance extends \Core\Controller
      */
     public function indexAction()
     {
-        $earlierDate = date("Y-m") . "-01";
-        $laterDate = date("Y-m") . "-31";
-        $userIncomes = Income::getUserIncomes($earlierDate, $laterDate);
-        $userExpenses = Expense::getUserExpenses($earlierDate, $laterDate);
-        View::renderTemplate('Balance/index.html', [
-            'incomes' => $userIncomes,
-            'sumOfIncomes' => array_sum($userIncomes),
-            'expenses' => $userExpenses,
-            'sumOfExpenses' => array_sum($userExpenses),
-            'choosenPerion' => 'currentMonth'
-        ]);
+        $data = $this->balanceData();
+        View::renderTemplate('Balance/index.html', $data);
     }
 
-    public function periodAction()
+    /**
+     * Set sent rendering page data
+     * 
+     * @return array Contains data
+     */
+    public function balanceData()
     {
-        $period = $_POST['period'];
         if (isset($_POST['period'])) {
-            if ($period == "currentMonth") {
-                $earlierDate = date("Y-m") . "-01";
-                $laterDate = date("Y-m") . "-31";
-            }
-            else if ($period == "previousMonth") {
-                if (date("m") == "01") {
-                    $month = "12";
-                    $year = date("Y") - 1;
-                } else {
-                    $month = date("m") - 1;
-                    $year = date("Y");
-                }
-                $earlierDate = $year . "-" . $month . "-01";
-                $laterDate = $year . "-" . $month . "-31";
-            }
-            else if ($period == "currentYear") {
-                $earlierDate = date("Y") . "-01-01";
-                $laterDate = date("Y") . "-12-31";
-            }
-            else if ($period == "other") {
-                $earlierDate = $_POST['beginingDate'];
-                $laterDate = $_POST['endingDate'];
-            }
-            unset($_POST['period']);
+            $period = $_POST['period'];
         } else {
-            $earlierDate = date("Y-m") . "-01";
-            $laterDate = date("Y-m") . "-31";
+            $period = 'currentMonth';
         }
-        $userIncomes = Income::getUserIncomes($earlierDate, $laterDate);
-        $userExpenses = Expense::getUserExpenses($earlierDate, $laterDate);
-        View::renderTemplate('Balance/index.html', [
+        unset($_POST['period']);
+
+        $dates = $this->finansesDates($period);
+
+        $userIncomes = Income::getUserIncomes($dates['earlierDate'], $dates['laterDate']);
+        $userExpenses = Expense::getUserExpenses($dates['earlierDate'], $dates['laterDate']);
+
+        $data = array(
             'incomes' => $userIncomes,
             'sumOfIncomes' => array_sum($userIncomes),
             'expenses' => $userExpenses,
             'sumOfExpenses' => array_sum($userExpenses),
             'choosenPerion' => $period
-        ]);
+        );
+        return $data;
+    }
+
+    /**
+     * Set selected dates
+     * 
+     * @param string Contains selected period
+     * 
+     * @return array Contains earlier date and later date of selected period
+     */
+    public function finansesDates($period)
+    {
+        $dates = array(
+            'earlierDate' => date("Y-m") . "-01",
+            'laterDate' => date("Y-m") . "-31"
+        );
+        if ($period == "previousMonth") {
+            if (date("m") == "01") {
+                $month = "12";
+                $year = date("Y") - 1;
+            } else {
+                $month = date("m") - 1;
+                $year = date("Y");
+            }
+            $dates['earlierDate'] = $year . "-" . $month . "-01";
+            $dates['laterDate'] = $year . "-" . $month . "-31";
+        } else if ($period == "currentYear") {
+            $dates['earlierDate'] = date("Y") . "-01-01";
+            $dates['laterDate'] = date("Y") . "-12-31";
+        } else if ($period == "other") {
+            $dates['earlierDate'] = $_POST['beginingDate'];
+            $dates['laterDate'] = $_POST['endingDate'];
+        }
+        return $dates;
     }
 }
