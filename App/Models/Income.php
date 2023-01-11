@@ -73,23 +73,6 @@ class Income extends Finances
                 GROUP BY icatu.name 
                 ORDER BY amount DESC;";
 
-        $db = static::getDB();
-
-        $stmt = $db->prepare($sql);
-
-        $stmt->bindValue(':id', $_SESSION['user_id'], PDO::PARAM_INT);
-        $stmt->bindValue(':earlierDate', $earlierDate, PDO::PARAM_STR);
-        $stmt->bindValue(':laterDate', $laterDate, PDO::PARAM_STR);
-
-        $stmt->execute();
-        while ($category = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $categories[$category["name"]] = $category["amount"];
-        }
-        if (isset($categories)) {
-            return $categories;
-        } else {
-            $nothing[] = 0;
-            return $nothing;
-        }
+        return Finances::getUserFinances($sql, $earlierDate, $laterDate);
     }
 }

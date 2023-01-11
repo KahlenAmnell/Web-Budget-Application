@@ -78,4 +78,25 @@ abstract class Finances extends \Core\Model
             $this->errors[] = 'Data nie może wcześniejsza niż 01-01-2000.';
         }
     }
+
+    public static function getUserFinances($sql, $earlierDate, $laterDate){
+        $db = static::getDB();
+
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':id', $_SESSION['user_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':earlierDate', $earlierDate, PDO::PARAM_STR);
+        $stmt->bindValue(':laterDate', $laterDate, PDO::PARAM_STR);
+
+        $stmt->execute();
+        while ($category = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $categories[$category["name"]] = $category["amount"];
+        }
+        if (isset($categories)) {
+            return $categories;
+        } else {
+            $nothing[] = 0;
+            return $nothing;
+        }
+    }
 }
