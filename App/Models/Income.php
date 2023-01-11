@@ -60,4 +60,19 @@ class Income extends Finances
             $this->errors[] = 'Musisz podać kategorię przychodu';
         }
     }
+
+    /**
+     * 
+     */
+    public static function getUserIncomes($earlierDate, $laterDate)
+    {
+        $sql = "SELECT icatu.name, SUM(i.amount) AS amount 
+                FROM incomes_Category_Assigned_To_Users AS icatu INNER JOIN incomes AS i
+                WHERE i.userID = :id AND icatu.id = i.incomeCategoryAssignedToUserId 
+                    AND i.dateOfIncome >= :earlierDate AND i.dateOfIncome <= :laterDate 
+                GROUP BY icatu.name 
+                ORDER BY amount DESC;";
+
+        return Finances::getUserFinances($sql, $earlierDate, $laterDate);
+    }
 }

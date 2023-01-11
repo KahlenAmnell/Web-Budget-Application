@@ -76,4 +76,15 @@ class Expense extends Finances
             $this->errors[] = 'Musisz podać kategorię metody płatności.';
         }
     }
+
+    /**
+     * 
+     */
+    public static function getUserExpenses($earlierDate, $laterDate)
+    {
+        $sql = "SELECT ecatu.name, SUM(e.amount) AS amount FROM expense_Category_Assigned_To_User_ID AS ecatu INNER JOIN expenses AS e
+        WHERE e.userID = :id AND ecatu.id = e.expenseCategoryAssignedToUserID AND e.dateOfExpense >= :earlierDate AND e.dateOfExpense <= :laterDate GROUP BY ecatu.name ORDER BY amount DESC;";
+
+        return Finances::getUserFinances($sql, $earlierDate, $laterDate);
+    }
 }
