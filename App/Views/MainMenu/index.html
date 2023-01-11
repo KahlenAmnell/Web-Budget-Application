@@ -2,6 +2,68 @@
 
 {% block title %}Budżet domowy{% endblock %}
 
-{% block body %}
+{% block footer %}
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script>
+    const incomeDataPoints = JSON.parse('{{incomeDataPoints|json_encode()|raw}}');
+    const expenseDataPoints = JSON.parse('{{expenseDataPoints|json_encode()|raw}}');
+    window.onload = function () {
+        var incomesChart = new CanvasJS.Chart("incomesPieChart", {
+            animationEnabled: true,
+            data: [{
+                type: "pie",
+                indexLabel: "{y}",
+                yValueFormatString: "#,##0.00\"%\"",
+                indexLabelPlacement: "inside",
+                indexLabelFontColor: "#36454F",
+                indexLabelFontSize: 18,
+                indexLabelFontWeight: "bolder",
+                dataPoints: incomeDataPoints
+            }]
+        });
+        var expensesChart = new CanvasJS.Chart("expensesPieChart", {
+            animationEnabled: true,
+            data: [{
+                type: "pie",
+                indexLabel: "{y}",
+                yValueFormatString: "#,##0.00\"%\"",
+                indexLabelPlacement: "inside",
+                indexLabelFontColor: "#36454F",
+                indexLabelFontSize: 18,
+                indexLabelFontWeight: "bolder",
+                dataPoints: expenseDataPoints
+            }]
+        });
+        if (incomeDataPoints.length != 0) { incomesChart.render(); }
+        if (expenseDataPoints.length != 0) { expensesChart.render(); }
 
+    }
+</script>
+{% endblock %}
+
+{% block body %}
+<main class="mx-5">
+    <div>
+        <h1 class="display-2 mt-3 d-flex justify-content-center text-center">Aplikacja budżetowa</h1>
+    </div>
+    <h2 class='display-4'>Witaj, {{ name }}!</h2>
+    <div class="d-md-flex justify-content-evenly mt-5">
+        <div class="tableBackground p-3 rounded mb-3 w-25 w-md-100 mr-3">
+            {% if sumOfIncomes != 0 %}
+            <h3 class="display-5 text-center mt-sm-3 mt-md-0">Przychody</h3>
+            <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+            {% else %}
+            <h3 class="text-center my-3">Brak przychodów</h3>
+            {% endif %}
+        </div>
+        <div class="tableBackground p-3 rounded mb-3 w-25 w-md-100 ml-3">
+            {% if sumOfExpenses != 0 %}
+            <h3 class="display-5 text-center mt-sm-3 mt-md-0">Wydatki</h3>
+            <div id="expensesPieChart" style="height: 370px; width: 100%;"></div>
+            {% else %}
+            <h3 class="text-center my-3">Brak wydatków</h3>
+            {% endif %}
+        </div>
+    </div>
+</main>
 {% endblock %}
