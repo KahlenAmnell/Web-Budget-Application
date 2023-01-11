@@ -6,6 +6,7 @@
 <script src="https://code.jquery.com/jquery-3.6.3.slim.min.js"
     integrity="sha256-ZwqZIVdD3iXNyGHbSYdsmWP//UBokj2FHAxKuSBKDSo=" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 <script>
     var today = new Date();
     var dd = today.getDate();
@@ -33,11 +34,46 @@
         }
     })
 </script>
+<script>
+    const incomeDataPoints = JSON.parse('{{incomeDataPoints|json_encode()|raw}}');
+    const expenseDataPoints = JSON.parse('{{expenseDataPoints|json_encode()|raw}}');
+    window.onload = function () {
+        var incomesChart = new CanvasJS.Chart("incomesPieChart", {
+            animationEnabled: true,
+            data: [{
+                type: "pie",
+                indexLabel: "{y}",
+                yValueFormatString: "#,##0.00\"%\"",
+                indexLabelPlacement: "inside",
+                indexLabelFontColor: "#36454F",
+                indexLabelFontSize: 18,
+                indexLabelFontWeight: "bolder",
+                dataPoints: incomeDataPoints
+            }]
+        });
+        var expensesChart = new CanvasJS.Chart("expensesPieChart", {
+            animationEnabled: true,
+            data: [{
+                type: "pie",
+                indexLabel: "{y}",
+                yValueFormatString: "#,##0.00\"%\"",
+                indexLabelPlacement: "inside",
+                indexLabelFontColor: "#36454F",
+                indexLabelFontSize: 18,
+                indexLabelFontWeight: "bolder",
+                dataPoints: expenseDataPoints
+            }]
+        });
+        if (incomeDataPoints.length != 0) { incomesChart.render(); }
+        if (expenseDataPoints.length != 0) { expensesChart.render(); }
+
+    }
+</script>
 {% endblock %}
 {% block body %}
 
 <main class="mx-5">
-
+    <div id="income-data-container" data-income="{{ incomeDataPoints|json_encode()|escape('js') }}"></div>
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -99,9 +135,9 @@
     <div class="d-lg-flex justify-content-lg-evenly">
         <div class="mb-5 tableBackground h-100 " style="width:33%">
             {% if sumOfIncomes != 0 %}
-            <h3 class="text-center">Przychody</h3>
+            <h3 class="text-center mt-3">Przychody</h3>
             <div class="container-fluid d-xl-flex my-auto">
-                <table class="table table-light me-3">
+                <table class="table table-striped table-hover me-3 " style="background-color:#EDDFD5">
                     <thead class="">
                         <tr>
                             <th>Kategoria</th>
@@ -123,6 +159,7 @@
                         </tr>
                     </tfoot>
                 </table>
+                <div id="incomesPieChart" class="w-100 mb-3"></div>
             </div>
             {% else %}
             <h3 class="text-center my-3">Brak przychodów</h3>
@@ -132,7 +169,7 @@
             {% if sumOfExpenses != 0 %}
             <h3 class="text-center mt-3">Wydatki</h3>
             <div class="container-fluid d-xl-flex my-auto">
-                <table class="table table-light me-3">
+                <table class="table table-striped table-hover me-3" style="background-color:#EDDFD5">
                     <thead class="">
                         <tr>
                             <th>Kategoria</th>
@@ -154,6 +191,7 @@
                         </tr>
                     </tfoot>
                 </table>
+                <div id="expensesPieChart" class="w-100 mb-3"></div>
             </div>
             {% else %}
             <h3 class="text-center my-3">Brak wydatków</h3>

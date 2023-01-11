@@ -41,12 +41,33 @@ class Balance extends Authenticated
         $userIncomes = Income::getUserIncomes($dates['earlierDate'], $dates['laterDate']);
         $userExpenses = Expense::getUserExpenses($dates['earlierDate'], $dates['laterDate']);
 
+        $sumOfIncomes = array_sum($userIncomes);
+        $sumOfExpenses = array_sum($userExpenses);
+        $incomeDataPoints = array();
+
+        if (!empty($userIncomes) && $sumOfIncomes > 0) {
+            foreach ($userIncomes as $incomeName => $amount) {
+                $percent = $amount / $sumOfIncomes * 100;
+                $incomeDataPoints[] = array("label" => $incomeName, "y" => $percent);
+            }
+        }
+        $jsonIncome = json_encode($incomeDataPoints, JSON_NUMERIC_CHECK);
+
+        if (!empty($userExpenses) && $sumOfExpenses > 0) {
+            foreach ($userExpenses as $expenseName => $amount) {
+                $percent = $amount / $sumOfExpenses * 100;
+                $expensesDataPoints[] = array("label" => $expenseName, "y" => $percent);
+            }
+        }
+
         $data = array(
             'incomes' => $userIncomes,
             'sumOfIncomes' => array_sum($userIncomes),
             'expenses' => $userExpenses,
             'sumOfExpenses' => array_sum($userExpenses),
-            'choosenPerion' => $period
+            'choosenPerion' => $period,
+            'incomeDataPoints' => $incomeDataPoints,
+            'expenseDataPoints' => $expensesDataPoints
         );
         return $data;
     }
