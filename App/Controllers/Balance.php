@@ -51,7 +51,6 @@ class Balance extends Authenticated
                 $incomeDataPoints[] = array("label" => $incomeName, "y" => $percent);
             }
         }
-        $jsonIncome = json_encode($incomeDataPoints, JSON_NUMERIC_CHECK);
 
         if (!empty($userExpenses) && $sumOfExpenses > 0) {
             foreach ($userExpenses as $expenseName => $amount) {

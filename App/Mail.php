@@ -6,6 +6,7 @@ namespace App;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
+use \App\Config;
 
 //require 'vendor/autoload.php';
 
@@ -29,13 +30,13 @@ class Mail
         $mail = new PHPMailer(true);
         $mail->isSMTP();
         
-        $mail->Host = 'smtp.gmail.com';
-        $mail->Port = 465;
+        $mail->Host = Config::MAIL_HOST;
+        $mail->Port = Config::MAIL_PORT;
         $mail-> SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->SMTPAuth = true;
 
-        $mail->Username = 'aplikacja.budzetowa@gmail.com';
-        $mail->Password = 'fumgwmkkqkjcdsze';
+        $mail->Username = Config::MAIL_USERNAME;
+        $mail->Password = Config::MAIL_PASSWORD;
 
         $mail->CharSet = 'UTF-8';
         $mail->setFrom('no-reply@domena.pl', 'Aplikacja budżetowa');
