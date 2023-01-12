@@ -51,7 +51,11 @@
         <div class="tableBackground p-3 rounded mb-3 w-25 w-md-100 mr-3">
             {% if sumOfIncomes != 0 %}
             <h3 class="display-5 text-center mt-sm-3 mt-md-0">Przychody</h3>
-            <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+            <div id="incomesPieChart" style="height: 370px; width: 100%;"></div>
+            <div style="background-color:#EDDFD5">
+                <h4 class="text-center">Suma Twoich przychodów wynosi</h4>
+                <h3 class="text-center"> {{sumOfIncomes}} zł</h3>
+            </div>
             {% else %}
             <h3 class="text-center my-3">Brak przychodów</h3>
             {% endif %}
@@ -60,6 +64,10 @@
             {% if sumOfExpenses != 0 %}
             <h3 class="display-5 text-center mt-sm-3 mt-md-0">Wydatki</h3>
             <div id="expensesPieChart" style="height: 370px; width: 100%;"></div>
+            <div style="background-color:#EDDFD5">
+                <h4 class="text-center">Suma Twoich wydatków wynosi</h4>
+                <h3 class="text-center"> {{sumOfExpenses}} zł</h3>
+            </div>
             {% else %}
             <h3 class="text-center my-3">Brak wydatków</h3>
             {% endif %}
