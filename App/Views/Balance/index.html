@@ -70,52 +70,55 @@
     }
 </script>
 {% endblock %}
+
+{% block modal %}
+<div class="modal fade" style="z-index: 1500;" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Wybierz okres</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="periodForm" action="/Balance/index" method="POST">
+                <div class="modal-body">
+                    <select class="form-select" name="period" id="period">
+                        <option value="currentMonth" {% if choosenPerion=="currentMonth" %} selected {% endif %}>
+                            Bieżący
+                            miesiąc</option>
+                        <option value="previousMonth" {% if choosenPerion=="previousMonth" %} selected {% endif %}>
+                            Poprzedni miesiąc</option>
+                        <option value="currentYear" {% if choosenPerion=="currentYear" %} selected {% endif %}>
+                            Bieżący
+                            rok</option>
+                        <option value="other" id="customPeriod" {% if choosenPerion=="other" %} selected {% endif %}>
+                            Niestandardowy</option>
+                    </select>
+                    <div id="customDateInput" class="">
+                        <div class="d-flex my-3 ms-3 d-grid gap-2">
+                            <label for="beginingDate">Od:</label>
+                            <input type="date" class="form-control ps-3" style="width: 150px;" min="1900-01-01"
+                                name="beginingDate" id="beginingDate">
+                        </div>
+                        <div class="d-flex ms-3 d-grid gap-2">
+                            <label for="endingDate">Do:</label>
+                            <input type="date" class="form-control" style="width: 150px;" min="1900-01-01"
+                                name="endingDate" id="endingDate">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-outline-light myButton" value="Wybierz okres">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
 {% block body %}
 
 <main class="mx-5">
-    <div id="income-data-container" data-income="{{ incomeDataPoints|json_encode()|escape('js') }}"></div>
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Wybierz okres</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form id="periodForm" action="/Balance/index" method="POST">
-                    <div class="modal-body">
-                        <select class="form-select" name="period" id="period">
-                            <option value="currentMonth" {% if choosenPerion=="currentMonth" %} selected {% endif %}>
-                                Bieżący
-                                miesiąc</option>
-                            <option value="previousMonth" {% if choosenPerion=="previousMonth" %} selected {% endif %}>
-                                Poprzedni miesiąc</option>
-                            <option value="currentYear" {% if choosenPerion=="currentYear" %} selected {% endif %}>
-                                Bieżący
-                                rok</option>
-                            <option value="other" id="customPeriod" {% if choosenPerion=="other" %} selected {% endif
-                                %}>
-                                Niestandardowy</option>
-                        </select>
-                        <div id="customDateInput" class="">
-                            <div class="d-flex my-3 ms-3 d-grid gap-2">
-                                <label for="beginingDate">Od:</label>
-                                <input type="date" class="form-control ps-3" style="width: 150px;" min="1900-01-01"
-                                    name="beginingDate" id="beginingDate">
-                            </div>
-                            <div class="d-flex ms-3 d-grid gap-2">
-                                <label for="endingDate">Do:</label>
-                                <input type="date" class="form-control" style="width: 150px;" min="1900-01-01"
-                                    name="endingDate" id="endingDate">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <input type="submit" class="btn btn-outline-light myButton" value="Wybierz okres">
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+
 
     <div class="mt-5 mx-lg-auto mx-sm-5% d-md-flex justify-content-between">
         <div> <button type="button" class="btn btn-outline-light myButton m-2" data-bs-toggle="modal"
@@ -133,7 +136,8 @@
 
     </div>
     <div class="d-lg-flex justify-content-lg-evenly">
-        <div class="mb-5 tableBackground h-100 " style="width:33%">
+
+        <div class="mb-5 tableBackground h-100 col-3 " style="width:33%">
             {% if sumOfIncomes != 0 %}
             <h3 class="text-center mt-3">Przychody</h3>
             <div class="container-fluid d-xl-flex my-auto">
@@ -141,7 +145,7 @@
                     <thead class="">
                         <tr>
                             <th>Kategoria</th>
-                            <th>Przychód w kategorii</th>
+                            <th>Przychód</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -173,7 +177,7 @@
                     <thead class="">
                         <tr>
                             <th>Kategoria</th>
-                            <th>Wydatki w kategorii</th>
+                            <th>Wydatki</th>
                         </tr>
                     </thead>
                     <tbody>
