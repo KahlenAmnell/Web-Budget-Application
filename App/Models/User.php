@@ -112,9 +112,9 @@ class User extends \Core\Model
         }
 
         //recaptcha
-        // if ($this->recaptha()) {
-        //     $this->errors[] = 'recaptcha';
-        // }
+        if ($this->recaptha()) {
+            $this->errors[] = 'recaptcha';
+        }
     }
 
     /**
