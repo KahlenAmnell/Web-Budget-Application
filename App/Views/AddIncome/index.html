@@ -11,7 +11,9 @@
                 amount: {
                     required: true,
                     min: 0,
-                    step: 0.01
+                    step: 0.01,
+                    max: 2147483646,
+                    digits: true
                 },
                 date: {
                     required: true,
@@ -26,7 +28,9 @@
                 amount: {
                     required: 'Podaj kwotę.',
                     min: 'Kwota musi być większa niż 0.',
-                    step: 'Podaj kwotę do dwóch miejsc po przecinku.'
+                    step: 'Podaj kwotę do dwóch miejsc po przecinku.',
+                    max: 'Kwota nie może być większa od 2147483646.',
+                    digits: 'Wprowadź liczbę.'
                 },
                 date: {
                     required: 'Podaj datę.',
