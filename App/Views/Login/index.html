@@ -2,6 +2,38 @@
 
 {% block title %}Logowanie{% endblock %}
 
+{% block footer %}
+<script>
+    $(document).ready(function () {
+        $("#loginForm").validate({
+            errorClass: 'errors',
+            rules: {
+                email: {
+                    required: true,
+                    email: true,
+                    remote: '/account/check-email'
+                },
+                password: {
+                    required: true,
+                    minlength: 8
+                }
+            },
+            messages: {
+                email: {
+                    required: 'Podaj adres email.',
+                    email: 'Podaj poprawny adres email.',
+                    remote: 'Nie istnieje konto z podanym adresem email.'
+                },
+                password: {
+                    required: 'Podaj hasło.',
+                    minlength: 'Hasło musi zawierać conajmniej 8 znaków.'
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}
+
 {% block body %}
 
 <main>

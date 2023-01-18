@@ -21,4 +21,17 @@ class Account extends \Core\Controller
         header('Content-Type: application/json');
         echo json_encode($is_valid);
     }
+
+    /**
+     * Check if email already exist in database (AJAX).
+     * 
+     * @return void
+     */
+    public function checkEmailAction()
+    {
+        $is_valid = User::emailExist($_GET['email']);
+
+        header('Content-Type: application/json');
+        echo json_encode($is_valid);
+    }
 }

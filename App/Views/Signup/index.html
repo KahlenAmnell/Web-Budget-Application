@@ -46,12 +46,6 @@
                     minlength: 'Hasło musi zawierać conajmniej 8 znaków.'
                 },
                 passwordConfirmation: 'Podane hasła nie są identyczne.'
-            },
-            highlight: function (element) {
-                $(element).next().addClass('text-warning')
-            },
-            unhighlight: function (element) {
-                $(element).next().removeClass('errors').removeClass('text-warning')
             }
         });
     });
