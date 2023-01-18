@@ -53,7 +53,7 @@
 
 
     {% for message in flash_messages %}
-    <div class="alert alert-{{message.type}} mx-auto border border-{{message.type}} border-2 rounded mt-1">
+    <div id="alert" class="alert alert-{{message.type}} mx-auto border border-{{message.type}} border-2 rounded mt-1">
         {{ message.body }}
     </div>
     {% endfor %}
@@ -70,6 +70,17 @@
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
+    <script>
+        // Get alert element
+        const alert = document.querySelector("#alert");
+        // Create Bootstrap alert instance
+        const bsAlert = new bootstrap.Alert(alert);
+
+        // Dismiss time out
+        setTimeout(() => {
+            bsAlert.close();
+        }, 2000);
+    </script>
     {% block modal %}
     {% endblock %}
     {% block footer %}
