@@ -76,7 +76,7 @@
             {% endif %}
         </div>
         <form class="p-4 mx-auto rounded-3 formBackground col-lg-4 col-md-6" id="signUpFrom" method="post"
-            action="/Signup/create">
+            action="/sign-up/create">
             <input type='hidden' id='re_token' name='re_token' />
             <div class="mb-4">
                 <h2 class="text-center display-5">Zarejestruj się</h2>
@@ -103,11 +103,8 @@
                     placeholder=" " required>
             </div>
             <div class="d-grid gap-2 w-50 mx-auto">
-                <button class="btn btn-outline-light g-recaptcha"
-                    data-sitekey="6LdirI8jAAAAADL0d9RY2dUeZiltApavLcXEWcKc" data-callback='onSubmit'
-                    data-action='register' type="submit" id="signInButton" name="buttonSubmit">Utwórz
+                <button class="btn btn-outline-light" type="submit" id="signInButton" name="buttonSubmit">Utwórz
                     konto</button>
-
                 <a class="btn btn-outline-light" href="/login/index">Powrót do logowania</a>
             </div>
         </form>

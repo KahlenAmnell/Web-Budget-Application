@@ -16,7 +16,7 @@ class Income extends Finances
      */
     public static function getIncomeCategories()
     {
-        return Finances::getCategories('incomes_category_assigned_to_users');
+        return Finances::getCategories('incomes_Category_Assigned_To_Users');
     }
 
     /**

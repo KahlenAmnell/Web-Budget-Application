@@ -16,7 +16,7 @@ class Expense extends Finances
      */
     public static function getExpenseCategories()
     {
-        return Finances::getCategories('expense_category_assigned_to_user_id');
+        return Finances::getCategories('expense_Category_Assigned_To_User_ID');
     }
 
     /**
@@ -26,7 +26,7 @@ class Expense extends Finances
      */
     public static function getPaymentCategories()
     {
-        return Finances::getCategories('payment_methods_assigned_to_users');
+        return Finances::getCategories('payment_Methods_Assigned_To_Users');
     }
 
     /**

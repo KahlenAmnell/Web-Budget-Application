@@ -53,7 +53,7 @@ CREATE TABLE `expense_Category_Assigned_To_User_ID` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `expenses_category_default`
+-- Struktura tabeli dla tabeli `expenses_Category_Default`
 --
 
 CREATE TABLE `expenses_Category_Default` (
@@ -62,7 +62,7 @@ CREATE TABLE `expenses_Category_Default` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
 --
--- Zrzut danych tabeli `expenses_category_default`
+-- Zrzut danych tabeli `expenses_Category_Default`
 --
 
 INSERT INTO `expenses_Category_Default` (`id`, `name`) VALUES
@@ -102,7 +102,7 @@ CREATE TABLE `incomes` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `incomes_category_assigned_to_users`
+-- Struktura tabeli dla tabeli `incomes_Category_Assigned_To_Users`
 --
 
 CREATE TABLE `incomes_Category_Assigned_To_Users` (
@@ -114,7 +114,7 @@ CREATE TABLE `incomes_Category_Assigned_To_Users` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `incomes_category_default`
+-- Struktura tabeli dla tabeli `incomes_Category_Default`
 --
 
 CREATE TABLE `incomes_Category_Default` (
@@ -123,7 +123,7 @@ CREATE TABLE `incomes_Category_Default` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
 --
--- Zrzut danych tabeli `incomes_category_default`
+-- Zrzut danych tabeli `incomes_Category_Default`
 --
 
 INSERT INTO `incomes_Category_Default` (`id`, `name`) VALUES
@@ -135,7 +135,7 @@ INSERT INTO `incomes_Category_Default` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `payment_methods_assigned_to_users`
+-- Struktura tabeli dla tabeli `payment_Methods_Assigned_To_Users`
 --
 
 CREATE TABLE `payment_Methods_Assigned_To_Users` (

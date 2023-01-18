@@ -30,7 +30,7 @@ $router = new Core\Router();
 
 $router->add('', ['controller' => 'Login', 'action' => 'index']);
 $router->add('logout', ['controller' => 'Login', 'action' => 'log-out']);
-$router->add('signup/activate/{token:[\da-f]+}', ['controller' => 'Signup', 'action' => 'activate']);
+$router->add('sign-up/activate/{token:[\da-f]+}', ['controller' => 'SignUp', 'action' => 'activate']);
 $router->add('{controller}/{action}');
 $router->add('{controller}/{id:\d+}/{action}');
 
