@@ -27,12 +27,14 @@ class MainMenu extends Authenticated
         $sumOfIncomes = array_sum($userIncomes);
         $sumOfExpenses = array_sum($userExpenses);
         $incomeDataPoints = array();
+        $expensesDataPoints = array();
 
         if (!empty($userIncomes) && $sumOfIncomes > 0) {
             foreach ($userIncomes as $incomeName => $amount) {
                 $percent = $amount / $sumOfIncomes * 100;
                 $incomeDataPoints[] = array("label" => $incomeName, "y" => $percent);
             }
+        } else {
         }
 
         if (!empty($userExpenses) && $sumOfExpenses > 0) {

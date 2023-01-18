@@ -44,6 +44,7 @@ class Balance extends Authenticated
         $sumOfIncomes = array_sum($userIncomes);
         $sumOfExpenses = array_sum($userExpenses);
         $incomeDataPoints = array();
+        $expensesDataPoints = array();
 
         if (!empty($userIncomes) && $sumOfIncomes > 0) {
             foreach ($userIncomes as $incomeName => $amount) {
