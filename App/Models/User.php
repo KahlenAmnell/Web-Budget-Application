@@ -285,4 +285,33 @@ class User extends \Core\Model
 
         $stmt->execute();
     }
+
+    /**
+     * 
+     */
+    public static function setBalancePeriod()
+    {
+        if (isset($_POST['period'])) {
+            $period = $_POST['period'];
+        } else {
+            $period = 'currentMonth';
+        }
+        unset($_POST['period']);
+        return $period;
+    }
+
+    /**
+     * 
+     */
+    public static function createChartData($financesArray, $financeSsum)
+    {
+        $dataPoints = array();
+        if (!empty($financesArray) && $financeSsum > 0) {
+            foreach ($financesArray as $categoryName => $amount) {
+                $percent = $amount / $financeSsum * 100;
+                $dataPoints[] = array("label" => $categoryName, "y" => $percent);
+            }
+        }
+        return $dataPoints;
+    }
 }
