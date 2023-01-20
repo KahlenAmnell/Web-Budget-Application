@@ -21,7 +21,8 @@ class AddIncome extends Authenticated
     {
         $user = Auth::getUser();
         View::renderTemplate('AddIncome/index.html', [
-            'categories' => Income::getIncomeCategories()
+            'categories' => Income::getIncomeCategories(),
+            'todayDate' => date('Y-m-d')
         ]);
     }
 
@@ -40,7 +41,8 @@ class AddIncome extends Authenticated
         } else {
             Flash::addMessage('Nie udało się dodać przychodu.', 'danger');
             View::renderTemplate('AddIncome/index.html', [
-                'income' => $income
+                'income' => $income,
+                'todayDate' => date('Y-m-d')
             ]);
         }
     }

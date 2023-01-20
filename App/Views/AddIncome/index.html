@@ -46,21 +46,6 @@
         });
     });
 </script>
-
-<script>
-    var today = new Date();
-    var dd = today.getDate();
-    var mm = today.getMonth() + 1; //January is 0!
-    var yyyy = today.getFullYear();
-    if (dd < 10) {
-        dd = '0' + dd
-    }
-    if (mm < 10) {
-        mm = '0' + mm
-    }
-    today = yyyy + '-' + mm + '-' + dd;
-    document.getElementById("datefield").setAttribute("max", today);
-</script>
 {% endblock %}
 
 {% block body %}
@@ -84,11 +69,13 @@
             id="incomeForm" method="POST">
             <div class="mb-3 text-light mx-5">
                 <label for="amount">Kwota (podaj z kropką):</label>
-                <input type="number" class="form-control" placeholder="Wpisz kwotę..." id="incomeAmount" name="amount">
+                <input type="number" class="form-control" placeholder="Wpisz kwotę..." id="incomeAmount" name="amount"
+                    min="0.01" step="0.01">
             </div>
             <div class="mb-3 text-light mx-5">
                 <label for="date">Data:</label>
-                <input id="datefield" name="date" type='date' max='2050-12-31' class='form-control'></input>
+                <input class='form-control' id="datefield" name="date" type='date' min="2000-01-01"
+                    max="{{ todayDate }}"></input>
             </div>
             <div class="mb-3 text-light col-9 mx-5">
                 <label for="category">Kategoria:</label>
@@ -102,7 +89,7 @@
             <div class="mb-3 text-light col-9 mx-5">
                 <label class="form-label" for="comment">Komentarz (opcjonalnie):</label>
                 <div><textarea class="form-control" name="comment" id="comment" rows="2"
-                        placeholder="Max. 250 znaków..."></textarea>
+                        placeholder="Max. 250 znaków..." style="resize: none" maxlength="250"></textarea>
                 </div>
             </div>
             <div class="d-grid gap-2 w-50 mx-auto">
