@@ -1,3 +1,4 @@
 *.pdf
 App/Config.php
-logs
+logs/
+vendor/
