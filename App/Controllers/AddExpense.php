@@ -21,7 +21,8 @@ class AddExpense extends Authenticated
     {
         View::renderTemplate('AddExpense/index.html', [
             'expenseCategories' => Expense::getExpenseCategories(),
-            'paymentCategories' => Expense::getPaymentCategories()
+            'paymentCategories' => Expense::getPaymentCategories(),
+            'todayDate' => date('Y-m-d')
         ]);
     }
 
@@ -40,7 +41,8 @@ class AddExpense extends Authenticated
         } else {
             Flash::addMessage('Nie udało się dodać wydatku.', 'danger');
             View::renderTemplate('AddExpense/index.html', [
-                'expense' => $expense
+                'expense' => $expense,
+                'todayDate' => date('Y-m-d')
             ]);
         }
     }
