@@ -69,6 +69,8 @@
 
     }
 </script>
+<script src="/js/app.js"></script>
+
 {% endblock %}
 
 {% block modal %}
@@ -178,19 +180,19 @@
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="incomeList">
                         {% for category, income in incomes %}
-                        <tr>
+                        <tr id="{{ incomeId }}">
                             <td> {{ date }}</td>
                             <td>{{ category }}</td>
                             <td>{{ income }}</td>
                             <td> {{ comment }} </td>
-                            <td><a>
+                            <td><button class="btn btn-outline-light">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                         class="bi bi-pen" viewBox="0 0 16 16">
                                         <path
                                             d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z" />
-                                    </svg></a>
+                                    </svg></button>
                                 <a>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                         class="bi bi-trash3" viewBox="0 0 16 16">
@@ -239,7 +241,7 @@
             <div style="background-color:#EDDFD5">
                 <h4 class="text-center mt-3">Lista wydatków</h4>
                 <div class="container-fluid d-xl-flex my-auto">
-                    <table class="table table-striped table-hover me-3 ">
+                    <table class="table table-striped table-hover me-3 " id="listExpenseTable">
                         <thead class="">
                             <tr>
                                 <th>Data</th>
@@ -251,18 +253,18 @@
                         </thead>
                         <tbody>
                             {% for category, expense in expenses %}
-                            <tr>
+                            <tr id="{{category}}">
                                 <td> {{ date }}</td>
                                 <td>{{ category }}</td>
                                 <td>{{ expense }}</td>
                                 <td> {{ comment }} </td>
-                                <td><a>
+                                <td><button class="btn btn-outline-dark" id="butonn" onclick="myFunction({{category}})">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
                                             <path
                                                 d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z" />
-                                        </svg></a>
-                                    <a>
+                                        </svg></button>
+                                    <a class="btn btn-outline-dark" id="del">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                                             <path
@@ -270,6 +272,20 @@
                                         </svg>
                                     </a>
                                 </td>
+                            </tr>
+                            <tr id="{{category}}-form" style="display:none">
+                                <form action="">
+                                    <td> <input type="date" class='form-control'></td>
+                                    <td><input type="text" class='form-control'></td>
+                                    <td><input type="number" class='form-control'></td>
+                                    <td><input type="text" class='form-control'></td>
+                                    <td><button class="btn btn-outline-dark" id="hidButonn">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                                                <path
+                                                    d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z" />
+                                            </svg></button></td>
+                                </form>
                             </tr>
                             {% endfor %}
                         </tbody>

@@ -17,3 +17,12 @@ $.validator.addMethod('validPassword',
     },
     'Hasło musi zawierać conajmniej 1 literę i 1 cyfrę.'
 );
+
+function myFunction(id) {
+
+    const idd = "#" + id.id;
+    const form = idd + "-form";
+
+    $(form).show();
+    $(idd).hide();
+}
