@@ -28,6 +28,8 @@ class Balance extends Authenticated
         $sumOfExpenses = array_sum($userExpenses);
         $incomeDataPoints = User::createChartData($userIncomes, $sumOfIncomes);
         $expensesDataPoints = User::createChartData($userExpenses, $sumOfExpenses);
+        $incomeList = Income::getIncomesList($dates['earlierDate'], $dates['laterDate']);
+        $expenseList = Expense::getExpensesList($dates['earlierDate'], $dates['laterDate']);
 
         View::renderTemplate('Balance/index.html', [
             'incomes' => $userIncomes,
@@ -36,7 +38,9 @@ class Balance extends Authenticated
             'sumOfExpenses' => array_sum($userExpenses),
             'choosenPerion' => $period,
             'incomeDataPoints' => $incomeDataPoints,
-            'expenseDataPoints' => $expensesDataPoints
+            'expenseDataPoints' => $expensesDataPoints,
+            'incomeList' => $incomeList,
+            'expenseList' => $expenseList
         ]);
     }
 }
