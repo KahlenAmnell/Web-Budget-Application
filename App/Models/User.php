@@ -292,12 +292,13 @@ class User extends \Core\Model
     public static function setBalancePeriod()
     {
         if (isset($_POST['period'])) {
-            $period = $_POST['period'];
+            $_SESSION['period'] = $_POST['period'];
+            return $_POST['period'];
+        } else if (isset($_SESSION['period'])) {
+            return $_SESSION['period'];
         } else {
-            $period = 'currentMonth';
+            return 'currentMonth';
         }
-        unset($_POST['period']);
-        return $period;
     }
 
     /**

@@ -6,6 +6,7 @@ use App\Models\Expense;
 use \Core\View;
 use \App\Models\Income;
 use \App\Dates;
+use App\Models\Finances;
 use \App\Models\User;
 
 /**
@@ -28,6 +29,8 @@ class Balance extends Authenticated
         $sumOfExpenses = array_sum($userExpenses);
         $incomeDataPoints = User::createChartData($userIncomes, $sumOfIncomes);
         $expensesDataPoints = User::createChartData($userExpenses, $sumOfExpenses);
+        $incomeList = Income::getIncomesList($dates['earlierDate'], $dates['laterDate']);
+        $expenseList = Expense::getExpensesList($dates['earlierDate'], $dates['laterDate']);
 
         View::renderTemplate('Balance/index.html', [
             'incomes' => $userIncomes,
@@ -36,7 +39,21 @@ class Balance extends Authenticated
             'sumOfExpenses' => array_sum($userExpenses),
             'choosenPerion' => $period,
             'incomeDataPoints' => $incomeDataPoints,
-            'expenseDataPoints' => $expensesDataPoints
+            'expenseDataPoints' => $expensesDataPoints,
+            'incomeList' => $incomeList,
+            'expenseList' => $expenseList
         ]);
+    }
+
+    public function deleteIncomeAction()
+    {
+        Finances::deleteRecord($this->route_params['id'], 'incomes');
+        $this->redirect('/balance/index');
+    }
+
+    public function deleteExpenseAction()
+    {
+        Finances::deleteRecord($this->route_params['id'], 'expenses');
+        $this->redirect('/balance/index');
     }
 }

@@ -75,4 +75,15 @@ class Income extends Finances
 
         return Finances::getUserFinances($sql, $earlierDate, $laterDate);
     }
+
+    public static function getIncomesList($earlierDate, $laterDate)
+    {
+        $sql = "SELECT i.id, i.dateOfIncome, icatu.name, i.amount, i.incomeComment 
+        FROM incomes_Category_Assigned_To_Users AS icatu INNER JOIN incomes AS i
+        WHERE i.userID = :id AND icatu.id = i.incomeCategoryAssignedToUserId 
+            AND i.dateOfIncome >= :earlierDate AND i.dateOfIncome <= :laterDate 
+        ORDER BY i.dateOfIncome DESC;";
+         return Finances::getListOfFinances($sql, $earlierDate, $laterDate);
+    }
+
 }
