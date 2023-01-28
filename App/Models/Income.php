@@ -85,4 +85,5 @@ class Income extends Finances
         ORDER BY i.dateOfIncome DESC;";
          return Finances::getListOfFinances($sql, $earlierDate, $laterDate);
     }
+
 }

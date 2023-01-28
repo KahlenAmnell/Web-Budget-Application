@@ -6,6 +6,7 @@ use App\Models\Expense;
 use \Core\View;
 use \App\Models\Income;
 use \App\Dates;
+use App\Models\Finances;
 use \App\Models\User;
 
 /**
@@ -42,5 +43,17 @@ class Balance extends Authenticated
             'incomeList' => $incomeList,
             'expenseList' => $expenseList
         ]);
+    }
+
+    public function deleteIncomeAction()
+    {
+        Finances::deleteRecord($this->route_params['id'], 'incomes');
+        $this->redirect('/balance/index');
+    }
+
+    public function deleteExpenseAction()
+    {
+        Finances::deleteRecord($this->route_params['id'], 'expenses');
+        $this->redirect('/balance/index');
     }
 }

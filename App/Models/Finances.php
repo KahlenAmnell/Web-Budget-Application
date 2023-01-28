@@ -79,7 +79,8 @@ abstract class Finances extends \Core\Model
         }
     }
 
-    public static function getUserFinances($sql, $earlierDate, $laterDate){
+    public static function getUserFinances($sql, $earlierDate, $laterDate)
+    {
         $db = static::getDB();
 
         $stmt = $db->prepare($sql);
@@ -100,7 +101,8 @@ abstract class Finances extends \Core\Model
         }
     }
 
-    public static function getListOfFinances($sql, $earlierDate, $laterDate){
+    public static function getListOfFinances($sql, $earlierDate, $laterDate)
+    {
         $db = static::getDB();
 
         $stmt = $db->prepare($sql);
@@ -121,5 +123,19 @@ abstract class Finances extends \Core\Model
             $nothing[] = 0;
             return $nothing;
         }
+    }
+
+
+    public static function deleteRecord($id, $table)
+    {
+        $sql = "DELETE FROM $table WHERE id = :id";
+
+        $db = static::getDB();
+
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+
+        $stmt->execute();
     }
 }
