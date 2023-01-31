@@ -13,4 +13,9 @@ class Settings extends Authenticated
     {
         View::renderTemplate('Settings/index.html');
     }
+
+    public function editProfileAction()
+    {
+        View::renderTemplate('Settings/editProfile.html');
+    }
 }
