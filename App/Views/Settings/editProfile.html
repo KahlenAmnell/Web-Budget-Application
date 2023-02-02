@@ -2,8 +2,100 @@
 
 {% block title %}Ustawienia{% endblock %}
 
+{% block footer %}
+<script src="/js/app.js"></script>
+
+<script>
+    $(document).ready(function () {
+        var userId = '{{ user.id }}';
+        $("#editFrom").validate({
+            errorClass: 'errors',
+            rules: {
+                name: 'required',
+                email: {
+                    required: true,
+                    email: true,
+                    remote: {
+                        url: '/account/validate-email',
+                        data: {
+                            ignore_id: function () {
+                                return userId;
+                            }
+                        }
+                    }
+                },
+                password: {
+                    minlength: 8,
+                    validPassword: true
+                },
+                passwordConfirmation: {
+                    equalTo: '#passwordInput'
+                }
+            },
+            messages: {
+                email: {
+                    email: 'Podaj poprawny adres email.',
+                    remote: 'Istnieje już konto z podanym adresem email.'
+                },
+                password: {
+                    minlength: 'Hasło musi zawierać conajmniej 8 znaków.'
+                },
+                passwordConfirmation: 'Podane hasła nie są identyczne.'
+            }
+        });
+    });
+</script>
+{% endblock %}
+
 {% block body %}
 
+<main>
+    <div>
+        <h1 class="display-2 my-5 d-flex justify-content-center">Edytuj profil</h1>
+    </div>
+    <div>
+        <span class="d-flex justify-content-center" id="helpBlock">Jeżeli nie chcesz
+            zmieniać hasła pola z hasłami zostaw puste.</span>
+    </div>
+    <div class="container mt-3 text-light  mx-md-auto mx-sm-5%">
+        <div class="mx-auto col-lg-4 col-md-6" style="color: #17694b">
+            {% if user.errors is not empty %}
+            <p>Błędy:</p>
+            <ul>
+                {% for error in user.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <form class="p-4 mx-auto rounded-3 formBackground col-lg-4 col-md-6" id="editFrom" method="post"
+            action="/settings/update">
+            <div>
+                <label for="nameInput" class="form-label">Imię</label>
+                <input type="text" class="form-control " name="name" id="nameInput" value="{{ user.username }}">
+            </div>
+            <div class="mb-3">
+                <label for="emailInput">Adres e-mail</label>
+                <input type="email" class="form-control" name="email" id="emailInput" value="{{ user.email }}">
 
+            </div>
+            <div class="mb-3">
+                <label for="passwordInput">Hasło</label>
+                <input type="password" class="form-control" name="password" id="passwordInput"
+                    aria-describedby="helpBlock">
+            </div>
+            <div class="mb-3">
+                <label for="passwordConfirmationInput">Powtórz hasło</label>
+                <input type="password" class="form-control" name="passwordConfirmation" id="passwordConfirmationInput"
+                    placeholder=" ">
+            </div>
+            <div class="d-grid gap-2 w-50 mx-auto">
+                <button class="btn btn-outline-light" type="submit" id="signInButton"
+                    name="buttonSubmit">Edytuj</button>
+                <a class="btn btn-outline-light" href="/settings/index">Powrót do ustawień</a>
+            </div>
+        </form>
+    </div>
+</main>
 
 {% endblock %}
