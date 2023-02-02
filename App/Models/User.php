@@ -90,25 +90,27 @@ class User extends \Core\Model
             $this->errors[] = 'Adres email jest nieprawidłowy.';
         }
 
-        if (static::emailExist($this->email)) {
+        if (static::emailExist($this->email, $this->id ?? null)) {
             $this->errors[] = 'Istnieje już konto o tym adresie email.';
         }
 
         //password
-        if (strlen($this->password) < 8) {
-            $this->errors[] = 'Hasło musi zawierać conajmniej 8 znaków.';
-        }
+        if (isset($this->password)) {
+            if (strlen($this->password) < 8) {
+                $this->errors[] = 'Hasło musi zawierać conajmniej 8 znaków.';
+            }
 
-        if (preg_match('/.*[a-z]+.*/i', $this->password) == 0) {
-            $this->errors[] = 'Hasło musi zawierać conajmniej 1 literę.';
-        }
+            if (preg_match('/.*[a-z]+.*/i', $this->password) == 0) {
+                $this->errors[] = 'Hasło musi zawierać conajmniej 1 literę.';
+            }
 
-        if (preg_match('/.*\d+.*/i', $this->password) == 0) {
-            $this->errors[] = 'Hasło musi zawierać conajmniej jedną cyfrę.';
-        }
+            if (preg_match('/.*\d+.*/i', $this->password) == 0) {
+                $this->errors[] = 'Hasło musi zawierać conajmniej jedną cyfrę.';
+            }
 
-        if ($this->password != $this->passwordConfirmation) {
-            $this->errors[] = 'Podane hasła się nie zgadzają.';
+            if ($this->password != $this->passwordConfirmation) {
+                $this->errors[] = 'Podane hasła się nie zgadzają.';
+            }
         }
     }
 
@@ -119,12 +121,14 @@ class User extends \Core\Model
      * 
      * @return boolean True i frecord already exist with specified email, false otherwise
      */
-    public static function emailExist($email)
+    public static function emailExist($email, $ignore_id = null)
     {
-        $user = static::findbyEmail($email);
+        $user = static::findByEmail($email);
 
         if ($user) {
-            return true;
+            if ($user->id != $ignore_id) {
+                return true;
+            }
         }
 
         return false;
@@ -314,5 +318,41 @@ class User extends \Core\Model
             }
         }
         return $dataPoints;
+    }
+
+    public function updateProfile($data)
+    {
+        $this->name = $data['name'];
+        $this->email = $data['email'];
+
+        if ($data['password'] != '') {
+            $this->password = $data['password'];
+            $this->passwordConfirmation = $data['passwordConfirmation'];
+        }
+
+        $this->validate();
+        if (empty($this->errors)) {
+            $sql = 'UPDATE users SET username = :name, email = :email';
+
+            if (isset($this->password)) {
+                $sql .=  ', password_hash = :password_hash';
+            }
+            $sql .= ' WHERE id = :id';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':name', $this->name, PDO::PARAM_STR);
+            $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
+            $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+
+            if (isset($this->password)) {
+                $password_hash = password_hash($this->password, PASSWORD_DEFAULT);
+                $stmt->bindValue(':password_hash', $password_hash, PDO::PARAM_STR);
+            }
+
+            return $stmt->execute();
+        }
+        return false;
     }
 }
