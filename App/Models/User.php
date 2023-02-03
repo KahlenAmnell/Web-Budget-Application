@@ -258,8 +258,8 @@ class User extends \Core\Model
         $subject = 'Aktywacja konta';
 
         $url = 'http://' . $_SERVER['HTTP_HOST'] . '/sign-up/activate/' . $this->activation_token;
-        $text = 'W celu aktywacji konta wejdź na stronę podaną w poniższym linku. \n' . $url;
 
+        $text = View::getTemplate('Signup/activation_email.txt', ['url' => $url]);
         $html = View::getTemplate('Signup/activation_email.html', ['url' => $url]);
 
         Mail::send($this->email, $subject, $text, $html);
@@ -354,5 +354,68 @@ class User extends \Core\Model
             return $stmt->execute();
         }
         return false;
+    }
+
+    /**
+     * Send password reset instructions to the user specified
+     * 
+     * @param string $email The email address
+     * 
+     * @return void
+     */
+    public static function sendPasswordReset($email)
+    {
+        $user = static::findByEmail($email);
+
+        if ($user) {
+            if ($user->startPasswordReset()) {
+                $user->sendPasswordResetEmail();
+            }
+        }
+    }
+
+    /**
+     * Start the password reset process by generating a new token and expiry
+     * 
+     * @return void
+     */
+    protected function startPasswordReset()
+    {
+        $token = new Token();
+        $hashed_token = $token->getHash();
+        $this->password_reset_token = $token->getValue();
+
+        $expiry_timestamp = time() + 60 * 60 * 2; // 2 hours from now
+
+        $sql = 'UPDATE users
+                SET password_reset_hash = :token_hash,
+                password_reset_expires_at = :expires_at
+                WHERE id = :id';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':token_hash', $hashed_token, PDO::PARAM_STR);
+        $stmt->bindValue(':expires_at', date('Y-m-d H:i:s', $expiry_timestamp), PDO::PARAM_STR);
+        $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
+
+    /**
+     * Send password reset instructions in an email to the user
+     * 
+     * @return void
+     */
+    protected function sendPasswordResetEmail()
+    {
+        $subject = "Reset hasła";
+
+        $url = 'http://' . $_SERVER['HTTP_HOST'] . '/password/reset/' . $this->password_reset_token;
+
+        $text = View::getTemplate('Password/reset_email.txt', ['url' => $url]);
+        $html = View::getTemplate('Password/reset_email.html', ['url' => $url]);
+
+        Mail::send($this->email, $subject, $text, $html);
     }
 }
