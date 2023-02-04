@@ -81,8 +81,10 @@ class User extends \Core\Model
     public function validate()
     {
         //Name
-        if ($this->name == '') {
-            $this->errors[] = 'Imię jest wymagane.';
+        if (isset($this->name)) {
+            if ($this->name == '') {
+                $this->errors[] = 'Imię jest wymagane.';
+            }
         }
 
         //email address
@@ -107,9 +109,10 @@ class User extends \Core\Model
             if (preg_match('/.*\d+.*/i', $this->password) == 0) {
                 $this->errors[] = 'Hasło musi zawierać conajmniej jedną cyfrę.';
             }
-
-            if ($this->password != $this->passwordConfirmation) {
-                $this->errors[] = 'Podane hasła się nie zgadzają.';
+            if (isset($this->passwordConfirmation)) {
+                if ($this->password != $this->passwordConfirmation) {
+                    $this->errors[] = 'Podane hasła się nie zgadzają.';
+                }
             }
         }
     }
@@ -445,11 +448,45 @@ class User extends \Core\Model
 
         $user = $stmt->fetch();
 
-        if($user) {
+        if ($user) {
             // Check password reset token hasn't expired
-            if(strtotime($user->password_reset_expires_at) > time()) {
+            if (strtotime($user->password_reset_expires_at) > time()) {
                 return $user;
             }
         }
+    }
+
+    /**
+     * Reset the password
+     * 
+     * @param string $password The new password
+     * 
+     * @return boolean True if the password was updated successfully, false otherwise
+     */
+    public function resetPassword($password)
+    {
+        $this->password = $password;
+
+        $this->validate();
+
+        if (empty($this->errors)) {
+            $password_hash = password_hash($this->password, PASSWORD_DEFAULT);
+
+            $sql = 'UPDATE users
+                    SET password_hash = :password_hash,
+                        password_reset_hash = NULL,
+                        password_reset_expires_at = NULL
+                    WHERE id = :id';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+            $stmt->bindValue(':password_hash', $password_hash, PDO::PARAM_STR);
+
+            return $stmt->execute();
+        }
+
+        return false;
     }
 }

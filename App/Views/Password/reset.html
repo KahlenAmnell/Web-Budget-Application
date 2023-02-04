@@ -49,12 +49,13 @@
             {% endif %}
         </div>
         <form class="p-4 mx-auto rounded-3 formBackground col-lg-4 col-md-6" id="resetForm" method="post"
-            action="">
+            action="/password/reset-password">
             <div class="mb-4">
                 <h2 class="text-center display-5">Zmień hasło</h2>
             </div>
+            <input type="hidden" name="token" value="{{ token }}">
             <div class="mb-3">
-                <label for="passwordInput">Hasło</label>
+                <label for="passwordInput">Nowe hasło</label>
                 <input type="password" class="form-control" name="password" id="passwordInput" placeholder=" " required>
 
             </div>
@@ -64,7 +65,8 @@
                     placeholder=" " required>
             </div>
             <div class="d-grid gap-2 w-50 mx-auto">
-                <button class="btn btn-outline-light" type="submit" id="signInButton" name="buttonSubmit">Zmień hasło</button>
+                <button class="btn btn-outline-light" type="submit" name="buttonSubmit">Zmień
+                    hasło</button>
             </div>
         </form>
     </div>
