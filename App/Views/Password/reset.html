@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Odzyskaj hasło{% endblock %}
+
+{% block footer %}
+<script src="/js/app.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#resetForm").validate({
+            errorClass: 'errors',
+            rules: {
+                password: {
+                    required: true,
+                    minlength: 8,
+                    validPassword: true
+                },
+                passwordConfirmation: {
+                    equalTo: '#passwordInput'
+                }
+            },
+            messages: {
+                password: {
+                    required: 'Podaj hasło.',
+                    minlength: 'Hasło musi zawierać conajmniej 8 znaków.'
+                },
+                passwordConfirmation: 'Podane hasła nie są identyczne.'
+            }
+        });
+    });
+</script>
+{% endblock %}
+
+{% block body %}
+
+<main>
+    <div>
+        <h1 class="display-2 mt-5 d-flex justify-content-center">Reset hasła</h1>
+    </div>
+    <div class="container mt-5 text-light  mx-md-auto mx-sm-5%">
+        <div class="mx-auto col-lg-4 col-md-6" style="color: #17694b">
+            {% if user.errors is not empty %}
+            <p>Błędy:</p>
+            <ul>
+                {% for error in user.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <form class="p-4 mx-auto rounded-3 formBackground col-lg-4 col-md-6" id="resetForm" method="post"
+            action="/password/reset-password">
+            <div class="mb-4">
+                <h2 class="text-center display-5">Zmień hasło</h2>
+            </div>
+            <input type="hidden" name="token" value="{{ token }}">
+            <div class="mb-3">
+                <label for="passwordInput">Nowe hasło</label>
+                <input type="password" class="form-control" name="password" id="passwordInput" placeholder=" " required>
+
+            </div>
+            <div class="mb-3">
+                <label for="passwordConfirmationInput">Powtórz hasło</label>
+                <input type="password" class="form-control" name="passwordConfirmation" id="passwordConfirmationInput"
+                    placeholder=" " required>
+            </div>
+            <div class="d-grid gap-2 w-50 mx-auto">
+                <button class="btn btn-outline-light" type="submit" name="buttonSubmit">Zmień
+                    hasło</button>
+            </div>
+        </form>
+    </div>
+</main>
+
+{% endblock %}

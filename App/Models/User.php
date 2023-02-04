@@ -81,8 +81,10 @@ class User extends \Core\Model
     public function validate()
     {
         //Name
-        if ($this->name == '') {
-            $this->errors[] = 'Imię jest wymagane.';
+        if (isset($this->name)) {
+            if ($this->name == '') {
+                $this->errors[] = 'Imię jest wymagane.';
+            }
         }
 
         //email address
@@ -107,9 +109,10 @@ class User extends \Core\Model
             if (preg_match('/.*\d+.*/i', $this->password) == 0) {
                 $this->errors[] = 'Hasło musi zawierać conajmniej jedną cyfrę.';
             }
-
-            if ($this->password != $this->passwordConfirmation) {
-                $this->errors[] = 'Podane hasła się nie zgadzają.';
+            if (isset($this->passwordConfirmation)) {
+                if ($this->password != $this->passwordConfirmation) {
+                    $this->errors[] = 'Podane hasła się nie zgadzają.';
+                }
             }
         }
     }
@@ -258,8 +261,8 @@ class User extends \Core\Model
         $subject = 'Aktywacja konta';
 
         $url = 'http://' . $_SERVER['HTTP_HOST'] . '/sign-up/activate/' . $this->activation_token;
-        $text = 'W celu aktywacji konta wejdź na stronę podaną w poniższym linku. \n' . $url;
 
+        $text = View::getTemplate('Signup/activation_email.txt', ['url' => $url]);
         $html = View::getTemplate('Signup/activation_email.html', ['url' => $url]);
 
         Mail::send($this->email, $subject, $text, $html);
@@ -353,6 +356,137 @@ class User extends \Core\Model
 
             return $stmt->execute();
         }
+        return false;
+    }
+
+    /**
+     * Send password reset instructions to the user specified
+     * 
+     * @param string $email The email address
+     * 
+     * @return void
+     */
+    public static function sendPasswordReset($email)
+    {
+        $user = static::findByEmail($email);
+
+        if ($user) {
+            if ($user->startPasswordReset()) {
+                $user->sendPasswordResetEmail();
+            }
+        }
+    }
+
+    /**
+     * Start the password reset process by generating a new token and expiry
+     * 
+     * @return void
+     */
+    protected function startPasswordReset()
+    {
+        $token = new Token();
+        $hashed_token = $token->getHash();
+        $this->password_reset_token = $token->getValue();
+
+        $expiry_timestamp = time() + 60 * 60 * 2; // 2 hours from now
+
+        $sql = 'UPDATE users
+                SET password_reset_hash = :token_hash,
+                password_reset_expires_at = :expires_at
+                WHERE id = :id';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':token_hash', $hashed_token, PDO::PARAM_STR);
+        $stmt->bindValue(':expires_at', date('Y-m-d H:i:s', $expiry_timestamp), PDO::PARAM_STR);
+        $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
+
+    /**
+     * Send password reset instructions in an email to the user
+     * 
+     * @return void
+     */
+    protected function sendPasswordResetEmail()
+    {
+        $subject = "Reset hasła";
+
+        $url = 'http://' . $_SERVER['HTTP_HOST'] . '/password/reset/' . $this->password_reset_token;
+
+        $text = View::getTemplate('Password/reset_email.txt', ['url' => $url]);
+        $html = View::getTemplate('Password/reset_email.html', ['url' => $url]);
+
+        Mail::send($this->email, $subject, $text, $html);
+    }
+
+    /**
+     * Find a user model by password reset token and expiry
+     * 
+     * @param string $token Password reset token sent to user
+     * 
+     * @return mixed User object if found and the token hasn't expired, null otherwise
+     */
+    public static function findByPasswordReset($token)
+    {
+        $token = new Token($token);
+        $hashed_token = $token->getHash();
+
+        $sql = 'SELECT * FROM users
+                WHERE password_reset_hash = :token_hash';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':token_hash', $hashed_token, PDO::PARAM_STR);
+
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+
+        $stmt->execute();
+
+        $user = $stmt->fetch();
+
+        if ($user) {
+            // Check password reset token hasn't expired
+            if (strtotime($user->password_reset_expires_at) > time()) {
+                return $user;
+            }
+        }
+    }
+
+    /**
+     * Reset the password
+     * 
+     * @param string $password The new password
+     * 
+     * @return boolean True if the password was updated successfully, false otherwise
+     */
+    public function resetPassword($password)
+    {
+        $this->password = $password;
+
+        $this->validate();
+
+        if (empty($this->errors)) {
+            $password_hash = password_hash($this->password, PASSWORD_DEFAULT);
+
+            $sql = 'UPDATE users
+                    SET password_hash = :password_hash,
+                        password_reset_hash = NULL,
+                        password_reset_expires_at = NULL
+                    WHERE id = :id';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+            $stmt->bindValue(':password_hash', $password_hash, PDO::PARAM_STR);
+
+            return $stmt->execute();
+        }
+
         return false;
     }
 }

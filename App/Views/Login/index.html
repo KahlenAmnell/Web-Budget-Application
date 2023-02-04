@@ -50,7 +50,7 @@
             <div class="mb-3">
                 <label for="emailInput">Adres e-mail</label>
                 <input type="email" name="email" class="form-control" id="emailInput" placeholder=" "
-                    value="{{ email }}" autofocus required>
+                    value="{{ email }}" required>
             </div>
             <div class="mb-3">
                 <label for="passwordInput">Hasło</label>
@@ -58,9 +58,10 @@
                     required>
             </div>
             <div class="d-grid gap-2  mx-auto">
-                <button class="btn btn-outline-light w-50 mx-auto ">Zaloguj</button>
                 <label class="mx-auto"><input type="checkbox" name="remember_me" class="form-check-input me-2">
                     Zapamiętaj mnie</label>
+                <button class="btn btn-outline-light w-50 mx-auto ">Zaloguj</button>
+                <a href="/password/forgot" class="text-reset text-center">Nie pamiętasz hasła?</a>
                 <p class="d-flex justify-content-center mt-3 mb-0">Nie masz konta?</p>
                 <a href="/sign-up/index" class="btn btn-outline-light  w-50 mx-auto">Zarejestruj się</a>
             </div>

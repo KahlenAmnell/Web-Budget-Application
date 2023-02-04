@@ -1,0 +1,5 @@
+Aktywacja konta
+
+W celu aktywacji konta wejdź na stronę podaną w poniższym linku.
+
+{{ url }}

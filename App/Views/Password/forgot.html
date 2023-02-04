@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Odzyskaj hasło{% endblock %}
+
+{% block body %}
+
+<main>
+    <div>
+        <h1 class="display-2 my-5 d-flex justify-content-center">Nie pamiętasz hasła?</h1>
+    </div>
+    <div class="container mt-3 text-light  mx-md-auto mx-sm-5%">
+        <div class="mx-auto col-lg-4 col-md-6" style="color: #17694b">
+            {% if user.errors is not empty %}
+            <p>Błędy:</p>
+            <ul>
+                {% for error in user.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <form class="p-4 mx-auto rounded-3 formBackground col-lg-4 col-md-6" id="passwordForm" method="post"
+            action="/password/request-reset">
+            <div class="mb-4">
+                <h2 class="text-center display-5">Zresetuj hasło</h2>
+            </div>
+            <div class="mb-5">
+                <label for="emailInput">Podaj adres e-mail do konta</label>
+                <input type="email" class="form-control" name="email" id="emailInput">
+            </div>
+            <div class="d-grid gap-2 w-50 mx-auto mt-3">
+                <button class="btn btn-outline-light" type="submit">Zresetuj hasło</button>
+                <a class="btn btn-outline-light" href="/login/index">Powrót do logowania</a>
+            </div>
+        </form>
+    </div>
+</main>
+
+{% endblock %}
