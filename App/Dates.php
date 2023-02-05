@@ -34,8 +34,15 @@ class Dates
             $dates['earlierDate'] = date("Y") . "-01-01";
             $dates['laterDate'] = date("Y") . "-12-31";
         } else if ($period == "other") {
-            $dates['earlierDate'] = $_POST['beginingDate'];
-            $dates['laterDate'] = $_POST['endingDate'];
+            if (isset($_POST['beginingDate'])) {
+                $dates['earlierDate'] = $_POST['beginingDate'];
+                $dates['laterDate'] = $_POST['endingDate'];
+                $_SESSION['earlierDate'] = $_POST['beginingDate'];
+                $_SESSION['laterDate'] = $_POST['endingDate'];
+            } else {
+                $dates['earlierDate'] = $_SESSION['earlierDate'];
+                $dates['laterDate'] = $_SESSION['laterDate'];
+            }
         }
         return $dates;
     }
