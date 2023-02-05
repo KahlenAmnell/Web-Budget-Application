@@ -8,6 +8,7 @@ use \App\Models\Income;
 use \App\Dates;
 use App\Models\Finances;
 use \App\Models\User;
+use \App\Flash;
 
 /**
  * Balance controller
@@ -48,12 +49,14 @@ class Balance extends Authenticated
     public function deleteIncomeAction()
     {
         Finances::deleteRecord($this->route_params['id'], 'incomes');
-        $this->redirect('/balance/index');
+        Flash::addMessage('Usunięto przychód');
+        $this->redirect('/balance');
     }
 
     public function deleteExpenseAction()
     {
         Finances::deleteRecord($this->route_params['id'], 'expenses');
-        $this->redirect('/balance/index');
+        Flash::addMessage('Usunieto wydatek');
+        $this->redirect('/balance');
     }
 }
