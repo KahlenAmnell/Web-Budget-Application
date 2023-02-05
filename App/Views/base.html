@@ -28,23 +28,23 @@
                         d="M11 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h1V7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7h1V2z" />
                 </svg>
                 {% if current_user %}
-                <a class="btn btn-outline-light mx-2" href="/main-menu/index">Home</a>
+                <a class="btn btn-outline-light mx-2" href="/main-menu">Home</a>
             </div>
             <div class="d-grid gap-2 d-flex justify-content-end">
-                <a class="btn btn-outline-light mx-2" href="/settings/index">Ustawienia</a>
+                <a class="btn btn-outline-light mx-2" href="/settings">Ustawienia</a>
                 <a class="btn btn-outline-light me-3" href="/logout">Wyloguj się</a>
             </div>
             {% else %}
-            <a class="btn btn-outline-light mx-2" href="/login/index">Home</a>
+            <a class="btn btn-outline-light mx-2" href="/login">Home</a>
             {% endif %}
         </nav>
         {% if current_user %}
         <nav class="navbar navbar-dark secondNavColors">
             <div>
-                <a class="btn btn-outline-light secondNavColors buttonHover mx-2" href="/add-income/index">Dodaj
+                <a class="btn btn-outline-light secondNavColors buttonHover mx-2" href="/add-income">Dodaj
                     przychód</a><a class="btn btn-outline-light secondNavColors buttonHover me-2"
-                    href="/add-expense/index">Dodaj wydatek</a><a
-                    class="btn btn-outline-light secondNavColors buttonHover" href="/balance/index">Przeglądaj
+                    href="/add-expense">Dodaj wydatek</a><a class="btn btn-outline-light secondNavColors buttonHover"
+                    href="/balance">Przeglądaj
                     bilans</a>
             </div>
         </nav>
