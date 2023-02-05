@@ -11,28 +11,51 @@ use \App\Flash;
  */
 class Settings extends Authenticated
 {
+    /**
+     * Before filter - called before each action method
+     * 
+     * @reeturn void 
+     */
+    protected function before()
+    {
+        parent::before();
+        $this->user = Auth::getUser();
+    }
+
+    /**
+     * Show the profile
+     * 
+     * @return void
+     */
     public function indexAction()
     {
         View::renderTemplate('Settings/index.html');
     }
-
+    /**
+     * Show the form for editing the profile
+     * 
+     * @return void
+     */
     public function editProfileAction()
     {
         View::renderTemplate('Settings/editProfile.html', [
-            'user' => Auth::getUser()
+            'user' => $this->user
         ]);
     }
 
+    /**
+     * Update the profile
+     * 
+     * @return void
+     */
     public function updateAction()
     {
-        $user = Auth::getUser();
-        var_dump('tu');
-        if($user->updateProfile($_POST)){
+        if ($this->user->updateProfile($_POST)) {
             Flash::addMessage('Zapisano zmiany');
             $this->redirect('/settings/index');
         } else {
             View::renderTemplate('Settings/editProfile.html', [
-                'user' => $user
+                'user' => $this->user
             ]);
         }
     }

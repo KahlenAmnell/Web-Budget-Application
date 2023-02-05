@@ -125,19 +125,20 @@
     <div class="mt-5 mx-lg-auto mx-sm-5% d-md-flex justify-content-between">
         <div style="background-color:#EDDFD5">
             <div class="mt-2 mx-2">
-            {% if choosenPerion == 'currentMonth' %}
-            <p class="text-center">Bieżący miesiąc</p>
-            {% elseif choosenPerion == 'previousMonth' %} 
-            <p>Poprzedni miesiąc</p>
-            {% elseif choosenPerion == 'currentYear' %} 
-            <p>Bieżący rok</p>
-            {% elseif choosenPerion == 'other' %} 
-            <p>Okres niestandardowy</p>
-            {% endif %}
+                {% if choosenPerion == 'currentMonth' %}
+                <p class="text-center">Bieżący miesiąc</p>
+                {% elseif choosenPerion == 'previousMonth' %}
+                <p>Poprzedni miesiąc</p>
+                {% elseif choosenPerion == 'currentYear' %}
+                <p>Bieżący rok</p>
+                {% elseif choosenPerion == 'other' %}
+                <p>Okres niestandardowy</p>
+                {% endif %}
             </div>
             <button type="button" class="btn btn-outline-light myButton m-2" data-bs-toggle="modal"
                 data-bs-target="#exampleModal">Wybierz
-                okres</button></div>
+                okres</button>
+        </div>
         <div>
             <h1 class="display-3">Przeglądaj bilans</h1>
         </div>
@@ -198,13 +199,13 @@
                             <td>{{ income.name }}</td>
                             <td>{{ income.amount }}</td>
                             <td> {{ income.incomeComment }} </td>
-                            <td class="d-flex justify-content-end"><a class="mx-1">
+                            <td class="d-flex justify-content-end"><a class="mx-1 btn btn-outline-dark">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                         class="bi bi-pen" viewBox="0 0 16 16">
                                         <path
                                             d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z" />
                                     </svg></a>
-                                <a href="/balance/{{ income.id }}/delete-income">
+                                <a href="/balance/{{ income.id }}/delete-income" class="btn btn-outline-dark">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                         class="bi bi-trash3" viewBox="0 0 16 16">
                                         <path
@@ -268,14 +269,14 @@
                                 <td> {{ expense.dateOfExpense }}</td>
                                 <td>{{ expense.name }}</td>
                                 <td>{{ expense.amount }}</td>
-                                <td> {{ expense.incomeComment }} </td>
-                                <td class="d-flex justify-content-end"><a class="mx-1">
+                                <td> {{ expense.expenseComment }} </td>
+                                <td class="d-flex justify-content-end"><a class="mx-1 btn btn-outline-dark">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
                                             <path
                                                 d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z" />
                                         </svg></a>
-                                    <a href="/balance/{{ expense.id }}/delete-expense">
+                                    <a href="/balance/{{ expense.id }}/delete-expense" class="btn btn-outline-dark">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                                             <path

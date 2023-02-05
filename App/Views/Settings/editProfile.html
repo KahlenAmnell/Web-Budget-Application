@@ -55,7 +55,7 @@
     </div>
     <div>
         <span class="d-flex justify-content-center" id="helpBlock">Jeżeli nie chcesz
-            zmieniać hasła pola z hasłami zostaw puste.</span>
+            zmieniać hasła zostaw puste pola z hasłami.</span>
     </div>
     <div class="container mt-3 text-light  mx-md-auto mx-sm-5%">
         <div class="mx-auto col-lg-4 col-md-6" style="color: #17694b">
@@ -72,11 +72,12 @@
             action="/settings/update">
             <div>
                 <label for="nameInput" class="form-label">Imię</label>
-                <input type="text" class="form-control " name="name" id="nameInput" value="{{ user.username }}">
+                <input type="text" class="form-control " name="name" id="nameInput" value="{{ user.username }}"
+                    required>
             </div>
             <div class="mb-3">
                 <label for="emailInput">Adres e-mail</label>
-                <input type="email" class="form-control" name="email" id="emailInput" value="{{ user.email }}">
+                <input type="email" class="form-control" name="email" id="emailInput" value="{{ user.email }}" required>
 
             </div>
             <div class="mb-3">
