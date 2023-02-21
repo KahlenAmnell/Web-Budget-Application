@@ -32,6 +32,7 @@ $router->add('', ['controller' => 'Login', 'action' => 'index']);
 $router->add('logout', ['controller' => 'Login', 'action' => 'log-out']);
 $router->add('sign-up/activate/{token:[\da-f]+}', ['controller' => 'SignUp', 'action' => 'activate']);
 $router->add('password/reset/{token:[\da-f]+}', ['controller' => 'Password', 'action' => 'reset']);
+$router->add('api/expenseLimit/{id:\d+}', ['controller' => 'Limit', 'action' => 'expenseLimit']);
 $router->add('{controller}', ['action' => 'index']);
 $router->add('{controller}/{action}');
 $router->add('{controller}/{id:\d+}/{action}');

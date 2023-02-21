@@ -97,4 +97,22 @@ class Expense extends Finances
         ORDER BY e.dateOfExpense DESC;";
         return Finances::getListOfFinances($sql, $earlierDate, $laterDate);
     }
+
+    /**
+     * Get expense categorie limit assign to user
+     * 
+     * @return string String with category limit
+     */
+    public static function getExpenseLimit($id)
+    {
+        $sql = "SELECT categoryLimit FROM expense_category_assigned_to_user_id WHERE id = :id;";
+
+        $db = static::getDB();
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+
+        $stmt->execute();
+        return $stmt->fetchColumn();
+    }
 }
