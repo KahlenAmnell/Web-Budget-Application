@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use PDO;
+use App\Dates;
 
 /**
  * Exoense model
@@ -113,6 +114,35 @@ class Expense extends Finances
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
 
         $stmt->execute();
+        return $stmt->fetchColumn();
+    }
+
+    /**
+     * Get sum of chosen category expenses from month of chosen date
+     * 
+     * @param string $id Id of chosen category
+     * @param string $date Chosen date
+     * 
+     * @return string Sum of one category expenses from one month
+     */
+    public static function getCategoryExpenses($id, $date)
+    {
+        $dates = Dates::setLimitDates($date);
+        $earlierDate = $dates['earlierDate'];
+        $laterDate = $dates['laterDate'];
+        
+        $sql = "SELECT SUM(amount) FROM expenses 
+        WHERE expenseCategoryAssignedToUserID = :id 
+        AND dateOfExpense >= :earlierDate AND dateOfExpense <= :laterDate;";
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':earlierDate', $earlierDate, PDO::PARAM_STR);
+        $stmt->bindValue(':laterDate', $laterDate, PDO::PARAM_STR);
+        
+        $stmt->execute();
+
         return $stmt->fetchColumn();
     }
 }
