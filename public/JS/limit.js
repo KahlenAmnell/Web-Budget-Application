@@ -4,7 +4,7 @@ const selected = document.querySelector("#category");
 let categoryId = 0;
 let categoryLimit = 0;
 
-//pobiera dane kategorii z bazy
+//Get category limit from database
 const getLimit = async (id) => {
     try {
         const res = await axios.get(`/api/expenseLimit/${id}`);
@@ -13,12 +13,29 @@ const getLimit = async (id) => {
         return "problem";
     }
 }
+
+//Set limit in the field
+const setLimit = (limit) => {
+    limit = parseFloat(limit);
+    document.querySelector("#categoryLimit").textContent = limit.toFixed(2);
+}
+
+//Show limit box
+const showLimit = async (limit, categoryId) => {
+    if (limitBox.classList.contains('d-none')) {
+        limitBox.classList.replace('d-none', 'd-flex');
+    }
+    setLimit(limit);
+    
+
+}
+
 selected.addEventListener('input', async () => {
     categoryId = selected.value;
     await getLimit(categoryId);
     categoryLimit = parseFloat(categoryLimit).toFixed(2);
     if (categoryLimit != 0) {
-        limitBox.classList.replace('d-none', 'd-flex');
+        await showLimit(categoryLimit, categoryId);
     } else {
         limitBox.classList.replace('d-flex', 'd-none');
     }
