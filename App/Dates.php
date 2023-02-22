@@ -46,4 +46,22 @@ class Dates
         }
         return $dates;
     }
+
+    /**
+     * Set first and last day of a month from chosen date
+     * 
+     * @param string $date Chosen date
+     * 
+     * @return array Constains first and last dat of a month
+     */
+    public static function setLimitDates($date)
+    {
+        $earlierDate = substr_replace($date, '01', -2);
+        $laterDate = substr_replace($date, '31', -2);
+        $dates = array(
+            'earlierDate' => $earlierDate,
+            'laterDate' =>  $laterDate
+        );
+        return $dates;
+    }
 }
