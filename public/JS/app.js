@@ -17,3 +17,27 @@ $.validator.addMethod('validPassword',
     },
     'Hasło musi zawierać conajmniej 1 literę i 1 cyfrę.'
 );
+
+const appearLimitInput = () => {
+    const categoryGroup = document.querySelectorAll('input[name="categoryGroup"]');
+    const limit = document.querySelector("#limitValue");
+    categoryGroup.forEach(group => group.addEventListener('change', () => {
+        if (document.querySelector("#expenseRadio").checked == true) {
+            limit.classList.remove("d-none");
+        } else {
+            limit.classList.add("d-none");
+        }
+    }));
+}
+
+const ableLimitAmountInput = () => {
+    const limitCheckbox = document.querySelector('#limitCheckbox');
+    const limitInput = document.querySelector("#limitAmount");
+    limitCheckbox.addEventListener('click', () => {
+        if(limitCheckbox.checked == true) {
+            limitInput.removeAttribute('disabled');
+        } else {
+            limitInput.setAttribute('disabled', "");
+        }
+    })
+}

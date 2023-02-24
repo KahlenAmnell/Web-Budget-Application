@@ -7,43 +7,41 @@
 
 <script>
     $(document).ready(function () {
-        var userId = '{{ user.id }}';
-        $("#editFrom").validate({
+        $("#addCategoryForm").validate({
             errorClass: 'errors',
             rules: {
-                name: 'required',
-                email: {
+                categoryGroup: 'required',
+                categoryName: {
                     required: true,
-                    email: true,
-                    remote: {
-                        url: '/account/validate-email',
-                        data: {
-                            ignore_id: function () {
-                                return userId;
-                            }
-                        }
-                    }
+                    minlength: 3
                 },
-                password: {
-                    minlength: 8,
-                    validPassword: true
-                },
-                passwordConfirmation: {
-                    equalTo: '#passwordInput'
+                amount: {
+                    min: 0,
+                    step: 0.01,
+                    max: 2147483646,
+                    number: true
                 }
             },
             messages: {
-                email: {
-                    email: 'Podaj poprawny adres email.',
-                    remote: 'Istnieje już konto z podanym adresem email.'
+                categoryGroup: 'Wybierz grupę kategorii.',
+                categoryName: {
+                    required: 'Podaj nazwę kategorii.',
+                    minlength: 'Nazwa kategori musi mieć więcej niż 3 znaki.'
                 },
-                password: {
-                    minlength: 'Hasło musi zawierać conajmniej 8 znaków.'
-                },
-                passwordConfirmation: 'Podane hasła nie są identyczne.'
+                amount: {
+                    min: 'Kwota musi być większa niż 0.',
+                    step: 'Podaj kwotę do dwóch miejsc po przecinku.',
+                    max: 'Kwota nie może być większa od 2147483646.',
+                    number: 'Wprowadź liczbę.'
+                }
             }
         });
     });
+</script>
+
+<script>
+    appearLimitInput();
+    ableLimitAmountInput();
 </script>
 {% endblock %}
 
@@ -69,19 +67,22 @@
             <div class="mb-3">
                 <p class="mb-0">Grupa katerogii</p>
                 <div class="form-check ms-3">
-                    <input class="form-check-input" type="radio" name="categoryGroup" id="incomeRadio" checked>
+                    <input class="form-check-input" type="radio" name="categoryGroup" id="incomeRadio" value="incomes"
+                        checked>
                     <label class="form-check-label fw-light" for="incomeRadio">
                         Przychody
                     </label>
                 </div>
                 <div class="form-check ms-3">
-                    <input class="form-check-input" type="radio" name="categoryGroup" id="expenseRadio">
+                    <input class="form-check-input" type="radio" name="categoryGroup" id="expenseRadio"
+                        value="expenses">
                     <label class="form-check-label fw-light" for="expenseRadio">
                         Wydatki
                     </label>
                 </div>
                 <div class="form-check ms-3">
-                    <input class="form-check-input" type="radio" name="categoryGroup" id="paymentRadio">
+                    <input class="form-check-input" type="radio" name="categoryGroup" id="paymentRadio"
+                        value="payments">
                     <label class="form-check-label fw-light" for="paymentRadio">
                         Płatności
                     </label>
@@ -89,14 +90,16 @@
             </div>
             <div>
                 <label for="nameInput" class="form-label">Nazwa kategorii</label>
-                <input type="text" class="form-control " name="name" id="nameInput" required>
+                <input type="text" class="form-control " name="categoryName" id="nameInput" required>
             </div>
-            <div class="mt-3 d-none">
-                <p class="mb-0">Limit</p>
-                <div class="input-group mb-3">
-                    <div class="input-group-text">
-                        <input class="form-check-input mt-0" type="checkbox" value="" id="limitCheckbox">
-                    </div>
+            <div class="mt-3 d-none" id="limitValue">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="limitCheckbox">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        Włącz limit wydatków
+                    </label>
+                </div>
+                <div>
                     <input type="number" class="form-control" placeholder="Wpisz kwotę limitu..." id="limitAmount"
                         name="amount" min="0.01" step="0.01" disabled>
                 </div>
