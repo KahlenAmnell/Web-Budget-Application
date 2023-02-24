@@ -59,4 +59,14 @@ class Settings extends Authenticated
             ]);
         }
     }
+
+        /**
+     * Show the profile
+     * 
+     * @return void
+     */
+    public function addCategoryAction()
+    {
+        View::renderTemplate('Settings/addCategory.html');
+    }
 }
