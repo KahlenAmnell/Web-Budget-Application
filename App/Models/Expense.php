@@ -6,7 +6,7 @@ use PDO;
 use App\Dates;
 
 /**
- * Exoense model
+ * Expense model
  */
 class Expense extends Finances
 {
