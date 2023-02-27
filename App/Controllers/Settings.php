@@ -6,6 +6,8 @@ use \Core\View;
 use \App\Auth;
 use \App\Flash;
 use \App\Models\Categories;
+use \App\Models\Income;
+use \App\Models\Expense;
 
 /**
  * Settings controller
@@ -89,5 +91,23 @@ class Settings extends Authenticated
                 'category' => $category
             ]);
         }
+    }
+
+    /**
+     * Edit categories
+     * 
+     * @return void
+     */
+    public function editCategoriesAction()
+    {
+        $incomeCategories = Income::getIncomeCategories();
+        $expenseCategories = Expense::getExpenseCategories();
+        $paymentCategories = Expense::getPaymentCategories();
+        
+        View::renderTemplate('Settings/editCategory.html', [
+            'incomeCategories' => $incomeCategories,
+            'expenseCategories' => $expenseCategories,
+            'paymentCategories' => $paymentCategories
+        ]);
     }
 }

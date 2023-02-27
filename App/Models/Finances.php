@@ -36,7 +36,7 @@ abstract class Finances extends \Core\Model
     public static function getCategories($table)
     {
         $userId = $_SESSION['user_id'];
-        $sql = 'SELECT name, id FROM ' . $table . ' WHERE userID = :userId ORDER BY id';
+        $sql = 'SELECT * FROM ' . $table . ' WHERE userID = :userId ORDER BY id';
 
         $db = static::getDB();
 
