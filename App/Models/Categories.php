@@ -123,4 +123,43 @@ class Categories extends \Core\Model
             return 'payment_methods_assigned_to_users';
         }
     }
+
+    /**
+     * Update categories
+     * 
+     * @return void
+     */
+    public function update()
+    {
+        $this->validate();
+        if (empty($this->errors)) {
+            $table = $this->setCategoryTable();
+            $sql = 'UPDATE ';
+            $sql .= $table;
+            if ($table == 'expense_category_assigned_to_user_id') {
+                $sql .= ' SET name = :name, categoryLimit = :limit WHERE id = :id';
+                if (!isset($this->limitAmount)) {
+                    $limit = 0;
+                } else {
+                    $limit = $this->limitAmount;
+                }
+            } else {
+                $sql .= ' SET name = :name WHERE id = :id';
+            }
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+            $this->categoryName = $this->capitalizeName();
+            $stmt->bindValue(':name', $this->categoryName, PDO::PARAM_STR);
+
+            if (isset($limit)) {
+                $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+            }
+
+            $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+
+            return $stmt->execute();
+        }
+        return false;
+    }
 }

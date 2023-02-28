@@ -18,7 +18,7 @@
         var categoryName = $(this).attr("data-name");
         var expenseLimit = $(this).attr("data-limit");
         var category = $(this).attr("value");
-        if (category == 'expense') {
+        if (category == 'expenses') {
             $('#limitValue').css('display', 'block');
             if (expenseLimit != 0) {
                 $('#limitCheckbox').prop('checked', true);
@@ -34,7 +34,8 @@
             $('#limitValue').css('display', 'none');
         }
         $('#nameInput').val(categoryName);
-        $('#categoryId').val(categoryId);
+        $('#categoryId').val(parseInt(categoryId));
+        $('#categoryGroup').val(category);
     });
 </script>
 {% endblock %}
@@ -48,10 +49,11 @@
                 <h5 class="modal-title" id="modalEditTitle">Edytuj kategorię</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="editCategoryForm" action="" method="POST">
+            <form id="editCategoryForm" action="/settings/update-categories" method="POST">
                 <div class="modal-body">
                     <div hidden>
-                        <input type="text" id="categoryId" value="">
+                        <input type="text" id="categoryId" name="id" value="">
+                        <input type="text" id="categoryGroup" name="categoryGroup" value="">
                     </div>
                     <div>
                         <label for="nameInput" class="form-label">Nazwa kategorii</label>
@@ -104,7 +106,7 @@
                             <td class="d-flex justify-content-end">
                                 <a class="mx-1 btn btn-outline-dark" type="button" data-bs-toggle="modal"
                                     data-bs-target="#editCategoryModal" data-id="{{ income.id }}"
-                                    data-name="{{ income.name }}" value="income">
+                                    data-name="{{ income.name }}" value="incomes">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                         class="bi bi-pen" viewBox="0 0 16 16">
                                         <path
@@ -149,7 +151,7 @@
                                 <a class="mx-1 btn btn-outline-dark" type="button" data-bs-toggle="modal"
                                     data-bs-target="#editCategoryModal" data-id="{{ expense.id }}"
                                     data-name="{{ expense.name }}" data-limit="{{ expense.categoryLimit }} "
-                                    value="expense">
+                                    value="expenses">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                         class="bi bi-pen" viewBox="0 0 16 16">
                                         <path
@@ -186,7 +188,7 @@
                             <td class="d-flex justify-content-end">
                                 <a class="mx-1 btn btn-outline-dark" type="button" data-bs-toggle="modal"
                                     data-bs-target="#editCategoryModal" data-id="{{ payment.id }}"
-                                    data-name="{{ payment.name }}" value="payment">
+                                    data-name="{{ payment.name }}" value="payments">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                         class="bi bi-pen" viewBox="0 0 16 16">
                                         <path

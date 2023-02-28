@@ -110,4 +110,22 @@ class Settings extends Authenticated
             'paymentCategories' => $paymentCategories
         ]);
     }
+
+    /**
+     * Update categories
+     * 
+     * @return void
+     */
+    public function updateCategoriesAction()
+    {
+        $category = new Categories($_POST);
+
+        if ($category->update()) {
+            Flash::addMessage('Zedytowano kategorię.');
+            $this->redirect('/settings/edit-categories');
+        } else {
+            Flash::addMessage('Nie udało się zedytować kategorii.', 'danger');
+            View::renderTemplate('Settings/addCategory.html');
+        }
+    }
 }
