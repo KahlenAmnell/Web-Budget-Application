@@ -2,18 +2,73 @@
 
 {% block title %}Edytuj katerogie{% endblock %}
 
+{% block footer %}
+<script>
+    function checkCheckbox() {
+        $("#limitCheckbox").click(function () {
+            if ($(this).is(":checked")) {
+                $('#limitAmount').prop('disabled', false);
+            } else {
+                $('#limitAmount').prop('disabled', true);
+            }
+        })
+    }
+    $("a").click(function () {
+        var categoryId = $(this).attr("data-id");
+        var categoryName = $(this).attr("data-name");
+        var expenseLimit = $(this).attr("data-limit");
+        var category = $(this).attr("value");
+        if (category == 'expense') {
+            $('#limitValue').css('display', 'block');
+            if (expenseLimit != 0) {
+                $('#limitCheckbox').prop('checked', true);
+                $('#limitAmount').prop('disabled', false);
+                $('#limitAmount').val(parseInt(expenseLimit));
+            } else {
+                $('#limitCheckbox').prop('checked', false);
+                $('#limitAmount').prop('disabled', true);
+                $('#limitAmount').val("");
+            }
+            checkCheckbox();
+        } else {
+            $('#limitValue').css('display', 'none');
+        }
+        $('#nameInput').val(categoryName);
+        $('#categoryId').val(categoryId);
+    });
+</script>
+{% endblock %}
+
 {% block modal %}
-<div class="modal fade" style="z-index: 1500;" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+<div class="modal fade" style="z-index: 1500;" id="editCategoryModal" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content" style="width: 400px">
             <div class="modal-header">
-                <h5 class="modal-title">Edytuj</h5>
+                <h5 class="modal-title" id="modalEditTitle">Edytuj kategorię</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="editCategoryForm" action="" method="POST">
                 <div class="modal-body">
-
+                    <div hidden>
+                        <input type="text" id="categoryId" value="">
+                    </div>
+                    <div>
+                        <label for="nameInput" class="form-label">Nazwa kategorii</label>
+                        <input type="text" class="form-control " name="categoryName" id="nameInput" required>
+                    </div>
+                    <div class="mt-3" style='display: none' id="limitValue">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="limitCheckbox">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Włącz limit wydatków
+                            </label>
+                        </div>
+                        <div>
+                            <input type="number" class="form-control" placeholder="Wpisz kwotę limitu..."
+                                id="limitAmount" name="limitAmount" min="0.01" step="0.01" disabled>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <input type="submit" class="btn btn-outline-light myButton" value="Wybierz okres">
@@ -47,7 +102,9 @@
                         <tr>
                             <td> {{ income.name }} </td>
                             <td class="d-flex justify-content-end">
-                                <a class="mx-1 btn btn-outline-dark">
+                                <a class="mx-1 btn btn-outline-dark" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#editCategoryModal" data-id="{{ income.id }}"
+                                    data-name="{{ income.name }}" value="income">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                         class="bi bi-pen" viewBox="0 0 16 16">
                                         <path
@@ -89,7 +146,10 @@
                             <td> {{ expense.categoryLimit }} </td>
                             {% endif %}
                             <td class="d-flex justify-content-end">
-                                <a class="mx-1 btn btn-outline-dark">
+                                <a class="mx-1 btn btn-outline-dark" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#editCategoryModal" data-id="{{ expense.id }}"
+                                    data-name="{{ expense.name }}" data-limit="{{ expense.categoryLimit }} "
+                                    value="expense">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                         class="bi bi-pen" viewBox="0 0 16 16">
                                         <path
@@ -124,7 +184,9 @@
                         <tr>
                             <td> {{ payment.name }} </td>
                             <td class="d-flex justify-content-end">
-                                <a class="mx-1 btn btn-outline-dark">
+                                <a class="mx-1 btn btn-outline-dark" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#editCategoryModal" data-id="{{ payment.id }}"
+                                    data-name="{{ payment.name }}" value="payment">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                         class="bi bi-pen" viewBox="0 0 16 16">
                                         <path
