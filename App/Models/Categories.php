@@ -102,8 +102,11 @@ class Categories extends \Core\Model
      * 
      * @return string Capitalize name of the new category
      */
-    protected function capitalizeName()
+    public function capitalizeName($group = null)
     {
+        if(!isset($this->categoryGroup)){
+            $this->categoryGroup = $group;
+        }
         return ucfirst(strtolower($this->categoryName));
     }
 
@@ -112,9 +115,11 @@ class Categories extends \Core\Model
      * 
      * @return string Name of category table
      */
-    protected function setCategoryTable()
+    public function setCategoryTable($group = null)
     {
-        var_dump($this->categoryGroup);
+        if(!isset($this->categoryGroup)){
+            $this->categoryGroup = $group;
+        }
         if ($this->categoryGroup == 'incomes') {
             return 'incomes_category_assigned_to_users';
         } elseif ($this->categoryGroup == 'expenses') {
@@ -161,5 +166,39 @@ class Categories extends \Core\Model
             return $stmt->execute();
         }
         return false;
+    }
+
+    /**
+     * See if a user category name already exist
+     * 
+     * @param string $name New category name
+     * @param string $categoryGroup Category group (e.g. expenses)
+     * 
+     * @return boolean True if name is already exist for user or false otherwise
+     */
+    public  function checkName()
+    {
+        $table = $this->setCategoryTable();
+        $name = $this->capitalizeName();
+        $userId = $_SESSION['user_id'];
+
+        $sql = "SELECT * FROM ";
+        $sql .= $table;
+        $sql .= ' WHERE userID = :userId AND name = :name ;';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+        $stmt->bindValue(':name', $name, PDO::PARAM_STR);
+
+        $stmt->execute();
+
+        $respond = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if($respond){
+            if($respond[0]['id'] != $this->ignoreId){
+                return false;
+            }
+        }
+        return true;
     }
 }
