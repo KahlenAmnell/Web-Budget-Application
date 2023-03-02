@@ -128,4 +128,16 @@ class Settings extends Authenticated
             View::renderTemplate('Settings/addCategory.html');
         }
     }
+
+    /**
+     * Delete categories
+     * 
+     * @return void
+     */
+    public function deleteCategoriesAction()
+    {
+        Categories::deleteCategory($this->route_params['categorygroup'], $this->route_params['id']);
+        Flash::addMessage('Usunięto kategorię');
+        $this->redirect('/settings/edit-categories');
+    }
 }

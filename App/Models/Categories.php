@@ -206,4 +206,23 @@ class Categories extends \Core\Model
         }
         return false;
     }
+
+    /**
+     * Delete chosen category
+     * 
+     * @return boolean True if delete was success and false otherwise
+     */
+    public static function deleteCategory($table, $id)
+    {
+        $table = (new self)->setCategoryTable($table);
+        $sql = "DELETE FROM $table WHERE id = :id";
+
+        $db = static::getDB();
+
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+
+        $stmt->execute();
+    }
 }
