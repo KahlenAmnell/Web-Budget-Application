@@ -104,7 +104,7 @@ class Categories extends \Core\Model
      */
     public function capitalizeName($group = null)
     {
-        if(!isset($this->categoryGroup)){
+        if (!isset($this->categoryGroup)) {
             $this->categoryGroup = $group;
         }
         return ucfirst(strtolower($this->categoryName));
@@ -117,7 +117,7 @@ class Categories extends \Core\Model
      */
     public function setCategoryTable($group = null)
     {
-        if(!isset($this->categoryGroup)){
+        if (!isset($this->categoryGroup)) {
             $this->categoryGroup = $group;
         }
         if ($this->categoryGroup == 'incomes') {
@@ -194,11 +194,16 @@ class Categories extends \Core\Model
         $stmt->execute();
 
         $respond = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        if($respond){
-            if($respond[0]['id'] != $this->ignoreId){
-                return false;
+
+        if (!$respond) {
+            return true;
+        }
+
+        if(isset($this->ignoreId)){
+            if ($respond[0]['id'] == $this->ignoreId) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 }

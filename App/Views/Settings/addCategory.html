@@ -13,7 +13,15 @@
                 categoryGroup: 'required',
                 categoryName: {
                     required: true,
-                    minlength: 3
+                    minlength: 3,
+                    remote: {
+                        url: '/account/check-category-name',
+                        data: {
+                            categoryGroup: function () {
+                                return $("input[name='categoryGroup']:checked").val();
+                            }
+                        }
+                    }
                 },
                 amount: {
                     min: 0,
@@ -26,7 +34,8 @@
                 categoryGroup: 'Wybierz grupę kategorii.',
                 categoryName: {
                     required: 'Podaj nazwę kategorii.',
-                    minlength: 'Nazwa kategori musi mieć więcej niż 3 znaki.'
+                    minlength: 'Nazwa kategori musi mieć więcej niż 3 znaki.',
+                    remote: 'Podana nazwa kategorii już istnieje.'
                 },
                 amount: {
                     min: 'Kwota musi być większa niż 0.',
