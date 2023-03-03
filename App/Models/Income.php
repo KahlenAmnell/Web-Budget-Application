@@ -86,4 +86,11 @@ class Income extends Finances
          return Finances::getListOfFinances($sql, $earlierDate, $laterDate);
     }
 
+    public static function deleteRecordsOfOneCategoryOfIncomes($id)
+    {
+        $sql = "DELETE FROM incomes WHERE incomeCategoryAssignedToUserID = :id";
+
+        return Finances::deleteAllRecordsOfOneCategory($sql, $id);
+    }
+
 }

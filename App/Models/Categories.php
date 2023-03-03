@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use PDO;
+use App\Models\Income;
+use App\Models\Expense;
 
 /**
  * Categories model
@@ -199,7 +201,7 @@ class Categories extends \Core\Model
             return true;
         }
 
-        if(isset($this->ignoreId)){
+        if (isset($this->ignoreId)) {
             if ($respond[0]['id'] == $this->ignoreId) {
                 return true;
             }
@@ -214,15 +216,24 @@ class Categories extends \Core\Model
      */
     public static function deleteCategory($table, $id)
     {
-        $table = (new self)->setCategoryTable($table);
-        $sql = "DELETE FROM $table WHERE id = :id";
 
-        $db = static::getDB();
+        if ($table == 'incomes') {
+            $result = Income::deleteRecordsOfOneCategoryOfIncomes($id);
+        } else if ($table == 'expenses') {
+            $result = Expense::deleteRecordsOfOneCategoryOfExpenses($id);
+        }
+        if ($result) {
+            $table = (new self)->setCategoryTable($table);
+            $sql = "DELETE FROM $table WHERE id = :id";
 
-        $stmt = $db->prepare($sql);
+            $db = static::getDB();
 
-        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+            $stmt = $db->prepare($sql);
 
-        $stmt->execute();
+            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+
+            return $stmt->execute();
+        }
+        return false;
     }
 }

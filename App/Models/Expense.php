@@ -145,4 +145,11 @@ class Expense extends Finances
 
         return $stmt->fetchColumn();
     }
+
+    public static function deleteRecordsOfOneCategoryOfExpenses($id)
+    {
+        $sql = "DELETE FROM expenses WHERE expenseCategoryAssignedToUserID = :id";
+
+        return Finances::deleteAllRecordsOfOneCategory($sql, $id);
+    }
 }

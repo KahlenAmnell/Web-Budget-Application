@@ -103,7 +103,7 @@ class Settings extends Authenticated
         $incomeCategories = Income::getIncomeCategories();
         $expenseCategories = Expense::getExpenseCategories();
         $paymentCategories = Expense::getPaymentCategories();
-        
+
         View::renderTemplate('Settings/editCategory.html', [
             'incomeCategories' => $incomeCategories,
             'expenseCategories' => $expenseCategories,
@@ -136,8 +136,12 @@ class Settings extends Authenticated
      */
     public function deleteCategoriesAction()
     {
-        Categories::deleteCategory($this->route_params['categorygroup'], $this->route_params['id']);
-        Flash::addMessage('Usunięto kategorię');
+        $result = Categories::deleteCategory($this->route_params['categorygroup'], $this->route_params['id']);
+        if ($result) {
+            Flash::addMessage('Usunięto kategorię');
+        } else {
+            Flash::addMessage('Nie udało się usunąć kategorii.', 'danger');
+        }
         $this->redirect('/settings/edit-categories');
     }
 }
