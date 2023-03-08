@@ -5,6 +5,9 @@ namespace App\Controllers;
 use \Core\View;
 use \App\Auth;
 use \App\Flash;
+use \App\Models\Categories;
+use \App\Models\Income;
+use \App\Models\Expense;
 
 /**
  * Settings controller
@@ -58,5 +61,87 @@ class Settings extends Authenticated
                 'user' => $this->user
             ]);
         }
+    }
+
+    /**
+     * Show the add cattegory page
+     * 
+     * @return void
+     */
+    public function addCategoryAction()
+    {
+        View::renderTemplate('Settings/addCategory.html');
+    }
+
+    /**
+     * Add new category
+     * 
+     * @return void
+     */
+    public function newCategoryAction()
+    {
+        $category = new Categories($_POST);
+
+        if ($category->save()) {
+            Flash::addMessage('Dodano nową kategorię.');
+            $this->redirect('/settings/add-category');
+        } else {
+            Flash::addMessage('Nie udało się dodać kategorii.', 'danger');
+            View::renderTemplate('Settings/addCategory.html', [
+                'category' => $category
+            ]);
+        }
+    }
+
+    /**
+     * Edit categories
+     * 
+     * @return void
+     */
+    public function editCategoriesAction()
+    {
+        $incomeCategories = Income::getIncomeCategories();
+        $expenseCategories = Expense::getExpenseCategories();
+        $paymentCategories = Expense::getPaymentCategories();
+
+        View::renderTemplate('Settings/editCategory.html', [
+            'incomeCategories' => $incomeCategories,
+            'expenseCategories' => $expenseCategories,
+            'paymentCategories' => $paymentCategories
+        ]);
+    }
+
+    /**
+     * Update categories
+     * 
+     * @return void
+     */
+    public function updateCategoriesAction()
+    {
+        $category = new Categories($_POST);
+
+        if ($category->update()) {
+            Flash::addMessage('Zedytowano kategorię.');
+            $this->redirect('/settings/edit-categories');
+        } else {
+            Flash::addMessage('Nie udało się zedytować kategorii.', 'danger');
+            View::renderTemplate('Settings/addCategory.html');
+        }
+    }
+
+    /**
+     * Delete categories
+     * 
+     * @return void
+     */
+    public function deleteCategoriesAction()
+    {
+        $result = Categories::deleteCategory($this->route_params['categorygroup'], $this->route_params['id']);
+        if ($result) {
+            Flash::addMessage('Usunięto kategorię');
+        } else {
+            Flash::addMessage('Nie udało się usunąć kategorii.', 'danger');
+        }
+        $this->redirect('/settings/edit-categories');
     }
 }

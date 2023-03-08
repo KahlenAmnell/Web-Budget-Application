@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use \App\Models\User;
+use \App\Models\Categories;
 
 /**
  * Account controller
@@ -33,5 +34,19 @@ class Account extends \Core\Controller
 
         header('Content-Type: application/json');
         echo json_encode($is_valid);
+    }
+
+    /**
+     * Check if category name already exist in database (AJAX)
+     * 
+     * @return void
+     */
+    public function checkCategoryNameAction()
+    {
+        $categories = new Categories($_GET);
+        $is_available = $categories->checkName();
+
+        header('Content-Type: application/json');
+        echo json_encode($is_available);
     }
 }

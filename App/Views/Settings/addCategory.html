@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}Ustawienia{% endblock %}
+
+{% block footer %}
+<script src="/js/app.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#addCategoryForm").validate({
+            errorClass: 'errors',
+            rules: {
+                categoryGroup: 'required',
+                categoryName: {
+                    required: true,
+                    minlength: 3,
+                    remote: {
+                        url: '/account/check-category-name',
+                        data: {
+                            categoryGroup: function () {
+                                return $("input[name='categoryGroup']:checked").val();
+                            }
+                        }
+                    }
+                },
+                amount: {
+                    min: 0,
+                    step: 0.01,
+                    max: 2147483646,
+                    number: true
+                }
+            },
+            messages: {
+                categoryGroup: 'Wybierz grupę kategorii.',
+                categoryName: {
+                    required: 'Podaj nazwę kategorii.',
+                    minlength: 'Nazwa kategori musi mieć więcej niż 3 znaki.',
+                    remote: 'Podana nazwa kategorii już istnieje.'
+                },
+                amount: {
+                    min: 'Kwota musi być większa niż 0.',
+                    step: 'Podaj kwotę do dwóch miejsc po przecinku.',
+                    max: 'Kwota nie może być większa od 2147483646.',
+                    number: 'Wprowadź liczbę.'
+                }
+            }
+        });
+    });
+</script>
+
+<script>
+    appearLimitInput();
+    ableLimitAmountInput();
+</script>
+{% endblock %}
+
+{% block body %}
+
+<main>
+    <div>
+        <h1 class="display-2 my-5 d-flex justify-content-center">Dodaj kategorię</h1>
+    </div>
+    <div class="container mt-3 text-light  mx-md-auto mx-sm-5%">
+        <div class="mx-auto col-lg-4 col-md-6" style="color: #17694b">
+            {% if user.errors is not empty %}
+            <p>Błędy:</p>
+            <ul>
+                {% for error in user.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <form class="p-4 mx-auto rounded-3 formBackground col-lg-4 col-md-6" id="addCategoryForm" method="post"
+            action="/settings/new-category">
+            <div class="mb-3">
+                <p class="mb-0">Grupa katerogii</p>
+                <div class="form-check ms-3">
+                    <input class="form-check-input" type="radio" name="categoryGroup" id="incomeRadio" value="incomes"
+                        checked>
+                    <label class="form-check-label fw-light" for="incomeRadio">
+                        Przychody
+                    </label>
+                </div>
+                <div class="form-check ms-3">
+                    <input class="form-check-input" type="radio" name="categoryGroup" id="expenseRadio"
+                        value="expenses">
+                    <label class="form-check-label fw-light" for="expenseRadio">
+                        Wydatki
+                    </label>
+                </div>
+                <div class="form-check ms-3">
+                    <input class="form-check-input" type="radio" name="categoryGroup" id="paymentRadio"
+                        value="payments">
+                    <label class="form-check-label fw-light" for="paymentRadio">
+                        Płatności
+                    </label>
+                </div>
+            </div>
+            <div>
+                <label for="nameInput" class="form-label">Nazwa kategorii</label>
+                <input type="text" class="form-control " name="categoryName" id="nameInput" required>
+            </div>
+            <div class="mt-3 d-none" id="limitValue">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="limitCheckbox">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        Włącz limit wydatków
+                    </label>
+                </div>
+                <div>
+                    <input type="number" class="form-control" placeholder="Wpisz kwotę limitu..." id="limitAmount"
+                        name="limitAmount" min="0.01" step="0.01" disabled>
+                </div>
+            </div>
+            <div class="d-grid gap-2 w-50 mt-3 mx-auto">
+                <button class="btn btn-outline-light" type="submit" id="addCategoryBtn" name="addCategoryBtn">Dodaj
+                    kategorię</button>
+                <a class="btn btn-outline-light" href="/settings/index">Powrót do ustawień</a>
+            </div>
+        </form>
+    </div>
+</main>
+
+{% endblock %}

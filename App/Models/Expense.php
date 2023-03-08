@@ -6,7 +6,7 @@ use PDO;
 use App\Dates;
 
 /**
- * Exoense model
+ * Expense model
  */
 class Expense extends Finances
 {
@@ -144,5 +144,12 @@ class Expense extends Finances
         $stmt->execute();
 
         return $stmt->fetchColumn();
+    }
+
+    public static function deleteRecordsOfOneCategoryOfExpenses($id)
+    {
+        $sql = "DELETE FROM expenses WHERE expenseCategoryAssignedToUserID = :id";
+
+        return Finances::deleteAllRecordsOfOneCategory($sql, $id);
     }
 }

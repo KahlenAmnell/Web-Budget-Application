@@ -36,7 +36,7 @@ abstract class Finances extends \Core\Model
     public static function getCategories($table)
     {
         $userId = $_SESSION['user_id'];
-        $sql = 'SELECT name, id FROM ' . $table . ' WHERE userID = :userId ORDER BY id';
+        $sql = 'SELECT * FROM ' . $table . ' WHERE userID = :userId ORDER BY id';
 
         $db = static::getDB();
 
@@ -125,6 +125,14 @@ abstract class Finances extends \Core\Model
         }
     }
 
+    /**
+     * Delete one, chosen record
+     * 
+     * @param int $id Record id
+     * @param string $table Name of table from which user want to delete record
+     * 
+     * @return void
+     */
 
     public static function deleteRecord($id, $table)
     {
@@ -137,5 +145,21 @@ abstract class Finances extends \Core\Model
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
 
         $stmt->execute();
+    }
+
+    /**
+     * Delete records of chosen category
+     * 
+     * @return boolean True if delete was success and false otherwise
+     */
+    public static function deleteAllRecordsOfOneCategory($sql, $id)
+    {
+        $db = static::getDB();
+
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+
+        return $stmt->execute();
     }
 }

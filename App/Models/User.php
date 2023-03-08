@@ -122,7 +122,7 @@ class User extends \Core\Model
      * 
      * @param string $email email address to search for
      * 
-     * @return boolean True i frecord already exist with specified email, false otherwise
+     * @return boolean True if record already exist with specified email, false otherwise
      */
     public static function emailExist($email, $ignore_id = null)
     {
