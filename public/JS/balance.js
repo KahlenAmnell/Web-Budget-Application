@@ -13,6 +13,9 @@ var todayDate = () => {
     document.getElementById("beginingDate").setAttribute("max", today);
     document.getElementById("endingDate").setAttribute("max", today);
     document.getElementById("incomeUpdateDatefield").setAttribute("max", today);
+    document.getElementById("expenseUpdateDatefield").setAttribute("max", today);
+
+    
 }
 
 var displayCustomDateInput = () => {
@@ -76,9 +79,9 @@ var updateIncome = () => {
     $("button[name='updateIncomeBtn']").click(function () {
         $('#incomeAmount').val($(this).attr("data-amount"));
         $('#incomeUpdateDatefield').val($(this).attr("data-date"));
-        $('#comment').val($(this).attr("data-comment"));
+        $('#incomeComment').val($(this).attr("data-comment"));
 
         var selectedCategory = $(this).attr("data-name");
-        $(`#category option[name=${selectedCategory}]`).attr("selected", "selected");
+        $(`#incomeCategory option[name=${selectedCategory}]`).attr("selected", "selected");
     })
 }

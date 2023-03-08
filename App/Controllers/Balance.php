@@ -43,7 +43,9 @@ class Balance extends Authenticated
             'expenseDataPoints' => $expensesDataPoints,
             'incomeList' => $incomeList,
             'expenseList' => $expenseList,
-            'categories' => Income::getIncomeCategories()
+            'incomeCategories' => Income::getIncomeCategories(),
+            'expenseCategories' => Expense::getExpenseCategories(),
+            'paymentCategories' => Expense::getPaymentCategories()
         ]);
     }
 
