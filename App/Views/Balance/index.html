@@ -3,15 +3,16 @@
 {% block title %}Bilans{% endblock %}
 
 {% block footer %}
-<script src="https://code.jquery.com/jquery-3.6.3.slim.min.js"
-    integrity="sha256-ZwqZIVdD3iXNyGHbSYdsmWP//UBokj2FHAxKuSBKDSo=" crossorigin="anonymous"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-<script scr="/js/balance.js"></script>
+<script src="/js/balance.js"></script>
+<script>
+
+</script>
 <script>
     todayDate();
     displayCustomDateInput();
     validateUpdateIncome();
+    updateIncome();
 </script>
 <script>
     const incomeDataPoints = JSON.parse('{{incomeDataPoints|json_encode()|raw}}');
@@ -121,8 +122,8 @@
                     </div>
                     <div class="mb-3 mx-5">
                         <label for="date">Data:</label>
-                        <input class='form-control' id="datefield" name="date" type='date' min="2000-01-01"
-                            max="{{ todayDate }}"></input>
+                        <input class='form-control' id="incomeUpdateDatefield" name="date" type='date'
+                            min="2000-01-01"></input>
                     </div>
                     <div class="mb-3 col-9 mx-5">
                         <label for="category">Kategoria:</label>
@@ -233,10 +234,12 @@
                             <td>{{ income.amount }}</td>
                             <td> {{ income.incomeComment }} </td>
                             <td class="d-flex justify-content-end">
-                                <button class="mx-1 btn btn-outline-dark">
+                                <button class="mx-1 btn btn-outline-dark" name="updateIncomeBtn"
+                                    data-bs-target="#incomeModal" data-bs-toggle="modal" data-id="{{income.id}}"
+                                    data-amount="{{income.amount}}" data-name="{{income.name}}"
+                                    data-comment="{{income.incomeComment}}" data-date="{{income.dateOfIncome}}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                        class="bi bi-pen" viewBox="0 0 16 16" data-bs-toggle="modal"
-                                        data-bs-target="#incomeModal">
+                                        class="bi bi-pen" viewBox="0 0 16 16">
                                         <path
                                             d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z" />
                                     </svg></button>
