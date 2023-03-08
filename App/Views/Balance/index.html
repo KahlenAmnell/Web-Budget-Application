@@ -69,6 +69,49 @@
 
     }
 </script>
+<script>
+    $(document).ready(function () {
+        $("#incomeUpdateForm").validate({
+            errorClass: 'errors',
+            rules: {
+                amount: {
+                    required: true,
+                    min: 0,
+                    step: 0.01,
+                    max: 2147483646,
+                    number: true
+                },
+                date: {
+                    required: true,
+                    min: '2000-01-01'
+                },
+                category: 'required',
+                comment: {
+                    maxlength: 250
+                }
+            },
+            messages: {
+                amount: {
+                    required: 'Podaj kwotę.',
+                    min: 'Kwota musi być większa niż 0.',
+                    step: 'Podaj kwotę do dwóch miejsc po przecinku.',
+                    max: 'Kwota nie może być większa od 2147483646.',
+                    number: 'Wprowadź liczbę.'
+                },
+                date: {
+                    required: 'Podaj datę.',
+                    min: 'Data nie może być wcześniejsza niż 01-01-2000.',
+                    max: 'Data nie może być przyszła.'
+                },
+                category: 'Wybierz kategorię przychodu.',
+                comment: {
+                    maxlength: 'Komentarz nie może mieć więcej niż 250 znaków.'
+                }
+
+            }
+        });
+    });
+</script>
 
 {% endblock %}
 
@@ -115,6 +158,60 @@
         </div>
     </div>
 </div>
+<div class="modal fade" style="z-index: 1500;" id="incomeModal" tabindex="-1" aria-labelledby="incomeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 400px">
+            <div class="modal-header">
+                <h5 class="modal-title">Edytuj przychód</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="incomeUpdateForm" action="" method="POST">
+                <div class="modal-body">
+                    <div class="mx-auto col-lg-4 col-md-6" style="color: #17694b">
+                        {% if income.errors is not empty %}
+                        <p>Błędy:</p>
+                        <ul>
+                            {% for error in income.errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3 mx-5">
+                        <label for="amount">Kwota (podaj z kropką):</label>
+                        <input type="number" class="form-control" placeholder="Wpisz kwotę..." id="incomeAmount"
+                            name="amount" min="0.01" step="0.01">
+                    </div>
+                    <div class="mb-3 mx-5">
+                        <label for="date">Data:</label>
+                        <input class='form-control' id="datefield" name="date" type='date' min="2000-01-01"
+                            max="{{ todayDate }}"></input>
+                    </div>
+                    <div class="mb-3 col-9 mx-5">
+                        <label for="category">Kategoria:</label>
+                        <select class="form-select" name="category" id="category">
+                            <option value="">Wybierz kategorię</option>
+                            {% for category in categories %}
+                            <option value="{{ category.id }}" name="{{ category.name }}">{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3 col-9 mx-5">
+                        <label class="form-label" for="comment">Komentarz (opcjonalnie):</label>
+                        <div><textarea class="form-control" name="comment" id="comment" rows="2"
+                                placeholder="Max. 250 znaków..." style="resize: none" maxlength="250"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-outline-light myButton" value="Zapisz">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
 
 {% block body %}
@@ -199,12 +296,14 @@
                             <td>{{ income.name }}</td>
                             <td>{{ income.amount }}</td>
                             <td> {{ income.incomeComment }} </td>
-                            <td class="d-flex justify-content-end"><a class="mx-1 btn btn-outline-dark">
+                            <td class="d-flex justify-content-end">
+                                <button class="mx-1 btn btn-outline-dark">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                        class="bi bi-pen" viewBox="0 0 16 16">
+                                        class="bi bi-pen" viewBox="0 0 16 16" data-bs-toggle="modal"
+                                        data-bs-target="#incomeModal">
                                         <path
                                             d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z" />
-                                    </svg></a>
+                                    </svg></button>
                                 <a href="/balance/{{ income.id }}/delete-income" class="btn btn-outline-dark">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                         class="bi bi-trash3" viewBox="0 0 16 16">
