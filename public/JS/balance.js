@@ -95,6 +95,8 @@ var setExpenseModal = () => {
         $('#expenseUpdateDatefield').val($(this).attr("data-date"));
         $('#expenseComment').val($(this).attr("data-comment"));
         
+        var expenseId = $(this).attr("data-id");
+        $('#expenseId').val(parseInt(expenseId));
 
         var selectedCategory = $(this).attr("data-name");
         $(`#expenseCategory option[name='${selectedCategory}']`).attr("selected", "selected");

@@ -73,8 +73,19 @@ class Balance extends Authenticated
         } else {
             Flash::addMessage('Nie udało się wprowadzić zmian');
             $this->redirect('/balance');
-        }
-            
-        
+        }  
+    }
+
+    public function updateExpenseAction()
+    {
+        $update = new Expense($_POST);
+        if($update->updateRecord())
+        {
+            Flash::addMessage('Zaktualizowano');
+            $this->redirect('/balance');
+        } else {
+            Flash::addMessage('Nie udało się wprowadzić zmian');
+            $this->redirect('/balance');
+        }  
     }
 }

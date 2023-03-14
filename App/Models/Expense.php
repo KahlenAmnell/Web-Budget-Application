@@ -153,4 +153,27 @@ class Expense extends Finances
 
         return Finances::deleteAllRecordsOfOneCategory($sql, $id);
     }
+
+    public function updateRecord()
+    {
+        $this->validate();
+        if (empty($this->errors)) {
+            $sql = "UPDATE expenses
+                    SET expenseCategoryAssignedToUserID = :categoryId, paymentMethodAssignedToUserID = :payment, amount = :amount, dateOfExpense = :date, expenseComment = :comment 
+                    WHERE id = :id";
+
+            $db = static::getDB();
+
+            $stmt = $db->prepare($sql);
+            $stmt->bindValue(':categoryId', $this->category, PDO::PARAM_INT);
+            $stmt->bindValue(':payment', $this->paymentMethod, PDO::PARAM_INT);
+            $stmt->bindValue(':amount', $this->amount, PDO::PARAM_INT);
+            $stmt->bindValue(':date', $this->date, PDO::PARAM_STR);
+            $stmt->bindValue(':comment', $this->comment, PDO::PARAM_STR);
+            $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+
+            return $stmt->execute();
+        }
+        return false;
+    }
 }
