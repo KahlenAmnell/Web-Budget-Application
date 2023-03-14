@@ -42,7 +42,10 @@ class Balance extends Authenticated
             'incomeDataPoints' => $incomeDataPoints,
             'expenseDataPoints' => $expensesDataPoints,
             'incomeList' => $incomeList,
-            'expenseList' => $expenseList
+            'expenseList' => $expenseList,
+            'incomeCategories' => Income::getIncomeCategories(),
+            'expenseCategories' => Expense::getExpenseCategories(),
+            'paymentCategories' => Expense::getPaymentCategories()
         ]);
     }
 
@@ -58,5 +61,31 @@ class Balance extends Authenticated
         Finances::deleteRecord($this->route_params['id'], 'expenses');
         Flash::addMessage('Usunieto wydatek');
         $this->redirect('/balance');
+    }
+
+    public function updateIncomeAction()
+    {
+        $update = new Income($_POST);
+        if($update->updateRecord())
+        {
+            Flash::addMessage('Zaktualizowano');
+            $this->redirect('/balance');
+        } else {
+            Flash::addMessage('Nie udało się wprowadzić zmian');
+            $this->redirect('/balance');
+        }  
+    }
+
+    public function updateExpenseAction()
+    {
+        $update = new Expense($_POST);
+        if($update->updateRecord())
+        {
+            Flash::addMessage('Zaktualizowano');
+            $this->redirect('/balance');
+        } else {
+            Flash::addMessage('Nie udało się wprowadzić zmian');
+            $this->redirect('/balance');
+        }  
     }
 }

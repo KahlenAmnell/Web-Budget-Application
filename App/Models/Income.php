@@ -16,7 +16,7 @@ class Income extends Finances
      */
     public static function getIncomeCategories()
     {
-        return Finances::getCategories('incomes_Category_Assigned_To_Users');
+        return Finances::getCategories('incomes_category_assigned_to_users');
     }
 
     /**
@@ -67,7 +67,7 @@ class Income extends Finances
     public static function getUserIncomes($earlierDate, $laterDate)
     {
         $sql = "SELECT icatu.name, SUM(i.amount) AS amount 
-                FROM incomes_Category_Assigned_To_Users AS icatu INNER JOIN incomes AS i
+                FROM incomes_category_assigned_to_users AS icatu INNER JOIN incomes AS i
                 WHERE i.userID = :id AND icatu.id = i.incomeCategoryAssignedToUserId 
                     AND i.dateOfIncome >= :earlierDate AND i.dateOfIncome <= :laterDate 
                 GROUP BY icatu.name 
@@ -79,11 +79,11 @@ class Income extends Finances
     public static function getIncomesList($earlierDate, $laterDate)
     {
         $sql = "SELECT i.id, i.dateOfIncome, icatu.name, i.amount, i.incomeComment 
-        FROM incomes_Category_Assigned_To_Users AS icatu INNER JOIN incomes AS i
+        FROM incomes_category_assigned_to_users AS icatu INNER JOIN incomes AS i
         WHERE i.userID = :id AND icatu.id = i.incomeCategoryAssignedToUserId 
             AND i.dateOfIncome >= :earlierDate AND i.dateOfIncome <= :laterDate 
         ORDER BY i.dateOfIncome DESC;";
-         return Finances::getListOfFinances($sql, $earlierDate, $laterDate);
+        return Finances::getListOfFinances($sql, $earlierDate, $laterDate);
     }
 
     public static function deleteRecordsOfOneCategoryOfIncomes($id)
@@ -93,4 +93,25 @@ class Income extends Finances
         return Finances::deleteAllRecordsOfOneCategory($sql, $id);
     }
 
+    public function updateRecord()
+    {
+        $this->validate();
+        if (empty($this->errors)) {
+            $sql = "UPDATE incomes
+                    SET incomeCategoryAssignedToUserId = :categoryId, amount = :amount, dateOfIncome = :date, incomeComment = :comment 
+                    WHERE id = :id";
+
+            $db = static::getDB();
+
+            $stmt = $db->prepare($sql);
+            $stmt->bindValue(':categoryId', $this->category, PDO::PARAM_INT);
+            $stmt->bindValue(':amount', $this->amount, PDO::PARAM_INT);
+            $stmt->bindValue(':date', $this->date, PDO::PARAM_STR);
+            $stmt->bindValue(':comment', $this->comment, PDO::PARAM_STR);
+            $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+
+            return $stmt->execute();
+        }
+        return false;
+    }
 }

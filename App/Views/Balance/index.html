@@ -3,36 +3,17 @@
 {% block title %}Bilans{% endblock %}
 
 {% block footer %}
-<script src="https://code.jquery.com/jquery-3.6.3.slim.min.js"
-    integrity="sha256-ZwqZIVdD3iXNyGHbSYdsmWP//UBokj2FHAxKuSBKDSo=" crossorigin="anonymous"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script src="/js/balance.js"></script>
 <script>
-    var today = new Date();
-    var dd = today.getDate();
-    var mm = today.getMonth() + 1; //January is 0!
-    var yyyy = today.getFullYear();
-    if (dd < 10) {
-        dd = '0' + dd
-    }
-    if (mm < 10) {
-        mm = '0' + mm
-    }
-    today = yyyy + '-' + mm + '-' + dd;
-    document.getElementById("beginingDate").setAttribute("max", today);
-    document.getElementById("endingDate").setAttribute("max", today);
+
 </script>
 <script>
-    const customDate = document.querySelector("#customDateInput");
-    const periodSelected = document.querySelector("#period");
-
-    periodSelected.addEventListener('change', function () {
-        if (periodSelected.selectedIndex === 3) {
-            customDate.style.display = "block";
-        } else {
-            customDate.style.display = "none";
-        }
-    })
+    todayDate();
+    displayCustomDateInput();
+    validateUpdateIncome();
+    setIncomeModal();
+    setExpenseModal();
 </script>
 <script>
     const incomeDataPoints = JSON.parse('{{incomeDataPoints|json_encode()|raw}}');
@@ -115,6 +96,128 @@
         </div>
     </div>
 </div>
+<div class="modal fade" style="z-index: 1500;" id="incomeModal" tabindex="-1" aria-labelledby="incomeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 400px">
+            <div class="modal-header">
+                <h5 class="modal-title">Edytuj przychód</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="incomeUpdateForm" action="/balance/update-income" method="POST">
+                <div class="modal-body">
+                    <div class="mx-auto col-lg-4 col-md-6" style="color: #17694b">
+                        {% if income.errors is not empty %}
+                        <p>Błędy:</p>
+                        <ul>
+                            {% for error in income.errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                    <div hidden>
+                        <input type="text" id="incomeId" name="id">
+                    </div>
+                    <div class="mb-3 mx-5">
+                        <label for="amount">Kwota (podaj z kropką):</label>
+                        <input type="number" class="form-control" placeholder="Wpisz kwotę..." id="incomeAmount"
+                            name="amount" min="0.01" step="0.01">
+                    </div>
+                    <div class="mb-3 mx-5">
+                        <label for="date">Data:</label>
+                        <input class='form-control' id="incomeUpdateDatefield" name="date" type='date'
+                            min="2000-01-01"></input>
+                    </div>
+                    <div class="mb-3 col-9 mx-5">
+                        <label for="category">Kategoria:</label>
+                        <select class="form-select" name="category" id="incomeCategory">
+                            <option value="">Wybierz kategorię</option>
+                            {% for category in incomeCategories %}
+                            <option value="{{ category.id }}" name="{{ category.name }}">{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3 col-9 mx-5">
+                        <label class="form-label" for="comment">Komentarz (opcjonalnie):</label>
+                        <div><textarea class="form-control" name="comment" id="incomeComment" rows="2"
+                                placeholder="Max. 250 znaków..." style="resize: none" maxlength="250"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-outline-light myButton" value="Zapisz">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" style="z-index: 1500;" id="expenseModal" tabindex="-1" aria-labelledby="incomeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 400px">
+            <div class="modal-header">
+                <h5 class="modal-title">Edytuj wydatek</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="expenseUpdateForm" action="/balance/update-expense" method="POST">
+                <div class="modal-body">
+                    <div class="mx-auto col-lg-4 col-md-6" style="color: #17694b">
+                        {% if expense.errors is not empty %}
+                        <p>Błędy:</p>
+                        <ul>
+                            {% for error in expense.errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                    <div hidden>
+                        <input type="text" id="expenseId" name="id">
+                    </div>
+                    <div class="mb-3 mx-5">
+                        <label for="amount">Kwota (podaj z kropką):</label>
+                        <input type="number" class="form-control" placeholder="Wpisz kwotę..." id="expenseAmount"
+                            name="amount" min="0.01" step="0.01">
+                    </div>
+                    <div class="mb-3 mx-5">
+                        <label for="date">Data:</label>
+                        <input class='form-control' id="expenseUpdateDatefield" name="date" type='date'
+                            min="2000-01-01">
+                    </div>
+                    <div class="mb-3 col-9 mx-5">
+                        <label for="paymentMethod">Sposób płatności:</label>
+                        <select class="form-select" name="paymentMethod" id="paymentMethod">
+                            <option value="">Wybierz metodę płatności</option>
+                            {% for category in paymentCategories %}
+                            <option value="{{ category.id }}" name="{{ category.name }}">{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3 col-9 mx-5">
+                        <label for="category">Kategoria:</label>
+                        <select class="form-select" name="category" id="expenseCategory">
+                            <option value="">Wybierz kategorię</option>
+                            {% for category in expenseCategories %}
+                            <option value="{{ category.id }}" name="{{ category.name }}">{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3 col-9 mx-5">
+                        <label class="form-label" for="comment">Komentarz (opcjonalnie):</label>
+                        <div><textarea class="form-control" name="comment" id="expenseComment" rows="2"
+                                placeholder="Max. 250 znaków..." style="resize: none" maxlength="250"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-outline-light myButton" value="Zapisz">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
 
 {% block body %}
@@ -199,12 +302,16 @@
                             <td>{{ income.name }}</td>
                             <td>{{ income.amount }}</td>
                             <td> {{ income.incomeComment }} </td>
-                            <td class="d-flex justify-content-end"><a class="mx-1 btn btn-outline-dark">
+                            <td class="d-flex justify-content-end">
+                                <button class="mx-1 btn btn-outline-dark" name="updateIncomeBtn"
+                                    data-bs-target="#incomeModal" data-bs-toggle="modal" data-id="{{income.id}}"
+                                    data-amount="{{income.amount}}" data-name="{{income.name}}"
+                                    data-comment="{{income.incomeComment}}" data-date="{{income.dateOfIncome}}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                         class="bi bi-pen" viewBox="0 0 16 16">
                                         <path
                                             d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z" />
-                                    </svg></a>
+                                    </svg></button>
                                 <a href="/balance/{{ income.id }}/delete-income" class="btn btn-outline-dark">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                         class="bi bi-trash3" viewBox="0 0 16 16">
@@ -259,6 +366,7 @@
                                 <th>Data</th>
                                 <th>Kategoria</th>
                                 <th>Przychód</th>
+                                <th>Sposób płatności</th>
                                 <th>Komentarz</th>
                                 <th></th>
                             </tr>
@@ -269,13 +377,19 @@
                                 <td> {{ expense.dateOfExpense }}</td>
                                 <td>{{ expense.name }}</td>
                                 <td>{{ expense.amount }}</td>
+                                <td>{{ expense.paymentName }}</td>
                                 <td> {{ expense.expenseComment }} </td>
-                                <td class="d-flex justify-content-end"><a class="mx-1 btn btn-outline-dark">
+                                <td class="d-flex justify-content-end">
+                                    <button class="mx-1 btn btn-outline-dark" name="updateExpenseBtn"
+                                        data-bs-target="#expenseModal" data-bs-toggle="modal" data-id="{{expense.id}}"
+                                        data-amount="{{expense.amount}}" data-name="{{expense.name}}"
+                                        data-payment="{{ expense.paymentName }}"
+                                        data-comment="{{expense.expenseComment}}" data-date="{{expense.dateOfExpense}}">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
                                             <path
                                                 d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z" />
-                                        </svg></a>
+                                        </svg></button>
                                     <a href="/balance/{{ expense.id }}/delete-expense" class="btn btn-outline-dark">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">

@@ -64,9 +64,9 @@ class User extends \Core\Model
 
             $id = (int) $db->lastInsertId();
 
-            $this->assignCategories('incomes_Category_Default', 'incomes_Category_Assigned_To_Users', $id);
-            $this->assignCategories('expenses_Category_Default', 'expense_Category_Assigned_To_User_ID', $id);
-            $this->assignCategories('payment_Methods_Default', 'payment_Methods_Assigned_To_Users', $id);
+            $this->assignCategories('incomes_category_default', 'incomes_category_assigned_to_users', $id);
+            $this->assignCategories('expenses_category_default', 'expense_category_assigned_to_user_id', $id);
+            $this->assignCategories('payment_methods_default', 'payment_methods_assigned_to_users', $id);
 
             return $result;
         }
