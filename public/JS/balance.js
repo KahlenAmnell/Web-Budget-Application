@@ -15,7 +15,7 @@ var todayDate = () => {
     document.getElementById("incomeUpdateDatefield").setAttribute("max", today);
     document.getElementById("expenseUpdateDatefield").setAttribute("max", today);
 
-    
+
 }
 
 var displayCustomDateInput = () => {
@@ -75,7 +75,7 @@ var validateUpdateIncome = () => {
     });
 }
 
-var updateIncome = () => {
+var setIncomeModal = () => {
     $("button[name='updateIncomeBtn']").click(function () {
         $('#incomeAmount').val($(this).attr("data-amount"));
         $('#incomeUpdateDatefield').val($(this).attr("data-date"));
@@ -83,5 +83,19 @@ var updateIncome = () => {
 
         var selectedCategory = $(this).attr("data-name");
         $(`#incomeCategory option[name=${selectedCategory}]`).attr("selected", "selected");
+    })
+}
+
+var setExpenseModal = () => {
+    $("button[name='updateExpenseBtn']").click(function () {
+        $('#expenseAmount').val($(this).attr("data-amount"));
+        $('#expenseUpdateDatefield').val($(this).attr("data-date"));
+        $('#expenseComment').val($(this).attr("data-comment"));
+
+        var selectedCategory = $(this).attr("data-name");
+        $(`#expenseCategory option[name='${selectedCategory}']`).attr("selected", "selected");
+
+        var selectedPayment = $(this).attr("data-payment");
+        $(`#paymentMethod option[name='${selectedPayment}']`).attr("selected", "selected");
     })
 }
