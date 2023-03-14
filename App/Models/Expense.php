@@ -91,9 +91,10 @@ class Expense extends Finances
 
     public static function getExpensesList($earlierDate, $laterDate)
     {
-        $sql = "SELECT e.id, e.dateOfExpense, ecatu.name, e.amount, e.expenseComment 
+        $sql = "SELECT e.id, e.dateOfExpense, ecatu.name, e.amount, e.expenseComment, p.name AS paymentName
         FROM expense_Category_Assigned_To_User_ID AS ecatu INNER JOIN expenses AS e
-        WHERE e.userID = :id AND ecatu.id = e.expenseCategoryAssignedToUserID 
+        INNER JOIN payment_methods_assigned_to_users AS p
+        WHERE e.userID = :id AND ecatu.id = e.expenseCategoryAssignedToUserID AND p.id = e.paymentMethodAssignedToUserID
             AND e.dateOfExpense >= :earlierDate AND e.dateOfExpense <= :laterDate 
         ORDER BY e.dateOfExpense DESC;";
         return Finances::getListOfFinances($sql, $earlierDate, $laterDate);

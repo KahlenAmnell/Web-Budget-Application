@@ -12,7 +12,8 @@
     todayDate();
     displayCustomDateInput();
     validateUpdateIncome();
-    updateIncome();
+    setIncomeModal();
+    setExpenseModal();
 </script>
 <script>
     const incomeDataPoints = JSON.parse('{{incomeDataPoints|json_encode()|raw}}');
@@ -359,6 +360,7 @@
                                 <th>Data</th>
                                 <th>Kategoria</th>
                                 <th>Przychód</th>
+                                <th>Sposób płatności</th>
                                 <th>Komentarz</th>
                                 <th></th>
                             </tr>
@@ -369,6 +371,7 @@
                                 <td> {{ expense.dateOfExpense }}</td>
                                 <td>{{ expense.name }}</td>
                                 <td>{{ expense.amount }}</td>
+                                <td>{{ expense.paymentName }}</td>
                                 <td> {{ expense.expenseComment }} </td>
                                 <td class="d-flex justify-content-end">
                                     <button class="mx-1 btn btn-outline-dark" name="updateExpenseBtn"
