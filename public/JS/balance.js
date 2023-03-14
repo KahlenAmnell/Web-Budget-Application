@@ -81,8 +81,11 @@ var setIncomeModal = () => {
         $('#incomeUpdateDatefield').val($(this).attr("data-date"));
         $('#incomeComment').val($(this).attr("data-comment"));
 
+        var incomeId = $(this).attr("data-id");
+        $('#incomeId').val(parseInt(incomeId));
+
         var selectedCategory = $(this).attr("data-name");
-        $(`#incomeCategory option[name=${selectedCategory}]`).attr("selected", "selected");
+        $(`#incomeCategory option[name='${selectedCategory}']`).attr("selected", "selected");
     })
 }
 
@@ -91,6 +94,7 @@ var setExpenseModal = () => {
         $('#expenseAmount').val($(this).attr("data-amount"));
         $('#expenseUpdateDatefield').val($(this).attr("data-date"));
         $('#expenseComment').val($(this).attr("data-comment"));
+        
 
         var selectedCategory = $(this).attr("data-name");
         $(`#expenseCategory option[name='${selectedCategory}']`).attr("selected", "selected");

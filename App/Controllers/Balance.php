@@ -62,4 +62,19 @@ class Balance extends Authenticated
         Flash::addMessage('Usunieto wydatek');
         $this->redirect('/balance');
     }
+
+    public function updateIncomeAction()
+    {
+        $update = new Income($_POST);
+        if($update->updateRecord())
+        {
+            Flash::addMessage('Zaktualizowano');
+            $this->redirect('/balance');
+        } else {
+            Flash::addMessage('Nie udało się wprowadzić zmian');
+            $this->redirect('/balance');
+        }
+            
+        
+    }
 }

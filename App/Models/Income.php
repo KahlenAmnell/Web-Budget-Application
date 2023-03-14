@@ -83,7 +83,7 @@ class Income extends Finances
         WHERE i.userID = :id AND icatu.id = i.incomeCategoryAssignedToUserId 
             AND i.dateOfIncome >= :earlierDate AND i.dateOfIncome <= :laterDate 
         ORDER BY i.dateOfIncome DESC;";
-         return Finances::getListOfFinances($sql, $earlierDate, $laterDate);
+        return Finances::getListOfFinances($sql, $earlierDate, $laterDate);
     }
 
     public static function deleteRecordsOfOneCategoryOfIncomes($id)
@@ -93,4 +93,25 @@ class Income extends Finances
         return Finances::deleteAllRecordsOfOneCategory($sql, $id);
     }
 
+    public function updateRecord()
+    {
+        $this->validate();
+        if (empty($this->errors)) {
+            $sql = "UPDATE incomes
+                    SET incomeCategoryAssignedToUserId = :categoryId, amount = :amount, dateOfIncome = :date, incomeComment = :comment 
+                    WHERE id = :id";
+
+            $db = static::getDB();
+
+            $stmt = $db->prepare($sql);
+            $stmt->bindValue(':categoryId', $this->category, PDO::PARAM_INT);
+            $stmt->bindValue(':amount', $this->amount, PDO::PARAM_INT);
+            $stmt->bindValue(':date', $this->date, PDO::PARAM_STR);
+            $stmt->bindValue(':comment', $this->comment, PDO::PARAM_STR);
+            $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+
+            return $stmt->execute();
+        }
+        return false;
+    }
 }
