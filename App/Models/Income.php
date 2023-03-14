@@ -16,7 +16,7 @@ class Income extends Finances
      */
     public static function getIncomeCategories()
     {
-        return Finances::getCategories('incomes_Category_Assigned_To_Users');
+        return Finances::getCategories('incomes_category_assigned_to_users');
     }
 
     /**
@@ -67,7 +67,7 @@ class Income extends Finances
     public static function getUserIncomes($earlierDate, $laterDate)
     {
         $sql = "SELECT icatu.name, SUM(i.amount) AS amount 
-                FROM incomes_Category_Assigned_To_Users AS icatu INNER JOIN incomes AS i
+                FROM incomes_category_assigned_to_users AS icatu INNER JOIN incomes AS i
                 WHERE i.userID = :id AND icatu.id = i.incomeCategoryAssignedToUserId 
                     AND i.dateOfIncome >= :earlierDate AND i.dateOfIncome <= :laterDate 
                 GROUP BY icatu.name 
@@ -79,7 +79,7 @@ class Income extends Finances
     public static function getIncomesList($earlierDate, $laterDate)
     {
         $sql = "SELECT i.id, i.dateOfIncome, icatu.name, i.amount, i.incomeComment 
-        FROM incomes_Category_Assigned_To_Users AS icatu INNER JOIN incomes AS i
+        FROM incomes_category_assigned_to_users AS icatu INNER JOIN incomes AS i
         WHERE i.userID = :id AND icatu.id = i.incomeCategoryAssignedToUserId 
             AND i.dateOfIncome >= :earlierDate AND i.dateOfIncome <= :laterDate 
         ORDER BY i.dateOfIncome DESC;";

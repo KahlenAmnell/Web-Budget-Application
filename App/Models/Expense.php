@@ -17,7 +17,7 @@ class Expense extends Finances
      */
     public static function getExpenseCategories()
     {
-        return Finances::getCategories('expense_Category_Assigned_To_User_ID');
+        return Finances::getCategories('expense_category_assigned_to_user_id');
     }
 
     /**
@@ -27,7 +27,7 @@ class Expense extends Finances
      */
     public static function getPaymentCategories()
     {
-        return Finances::getCategories('payment_Methods_Assigned_To_Users');
+        return Finances::getCategories('payment_methods_assigned_to_users');
     }
 
     /**
@@ -83,7 +83,7 @@ class Expense extends Finances
      */
     public static function getUserExpenses($earlierDate, $laterDate)
     {
-        $sql = "SELECT ecatu.name, SUM(e.amount) AS amount FROM expense_Category_Assigned_To_User_ID AS ecatu INNER JOIN expenses AS e
+        $sql = "SELECT ecatu.name, SUM(e.amount) AS amount FROM expense_category_assigned_to_user_id AS ecatu INNER JOIN expenses AS e
         WHERE e.userID = :id AND ecatu.id = e.expenseCategoryAssignedToUserID AND e.dateOfExpense >= :earlierDate AND e.dateOfExpense <= :laterDate GROUP BY ecatu.name ORDER BY amount DESC;";
 
         return Finances::getUserFinances($sql, $earlierDate, $laterDate);
@@ -92,7 +92,7 @@ class Expense extends Finances
     public static function getExpensesList($earlierDate, $laterDate)
     {
         $sql = "SELECT e.id, e.dateOfExpense, ecatu.name, e.amount, e.expenseComment, p.name AS paymentName
-        FROM expense_Category_Assigned_To_User_ID AS ecatu INNER JOIN expenses AS e
+        FROM expense_category_assigned_to_user_id AS ecatu INNER JOIN expenses AS e
         INNER JOIN payment_methods_assigned_to_users AS p
         WHERE e.userID = :id AND ecatu.id = e.expenseCategoryAssignedToUserID AND p.id = e.paymentMethodAssignedToUserID
             AND e.dateOfExpense >= :earlierDate AND e.dateOfExpense <= :laterDate 
@@ -131,7 +131,7 @@ class Expense extends Finances
         $dates = Dates::setLimitDates($date);
         $earlierDate = $dates['earlierDate'];
         $laterDate = $dates['laterDate'];
-        
+
         $sql = "SELECT SUM(amount) FROM expenses 
         WHERE expenseCategoryAssignedToUserID = :id 
         AND dateOfExpense >= :earlierDate AND dateOfExpense <= :laterDate;";
@@ -141,7 +141,7 @@ class Expense extends Finances
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->bindValue(':earlierDate', $earlierDate, PDO::PARAM_STR);
         $stmt->bindValue(':laterDate', $laterDate, PDO::PARAM_STR);
-        
+
         $stmt->execute();
 
         return $stmt->fetchColumn();
